@@ -6,3 +6,10 @@ __pycache__/
 data/parts_*.json
 # dados de instância Postgres local
 pgdata*/
+
+# NUNCA versionar segredos — este arquivo contém credenciais de
+# infraestrutura não relacionadas a este projeto (PayPal, Cloudflare,
+# SMTP, OAuth Google/Facebook, Sentry, Discord, Mercado Pago, JWT, etc.)
+.env
+.env.*
+!.env.example
