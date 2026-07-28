@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:16
+    container_name: catalogo_pg
+    environment:
+      POSTGRES_USER: catalogo
+      POSTGRES_PASSWORD: catalogo
+      POSTGRES_DB: catalogo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # schema é aplicado automaticamente na 1ª inicialização (ordem alfabética)
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      # seed opcional via SQL puro; alternativamente use scripts/load.py (recomendado)
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U catalogo -d catalogo_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

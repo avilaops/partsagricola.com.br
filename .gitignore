@@ -1,0 +1,8 @@
+# caches / temporários
+__pycache__/
+*.pyc
+.DS_Store
+# parciais de extração (intermediários — recriáveis via combine.py)
+data/parts_*.json
+# dados de instância Postgres local
+pgdata*/

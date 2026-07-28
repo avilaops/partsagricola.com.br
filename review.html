@@ -1,0 +1,2987 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Revisão de peças — Geomaq</title>
+<style>
+ body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:#f4f5f7;color:#1a1a1a}
+ header{position:sticky;top:0;background:#0b6b3a;color:#fff;padding:14px 20px;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:10}
+ header h1{margin:0 0 4px;font-size:18px} header .sub{font-size:12px;opacity:.9}
+ .controls{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+ .controls button,.controls select{border:0;border-radius:6px;padding:6px 10px;font-size:13px;cursor:pointer}
+ .controls button{background:#fff;color:#0b6b3a;font-weight:600}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;padding:18px}
+ .card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.12);display:flex;flex-direction:column}
+ .card.flagged{outline:2px solid #e0a800}
+ .imgwrap{background:#eceef0;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center}
+ .imgwrap img{max-width:100%;max-height:100%;object-fit:contain}
+ .info{padding:10px}
+ .code{font-weight:700;font-size:15px}
+ .name{font-size:13px;margin:2px 0;min-height:32px}
+ .meta{font-size:11px;color:#666}
+ .badge{display:inline-block;margin-top:6px;font-size:10px;padding:2px 6px;border-radius:10px}
+ .badge.ok{background:#e6f4ea;color:#0b6b3a} .badge.rev{background:#fff3cd;color:#8a6d00}
+</style></head><body>
+<header>
+  <h1>Revisão de peças — Geomaq (Fase 1)</h1>
+  <div class="sub">294 peças · Algodão: 64 (58 p/ revisar) · Amendoim: 60 (3 p/ revisar) · Construção: 71 (19 p/ revisar) · Verde: 99 (15 p/ revisar)</div>
+  <div class="controls">
+    <select id="linha" onchange="apply()"><option value="">Todas as linhas</option>
+      <option>Algodão</option><option>Amendoim</option><option>Construção</option><option>Verde</option></select>
+    <button onclick="toggleRev()" id="revbtn">Mostrar só p/ revisar</button>
+    <input id="q" placeholder="buscar código/nome" oninput="apply()" style="border:0;border-radius:6px;padding:6px 10px;font-size:13px">
+  </div>
+</header>
+<div class="grid" id="grid">
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c1_AN273468.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN273468</div>
+        <div class="name">ME</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto; OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c2_KK27794.png" alt=""></div>
+      <div class="info">
+        <div class="code">KK27794</div>
+        <div class="name">FÊ JE</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c3_KK27988.png" alt=""></div>
+      <div class="info">
+        <div class="code">KK27988</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto; OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c0_KK27989.png" alt=""></div>
+      <div class="info">
+        <div class="code">KK27989</div>
+        <div class="name">ES SS UN</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c2_L2456N.png" alt=""></div>
+      <div class="info">
+        <div class="code">L2456N</div>
+        <div class="name">ENGRENAGEM 21Z</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c3_L2889N.png" alt=""></div>
+      <div class="info">
+        <div class="code">L2889N</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto; OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c1_N273658.png" alt=""></div>
+      <div class="info">
+        <div class="code">N273658</div>
+        <div class="name">ENGRENAGEM DO TAMBOR MENOR</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c0_N273659.png" alt=""></div>
+      <div class="info">
+        <div class="code">N273659</div>
+        <div class="name">JR DO TAMBOR</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta">TAMBOR </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c3_N371626.png" alt=""></div>
+      <div class="info">
+        <div class="code">N371626</div>
+        <div class="name">ER TX ENGRENAGEM DO FUSO</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p04_c2_NN18289.png" alt=""></div>
+      <div class="info">
+        <div class="code">NN18289</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.4 · ocr 63.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto; OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c0_AE53298.png" alt=""></div>
+      <div class="info">
+        <div class="code">AE53298</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c1_AKK25568.png" alt=""></div>
+      <div class="info">
+        <div class="code">AKK25568</div>
+        <div class="name">NS</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c2_E86147.png" alt=""></div>
+      <div class="info">
+        <div class="code">E86147</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Algodão" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c3_KK28390.png" alt=""></div>
+      <div class="info">
+        <div class="code">KK28390</div>
+        <div class="name">FUSO RECOLHEDOR GARRAS</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta">FUSO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Algodão" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c1_N192708.png" alt=""></div>
+      <div class="info">
+        <div class="code">N192708</div>
+        <div class="name">GUIA</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta">GUIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c0_N192710.png" alt=""></div>
+      <div class="info">
+        <div class="code">N192710</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Algodão" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c2_N277078.png" alt=""></div>
+      <div class="info">
+        <div class="code">N277078</div>
+        <div class="name">FUSO RECOLHEDOR GARRAS</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta">FUSO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p05_c2_N279372.png" alt=""></div>
+      <div class="info">
+        <div class="code">N279372</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.5 · ocr 74.8</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c0_AKK41952.png" alt=""></div>
+      <div class="info">
+        <div class="code">AKK41952</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c1_AKK49979.png" alt=""></div>
+      <div class="info">
+        <div class="code">AKK49979</div>
+        <div class="name">SEO</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta">SEO </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c0_AKKIGI93.png" alt=""></div>
+      <div class="info">
+        <div class="code">AKKIGI93</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c3_AN279609.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN279609</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c2_ID8804.png" alt=""></div>
+      <div class="info">
+        <div class="code">ID8804</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c1_N198724.png" alt=""></div>
+      <div class="info">
+        <div class="code">N198724</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c2_N273303.png" alt=""></div>
+      <div class="info">
+        <div class="code">N273303</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c3_N277542.png" alt=""></div>
+      <div class="info">
+        <div class="code">N277542</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c2_N277543.png" alt=""></div>
+      <div class="info">
+        <div class="code">N277543</div>
+        <div class="name">DO</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Algodão" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c3_N279986.png" alt=""></div>
+      <div class="info">
+        <div class="code">N279986</div>
+        <div class="name">RECOLHEDOR</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta">RECOLHEDOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Algodão" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p06_c1_N371572.png" alt=""></div>
+      <div class="info">
+        <div class="code">N371572</div>
+        <div class="name">DO FUSO</div>
+        <div class="meta">Algodão · p.6 · ocr 73.6</div>
+        <div class="meta">FUSO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c0_AN273676.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN273676</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c1_AN273838.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN273838</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c2_AN372217.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN372217</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c2_AN373216.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN373216</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c2_KK65432.png" alt=""></div>
+      <div class="info">
+        <div class="code">KK65432</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c1_N275607.png" alt=""></div>
+      <div class="info">
+        <div class="code">N275607</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c0_N276745.png" alt=""></div>
+      <div class="info">
+        <div class="code">N276745</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c1_N276746.png" alt=""></div>
+      <div class="info">
+        <div class="code">N276746</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p07_c0_N372970.png" alt=""></div>
+      <div class="info">
+        <div class="code">N372970</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.7 · ocr 83.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p08_c2_AKKIT562.png" alt=""></div>
+      <div class="info">
+        <div class="code">AKKIT562</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.8 · ocr 70.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p08_c2_AN272152.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN272152</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.8 · ocr 70.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p08_c2_AN272736.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN272736</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.8 · ocr 70.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Algodão" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p08_c2_AN272737.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN272737</div>
+        <div class="name">TAMBOR</div>
+        <div class="meta">Algodão · p.8 · ocr 70.1</div>
+        <div class="meta">TAMBOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p08_c0_AN406038.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN406038</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.8 · ocr 70.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p10_c2_AN273019.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN273019</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.10 · ocr 78.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p10_c2_AN277607.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN277607</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.10 · ocr 78.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p10_c0_AN372202.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN372202</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.10 · ocr 78.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p10_c1_AN374159.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN374159</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.10 · ocr 78.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p10_c0_N378789.png" alt=""></div>
+      <div class="info">
+        <div class="code">N378789</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.10 · ocr 78.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p10_c1_N378790.png" alt=""></div>
+      <div class="info">
+        <div class="code">N378790</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.10 · ocr 78.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p11_c2_AKK46326.png" alt=""></div>
+      <div class="info">
+        <div class="code">AKK46326</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.11 · ocr 80.7</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p11_c0_AKK46327.png" alt=""></div>
+      <div class="info">
+        <div class="code">AKK46327</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.11 · ocr 80.7</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p12_c2_AN273000.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN273000</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.12 · ocr 77.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p12_c3_AN273515.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN273515</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.12 · ocr 77.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p12_c2_AN273516.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN273516</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.12 · ocr 77.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p13_c0_AN276679.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN276679</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.13 · ocr 83.2</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p13_c2_AN276688.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN276688</div>
+        <div class="name">SE</div>
+        <div class="meta">Algodão · p.13 · ocr 83.2</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p13_c2_AN276830.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN276830</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.13 · ocr 83.2</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p13_c0_AN405636.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN405636</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.13 · ocr 83.2</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p14_c3_AN276819.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN276819</div>
+        <div class="name">CHAPA</div>
+        <div class="meta">Algodão · p.14 · ocr 68.5</div>
+        <div class="meta">CHAPA </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p14_c3_AN373565.png" alt=""></div>
+      <div class="info">
+        <div class="code">AN373565</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.14 · ocr 68.5</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto; OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p15_c3_3213_9300.png" alt=""></div>
+      <div class="info">
+        <div class="code">3213-9300</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p15_c2_3232_4200.png" alt=""></div>
+      <div class="info">
+        <div class="code">3232-4200</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p15_c1_3592_1250.png" alt=""></div>
+      <div class="info">
+        <div class="code">3592-1250</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Algodão" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Algodao/Algodao_p15_c2_4042_3775.png" alt=""></div>
+      <div class="info">
+        <div class="code">4042-3775</div>
+        <div class="name">—</div>
+        <div class="meta">Algodão · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c3_02014000004.png" alt=""></div>
+      <div class="info">
+        <div class="code">02014000004</div>
+        <div class="name">ENGRENAGEM Z31 5/8</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ENGRENAGEM · 5/8; Z31</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c2_0211129.png" alt=""></div>
+      <div class="info">
+        <div class="code">0211129</div>
+        <div class="name">ENGRENAGEM ACO 30Z 60/2 F40</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ENGRENAGEM · 60/2; F40</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c0_03120010003.png" alt=""></div>
+      <div class="info">
+        <div class="code">03120010003</div>
+        <div class="name">ENGRENAGEM 15Z 3/4 ESTICADORA</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ENGRENAGEM · 3/4</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c3_1228317.png" alt=""></div>
+      <div class="info">
+        <div class="code">1228317</div>
+        <div class="name">ENGRENAGEM DUPLA Z24 ASA</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ENGRENAGEM · Z24</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c1_750050014.png" alt=""></div>
+      <div class="info">
+        <div class="code">750050014</div>
+        <div class="name">ENGRENAGEM 60/1 Z16 25MM 8X8MM</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ENGRENAGEM · 25MM; 60/1; 8X8MM; Z16</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c1_87605592.png" alt=""></div>
+      <div class="info">
+        <div class="code">87605592</div>
+        <div class="name">ROLAMENTO</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ROLAMENTO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c0_AH129451.png" alt=""></div>
+      <div class="info">
+        <div class="code">AH129451</div>
+        <div class="name">ROLAMENTO</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ROLAMENTO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c1_AH168161.png" alt=""></div>
+      <div class="info">
+        <div class="code">AH168161</div>
+        <div class="name">ROLAMENTO</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ROLAMENTO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c2_CCB0012000094.png" alt=""></div>
+      <div class="info">
+        <div class="code">CCB0012000094</div>
+        <div class="name">ENGRENAGEM DUPLA 16Z</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c2_DQ02624.png" alt=""></div>
+      <div class="info">
+        <div class="code">DQ02624</div>
+        <div class="name">ROLAMENTO</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ROLAMENTO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c0_UC206.png" alt=""></div>
+      <div class="info">
+        <div class="code">UC206</div>
+        <div class="name">ROLAMENTO</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ROLAMENTO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p04_c3_UG207.png" alt=""></div>
+      <div class="info">
+        <div class="code">UG207</div>
+        <div class="name">ROLAMENTO</div>
+        <div class="meta">Amendoim · p.4 · text</div>
+        <div class="meta">ROLAMENTO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c1_02011000022.png" alt=""></div>
+      <div class="info">
+        <div class="code">02011000022</div>
+        <div class="name">CORREIA RODA DENTADA BIPARTIDA 1.1/4</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">CORREIA · 1/4</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c2_0375572.png" alt=""></div>
+      <div class="info">
+        <div class="code">0375572</div>
+        <div class="name">TURBINA TENSOR RECOLHEDORA</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">TURBINA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c0_0728870.png" alt=""></div>
+      <div class="info">
+        <div class="code">0728870</div>
+        <div class="name">CANECA MASTER</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">CANECA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c3_1426510.png" alt=""></div>
+      <div class="info">
+        <div class="code">1426510</div>
+        <div class="name">COROA ACO 60/1 Z30 70MM</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">COROA · 60/1; 70MM; Z30</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Amendoim" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c1_1587838.png" alt=""></div>
+      <div class="info">
+        <div class="code">1587838</div>
+        <div class="name">—</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c0_30410769.png" alt=""></div>
+      <div class="info">
+        <div class="code">30410769</div>
+        <div class="name">RODA DENTADA BIPARTIDA 1.1/2</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">RODA · 1/2</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c2_B092.png" alt=""></div>
+      <div class="info">
+        <div class="code">B092</div>
+        <div class="name">CORREIA</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">CORREIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c0_B103.png" alt=""></div>
+      <div class="info">
+        <div class="code">B103</div>
+        <div class="name">CORREIA</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">CORREIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c3_BB85.png" alt=""></div>
+      <div class="info">
+        <div class="code">BB85</div>
+        <div class="name">CORREIA</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">CORREIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c2_HP1017.png" alt=""></div>
+      <div class="info">
+        <div class="code">HP1017</div>
+        <div class="name">ENGRENAGEM OXICORTADA BI PARTIDA AGROMERICA</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p05_c1_SAE_1020.png" alt=""></div>
+      <div class="info">
+        <div class="code">SAE-1020</div>
+        <div class="name">PLASTICA PA</div>
+        <div class="meta">Amendoim · p.5 · text</div>
+        <div class="meta">PLASTICA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c3_02010100017.png" alt=""></div>
+      <div class="info">
+        <div class="code">02010100017</div>
+        <div class="name">ESPACADOR RODA BATEDOR</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">ESPACADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c2_02010100025.png" alt=""></div>
+      <div class="info">
+        <div class="code">02010100025</div>
+        <div class="name">BASE ESQUERDA</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">BASE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c3_02010100026.png" alt=""></div>
+      <div class="info">
+        <div class="code">02010100026</div>
+        <div class="name">BASE DIREITA</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">BASE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c2_0233350.png" alt=""></div>
+      <div class="info">
+        <div class="code">0233350</div>
+        <div class="name">BUCHA EXCENTRICA</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">BUCHA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c0_0464291.png" alt=""></div>
+      <div class="info">
+        <div class="code">0464291</div>
+        <div class="name">POLIA EST 3BX100MM</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">POLIA · 3BX100MM</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c0_04RD0007.png" alt=""></div>
+      <div class="info">
+        <div class="code">04RD0007</div>
+        <div class="name">RODA CHACOALHACAO</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">RODA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c1_04RD0018.png" alt=""></div>
+      <div class="info">
+        <div class="code">04RD0018</div>
+        <div class="name">RODA APOIO SUPERIOR ARRANCADORA</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">RODA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c1_1175286.png" alt=""></div>
+      <div class="info">
+        <div class="code">1175286</div>
+        <div class="name">POLIA FUNDIDA FURO 35MM</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">POLIA · 35MM</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c0_1175329.png" alt=""></div>
+      <div class="info">
+        <div class="code">1175329</div>
+        <div class="name">POLIA</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">POLIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c2_1175332.png" alt=""></div>
+      <div class="info">
+        <div class="code">1175332</div>
+        <div class="name">POLIA FUNDIDA</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">POLIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c1_1234970.png" alt=""></div>
+      <div class="info">
+        <div class="code">1234970</div>
+        <div class="name">BUCHA EXCENTRICA DO VIBRADOR 1.3/4</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">BUCHA · 3/4</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p06_c3_1235027.png" alt=""></div>
+      <div class="info">
+        <div class="code">1235027</div>
+        <div class="name">POLIA FUNDIDA 220MM F40</div>
+        <div class="meta">Amendoim · p.6 · text</div>
+        <div class="meta">POLIA · 220MM; F40</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p07_c2_02012000005.png" alt=""></div>
+      <div class="info">
+        <div class="code">02012000005</div>
+        <div class="name">DEFLETOR ESQUERDO DUPLO</div>
+        <div class="meta">Amendoim · p.7 · text</div>
+        <div class="meta">DEFLETOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p07_c1_02012000006.png" alt=""></div>
+      <div class="info">
+        <div class="code">02012000006</div>
+        <div class="name">DEFLETOR DUPLO</div>
+        <div class="meta">Amendoim · p.7 · text</div>
+        <div class="meta">DEFLETOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p07_c2_02012000034.png" alt=""></div>
+      <div class="info">
+        <div class="code">02012000034</div>
+        <div class="name">HASTE ESQUERDA</div>
+        <div class="meta">Amendoim · p.7 · text</div>
+        <div class="meta">HASTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p07_c1_02012000035.png" alt=""></div>
+      <div class="info">
+        <div class="code">02012000035</div>
+        <div class="name">DIREITA</div>
+        <div class="meta">Amendoim · p.7 · text</div>
+        <div class="meta">DIREITA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p07_c1_HP102225.png" alt=""></div>
+      <div class="info">
+        <div class="code">HP102225</div>
+        <div class="name">LAMINA DIREITA</div>
+        <div class="meta">Amendoim · p.7 · text</div>
+        <div class="meta">LAMINA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p07_c2_HP102226.png" alt=""></div>
+      <div class="info">
+        <div class="code">HP102226</div>
+        <div class="name">BASE LAMINA</div>
+        <div class="meta">Amendoim · p.7 · text</div>
+        <div class="meta">BASE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p08_c2_030005.png" alt=""></div>
+      <div class="info">
+        <div class="code">030005</div>
+        <div class="name">FACAO</div>
+        <div class="meta">Amendoim · p.8 · text</div>
+        <div class="meta">FACAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p08_c2_030070.png" alt=""></div>
+      <div class="info">
+        <div class="code">030070</div>
+        <div class="name">FACAO LADO ESQUERDO</div>
+        <div class="meta">Amendoim · p.8 · text</div>
+        <div class="meta">FACAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p08_c2_030071.png" alt=""></div>
+      <div class="info">
+        <div class="code">030071</div>
+        <div class="name">FACAO LADO DIREITO</div>
+        <div class="meta">Amendoim · p.8 · text</div>
+        <div class="meta">FACAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Amendoim" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p09_c3_CA550.png" alt=""></div>
+      <div class="info">
+        <div class="code">CA550</div>
+        <div class="name">—</div>
+        <div class="meta">Amendoim · p.9 · text</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p09_c2_CA550K1.png" alt=""></div>
+      <div class="info">
+        <div class="code">CA550K1</div>
+        <div class="name">CORRENTE</div>
+        <div class="meta">Amendoim · p.9 · text</div>
+        <div class="meta">CORRENTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p09_c2_CA557.png" alt=""></div>
+      <div class="info">
+        <div class="code">CA557</div>
+        <div class="name">CORRENTE CORRENTE AGRICOLA KMC</div>
+        <div class="meta">Amendoim · p.9 · text</div>
+        <div class="meta">CORRENTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Amendoim" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p09_c3_CA557_4X4.png" alt=""></div>
+      <div class="info">
+        <div class="code">CA557-4X4</div>
+        <div class="name">KMC</div>
+        <div class="meta">Amendoim · p.9 · text</div>
+        <div class="meta">KMC </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p10_c2_1396660.png" alt=""></div>
+      <div class="info">
+        <div class="code">1396660</div>
+        <div class="name">GADANHO</div>
+        <div class="meta">Amendoim · p.10 · text</div>
+        <div class="meta">GADANHO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p10_c2_1396716.png" alt=""></div>
+      <div class="info">
+        <div class="code">1396716</div>
+        <div class="name">GADANHO</div>
+        <div class="meta">Amendoim · p.10 · text</div>
+        <div class="meta">GADANHO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p10_c2_1396750.png" alt=""></div>
+      <div class="info">
+        <div class="code">1396750</div>
+        <div class="name">GADANHO</div>
+        <div class="meta">Amendoim · p.10 · text</div>
+        <div class="meta">GADANHO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p11_c3_02012000002.png" alt=""></div>
+      <div class="info">
+        <div class="code">02012000002</div>
+        <div class="name">FACA RETO ESQUERDA</div>
+        <div class="meta">Amendoim · p.11 · text</div>
+        <div class="meta">FACA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p11_c0_02012000004.png" alt=""></div>
+      <div class="info">
+        <div class="code">02012000004</div>
+        <div class="name">PE FACA RETO</div>
+        <div class="meta">Amendoim · p.11 · text</div>
+        <div class="meta">FACA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p12_c0_0074666.png" alt=""></div>
+      <div class="info">
+        <div class="code">0074666</div>
+        <div class="name">ENGATE FUNDIDO</div>
+        <div class="meta">Amendoim · p.12 · text</div>
+        <div class="meta">ENGATE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p12_c1_0323029.png" alt=""></div>
+      <div class="info">
+        <div class="code">0323029</div>
+        <div class="name">ENVOLVENTE CERAMICA</div>
+        <div class="meta">Amendoim · p.12 · text</div>
+        <div class="meta">ENVOLVENTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p12_c2_XEE0057.png" alt=""></div>
+      <div class="info">
+        <div class="code">XEE0057</div>
+        <div class="name">MOVEL EIXO ESTRIADO 1.38POL</div>
+        <div class="meta">Amendoim · p.12 · text</div>
+        <div class="meta">MOVEL · 1.38POL</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p13_c3_K203080531.png" alt=""></div>
+      <div class="info">
+        <div class="code">K203080531</div>
+        <div class="name">BARRA TOMBADORA ESQUERDA</div>
+        <div class="meta">Amendoim · p.13 · text</div>
+        <div class="meta">BARRA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p13_c0_K203080532.png" alt=""></div>
+      <div class="info">
+        <div class="code">K203080532</div>
+        <div class="name">BARRA DIREITA</div>
+        <div class="meta">Amendoim · p.13 · text</div>
+        <div class="meta">BARRA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p14_c2_2104344.png" alt=""></div>
+      <div class="info">
+        <div class="code">2104344</div>
+        <div class="name">TALISCA ARRANCADOR</div>
+        <div class="meta">Amendoim · p.14 · text</div>
+        <div class="meta">TALISCA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Amendoim" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Amendoim/Amendoim_p14_c0_2104361.png" alt=""></div>
+      <div class="info">
+        <div class="code">2104361</div>
+        <div class="name">TALISCA ESQUERDA ARRANCADOR</div>
+        <div class="meta">Amendoim · p.14 · text</div>
+        <div class="meta">TALISCA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c2_12743122.png" alt=""></div>
+      <div class="info">
+        <div class="code">12743122</div>
+        <div class="name">ROLAMENTO MOTONIVELADORA</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">ROLAMENTO </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c3_1628434.png" alt=""></div>
+      <div class="info">
+        <div class="code">1628434</div>
+        <div class="name">ACOPLAMENTO EIXO CARDAN CARDAN TRASEIRO</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">ACOPLAMENTO </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c3_266336.png" alt=""></div>
+      <div class="info">
+        <div class="code">266336</div>
+        <div class="name">CUBO DO EIXO TANDEM</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">CUBO </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c0_553091.png" alt=""></div>
+      <div class="info">
+        <div class="code">553091</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto; OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c0_73125509.png" alt=""></div>
+      <div class="info">
+        <div class="code">73125509</div>
+        <div class="name">7/00 ME ENGRENAGEM GIRO DA LAMINA</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">ENGRENAGEM · 7/00</div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c1_75201847.png" alt=""></div>
+      <div class="info">
+        <div class="code">75201847</div>
+        <div class="name">EM ENGRENAGEM ROLAMENTO SEPARADOR BRONZE DD COROA PINHAO CENTRAL</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c2_75312403.png" alt=""></div>
+      <div class="info">
+        <div class="code">75312403</div>
+        <div class="name">SS EA COROA PINHAO CENTRAL</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">COROA </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c0_BE1368.png" alt=""></div>
+      <div class="info">
+        <div class="code">BE1368</div>
+        <div class="name">PÁ PLATO EMBREAGEM</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">PLATO </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p04_c2_TI84228.png" alt=""></div>
+      <div class="info">
+        <div class="code">TI84228</div>
+        <div class="name">ENGRENAGEM BRONZE</div>
+        <div class="meta">Construção · p.4 · ocr 65.9</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge rev">revisar: OCR baixa confiança</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c2_1080803.png" alt=""></div>
+      <div class="info">
+        <div class="code">1080803</div>
+        <div class="name">EIXO DA BARRA DO PIVO</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">EIXO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c1_1281013.png" alt=""></div>
+      <div class="info">
+        <div class="code">1281013</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c3_1473309.png" alt=""></div>
+      <div class="info">
+        <div class="code">1473309</div>
+        <div class="name">PONTA EIXO TRASEIRO</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">PONTA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c1_1666761.png" alt=""></div>
+      <div class="info">
+        <div class="code">1666761</div>
+        <div class="name">EIXO CARDAN</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">EIXO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c3_2478904.png" alt=""></div>
+      <div class="info">
+        <div class="code">2478904</div>
+        <div class="name">HASTE DO CILINDRO</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">HASTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c0_2482257.png" alt=""></div>
+      <div class="info">
+        <div class="code">2482257</div>
+        <div class="name">ESTRUTURA FRONTAL RETRO CAT</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">ESTRUTURA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c3_3161079.png" alt=""></div>
+      <div class="info">
+        <div class="code">3161079</div>
+        <div class="name">NS ARTICULACAO GIRO</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">ARTICULACAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c2_3559665.png" alt=""></div>
+      <div class="info">
+        <div class="code">3559665</div>
+        <div class="name">PINHAO LATERAL</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">PINHAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c1_4972125.png" alt=""></div>
+      <div class="info">
+        <div class="code">4972125</div>
+        <div class="name">RE SU</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta"> </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p05_c0_9MBN7.png" alt=""></div>
+      <div class="info">
+        <div class="code">9MBN7</div>
+        <div class="name">PINHAO GIRO DA LAMINA EIXO DA EMBREAGEM</div>
+        <div class="meta">Construção · p.5 · ocr 78.0</div>
+        <div class="meta">PINHAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c1_1226787.png" alt=""></div>
+      <div class="info">
+        <div class="code">1226787</div>
+        <div class="name">ER FLANGE DA TRANSHISSAO</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">FLANGE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c2_1484636.png" alt=""></div>
+      <div class="info">
+        <div class="code">1484636</div>
+        <div class="name">PINHAO GIRO</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">PINHAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c0_1666760.png" alt=""></div>
+      <div class="info">
+        <div class="code">1666760</div>
+        <div class="name">LUVA ACO</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">LUVA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c0_3238674.png" alt=""></div>
+      <div class="info">
+        <div class="code">3238674</div>
+        <div class="name">ENGRENAGEM</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c3_412414.png" alt=""></div>
+      <div class="info">
+        <div class="code">412414</div>
+        <div class="name">PINO BOLA MUNHAO</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">PINO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c2_456256.png" alt=""></div>
+      <div class="info">
+        <div class="code">456256</div>
+        <div class="name">CRUZETA DIFERENCIAL DO PORCA DO MOTRIZ</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">CRUZETA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c1_6G5533.png" alt=""></div>
+      <div class="info">
+        <div class="code">6G5533</div>
+        <div class="name">FORCA SEN ZEN ENGRENAGEM</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">FORCA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c3_9G9180.png" alt=""></div>
+      <div class="info">
+        <div class="code">9G9180</div>
+        <div class="name">CAMISA DO ESTICADOR ESTEIRA CUBO</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">CAMISA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p06_c0_9R2480.png" alt=""></div>
+      <div class="info">
+        <div class="code">9R2480</div>
+        <div class="name">TO CARCACA DO EIXO TRASEIRO</div>
+        <div class="meta">Construção · p.6 · ocr 70.7</div>
+        <div class="meta">CARCACA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c1_2101500011.png" alt=""></div>
+      <div class="info">
+        <div class="code">2101500011</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c0_2101500115.png" alt=""></div>
+      <div class="info">
+        <div class="code">2101500115</div>
+        <div class="name">PROTETOR RODA LÍ RE EX CACAMBA RETRO 12POL</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">PROTETOR · 12POL</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c1_2101500236.png" alt=""></div>
+      <div class="info">
+        <div class="code">2101500236</div>
+        <div class="name">NH CACAMBA 18POL</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">CACAMBA · 18POL</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c0_2101500237.png" alt=""></div>
+      <div class="info">
+        <div class="code">2101500237</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c3_2101500571.png" alt=""></div>
+      <div class="info">
+        <div class="code">2101500571</div>
+        <div class="name">CACAMBA MINI ESCAV 12POL</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">CACAMBA · 12POL</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c3_2101500675.png" alt=""></div>
+      <div class="info">
+        <div class="code">2101500675</div>
+        <div class="name">CACAMBA CARREG HYUNDAI</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">CACAMBA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c1_2107703647.png" alt=""></div>
+      <div class="info">
+        <div class="code">2107703647</div>
+        <div class="name">RIPPER</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">RIPPER </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c3_2107704689.png" alt=""></div>
+      <div class="info">
+        <div class="code">2107704689</div>
+        <div class="name">ENLEIRADOR</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">ENLEIRADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c1_214E_3CX_4CX.png" alt=""></div>
+      <div class="info">
+        <div class="code">214E/3CX/4CX</div>
+        <div class="name">JD CACAMBA</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">CACAMBA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p07_c0_B90B_B95B_B110B.png" alt=""></div>
+      <div class="info">
+        <div class="code">B90B/B95B/B110B</div>
+        <div class="name">NE CACAMBA RETRO</div>
+        <div class="meta">Construção · p.7 · ocr 73.3</div>
+        <div class="meta">CACAMBA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p09_c2_14896241.png" alt=""></div>
+      <div class="info">
+        <div class="code">14896241</div>
+        <div class="name">DISCO PAPER</div>
+        <div class="meta">Construção · p.9 · ocr 80.1</div>
+        <div class="meta">DISCO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p09_c0_2V9135.png" alt=""></div>
+      <div class="info">
+        <div class="code">2V9135</div>
+        <div class="name">PASTILHA FREIO</div>
+        <div class="meta">Construção · p.9 · ocr 80.1</div>
+        <div class="meta">PASTILHA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p09_c0_75216020.png" alt=""></div>
+      <div class="info">
+        <div class="code">75216020</div>
+        <div class="name">RN TERMINAL DIRECAO FORJADO LD LE CABO REVERSAO COM INT TRANSM</div>
+        <div class="meta">Construção · p.9 · ocr 80.1</div>
+        <div class="meta">TERMINAL </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p09_c3_7MOIB5.png" alt=""></div>
+      <div class="info">
+        <div class="code">7MOIB5</div>
+        <div class="name">DISCO ACO FREIO ACOPLAMENTO ESTRIAS CORREIA DO VENTILADOR</div>
+        <div class="meta">Construção · p.9 · ocr 80.1</div>
+        <div class="meta">DISCO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p09_c2_8PK1497.png" alt=""></div>
+      <div class="info">
+        <div class="code">8PK1497</div>
+        <div class="name">COMPLETA BARRA DIRECAO</div>
+        <div class="meta">Construção · p.9 · ocr 80.1</div>
+        <div class="meta">COMPLETA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p09_c1_9968018.png" alt=""></div>
+      <div class="info">
+        <div class="code">9968018</div>
+        <div class="name">PASTILHA FREIO EN ARTICULACAO DO TERMINAL DIRECAO</div>
+        <div class="meta">Construção · p.9 · ocr 80.1</div>
+        <div class="meta">PASTILHA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p09_c1_E69783.png" alt=""></div>
+      <div class="info">
+        <div class="code">E69783</div>
+        <div class="name">NUAS CABO DO ACELERADOR</div>
+        <div class="meta">Construção · p.9 · ocr 80.1</div>
+        <div class="meta">NUAS </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c3_1132907.png" alt=""></div>
+      <div class="info">
+        <div class="code">1132907</div>
+        <div class="name">RODA GUIA</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">RODA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c2_1634143.png" alt=""></div>
+      <div class="info">
+        <div class="code">1634143</div>
+        <div class="name">DENTE ESQ DIR FB MEL EA EN ROLETE INFERIOR</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">DENTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c3_2085235.png" alt=""></div>
+      <div class="info">
+        <div class="code">2085235</div>
+        <div class="name">UNHA</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">UNHA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c0_2M2858.png" alt=""></div>
+      <div class="info">
+        <div class="code">2M2858</div>
+        <div class="name">RETENTOR DA RODA GUIA</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">RETENTOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c1_4K6049.png" alt=""></div>
+      <div class="info">
+        <div class="code">4K6049</div>
+        <div class="name">RETENTOR DA RODA MOTRIZ</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">RETENTOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c2_5MN77.png" alt=""></div>
+      <div class="info">
+        <div class="code">5MN77</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c1_6Y6335.png" alt=""></div>
+      <div class="info">
+        <div class="code">6Y6335</div>
+        <div class="name">DENTE DIANTEIRO</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">DENTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c3_71418383.png" alt=""></div>
+      <div class="info">
+        <div class="code">71418383</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c1_7K2514.png" alt=""></div>
+      <div class="info">
+        <div class="code">7K2514</div>
+        <div class="name">ARO MOTRIZ</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">ARO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c0_84168135.png" alt=""></div>
+      <div class="info">
+        <div class="code">84168135</div>
+        <div class="name">UNHA</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">UNHA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p10_c0_9W9353.png" alt=""></div>
+      <div class="info">
+        <div class="code">9W9353</div>
+        <div class="name">ESTEIRA</div>
+        <div class="meta">Construção · p.10 · ocr 78.3</div>
+        <div class="meta">ESTEIRA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c1_1079579.png" alt=""></div>
+      <div class="info">
+        <div class="code">1079579</div>
+        <div class="name">POLIA MOTOR</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">POLIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c3_1913235.png" alt=""></div>
+      <div class="info">
+        <div class="code">1913235</div>
+        <div class="name">AD KO CARCACA DO COMANDO FINAL</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">CARCACA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c2_2258016.png" alt=""></div>
+      <div class="info">
+        <div class="code">2258016</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c0_2666229.png" alt=""></div>
+      <div class="info">
+        <div class="code">2666229</div>
+        <div class="name">GE POLIA</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">POLIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c1_3073063.png" alt=""></div>
+      <div class="info">
+        <div class="code">3073063</div>
+        <div class="name">JAR BOMBA HIDRAULICA CAT</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">JAR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c0_3500666.png" alt=""></div>
+      <div class="info">
+        <div class="code">3500666</div>
+        <div class="name">PR BOMBA HIDRAULICA CAT</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">BOMBA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c0_3522676.png" alt=""></div>
+      <div class="info">
+        <div class="code">3522676</div>
+        <div class="name">EA TURBINA</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">TURBINA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c3_4N25N.png" alt=""></div>
+      <div class="info">
+        <div class="code">4N25N</div>
+        <div class="name">RETENTOR COM LUVA BOMBA COMBUSTIVEL</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">RETENTOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c1_6N7203.png" alt=""></div>
+      <div class="info">
+        <div class="code">6N7203</div>
+        <div class="name">TURBINA</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">TURBINA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c2_7C4297.png" alt=""></div>
+      <div class="info">
+        <div class="code">7C4297</div>
+        <div class="name">RETENTOR TRAS</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">RETENTOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Construção" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p11_c2_8K7630.png" alt=""></div>
+      <div class="info">
+        <div class="code">8K7630</div>
+        <div class="name">DISCO FREIO FUROS</div>
+        <div class="meta">Construção · p.11 · ocr 75.4</div>
+        <div class="meta">DISCO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p15_c3_3213_9300.png" alt=""></div>
+      <div class="info">
+        <div class="code">3213-9300</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p15_c2_3232_4200.png" alt=""></div>
+      <div class="info">
+        <div class="code">3232-4200</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p15_c1_3592_1250.png" alt=""></div>
+      <div class="info">
+        <div class="code">3592-1250</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Construção" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Construcao/Construcao_p15_c2_4042_3775.png" alt=""></div>
+      <div class="info">
+        <div class="code">4042-3775</div>
+        <div class="name">—</div>
+        <div class="meta">Construção · p.15 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c2_L204844.png" alt=""></div>
+      <div class="info">
+        <div class="code">L204844</div>
+        <div class="name">COROA ANELAR</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">COROA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c0_L204863.png" alt=""></div>
+      <div class="info">
+        <div class="code">L204863</div>
+        <div class="name">EIXO COM PINHAO TRATOR 6000/7000</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">EIXO · 6000/7000</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c2_R216294.png" alt=""></div>
+      <div class="info">
+        <div class="code">R216294</div>
+        <div class="name">ENGRENAGEM AR EIXO TRASEIRO PLATO DA EMBREAGEM</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c1_R225107.png" alt=""></div>
+      <div class="info">
+        <div class="code">R225107</div>
+        <div class="name">COROA EIXO TRASEIRO</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">COROA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c3_R225109.png" alt=""></div>
+      <div class="info">
+        <div class="code">R225109</div>
+        <div class="name">EIXO SOLAR EIXO TRASEIRO</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">EIXO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c1_R237709.png" alt=""></div>
+      <div class="info">
+        <div class="code">R237709</div>
+        <div class="name">ENGR CX SATELITE 11Z TRATOR SERIE 6000/7000</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">ENGR · 6000/7000</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c0_R237713.png" alt=""></div>
+      <div class="info">
+        <div class="code">R237713</div>
+        <div class="name">ENGR CX SATELITE TRATOR SERIE 6000/7000</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">ENGR · 6000/7000</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c3_R63477.png" alt=""></div>
+      <div class="info">
+        <div class="code">R63477</div>
+        <div class="name">COROA ESTRIAS DIFERENCIAL TRASEIRO 6000/7000</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">COROA · 6000/7000</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c1_R96805.png" alt=""></div>
+      <div class="info">
+        <div class="code">R96805</div>
+        <div class="name">TRATOR AGR SERIE</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">TRATOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p04_c0_RI33296.png" alt=""></div>
+      <div class="info">
+        <div class="code">RI33296</div>
+        <div class="name">POLIA DO</div>
+        <div class="meta">Verde · p.4 · ocr 81.3</div>
+        <div class="meta">POLIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p06_c2_6000_7000.png" alt=""></div>
+      <div class="info">
+        <div class="code">6000/7000</div>
+        <div class="name">TRASEIRO</div>
+        <div class="meta">Verde · p.6 · ocr 84.0</div>
+        <div class="meta">TRASEIRO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p06_c2_ALIS3972.png" alt=""></div>
+      <div class="info">
+        <div class="code">ALIS3972</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.6 · ocr 84.0</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p06_c1_R305695.png" alt=""></div>
+      <div class="info">
+        <div class="code">R305695</div>
+        <div class="name">EMBREAGEM EIXO DIRETO TRATOR</div>
+        <div class="meta">Verde · p.6 · ocr 84.0</div>
+        <div class="meta">EMBREAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p06_c3_RE200884.png" alt=""></div>
+      <div class="info">
+        <div class="code">RE200884</div>
+        <div class="name">SILENCIOSO 6000/7000 BLINDAGEM CARDAN SILENCIOSO TRATOR</div>
+        <div class="meta">Verde · p.6 · ocr 84.0</div>
+        <div class="meta">SILENCIOSO · 6000/7000</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p06_c0_RE220766.png" alt=""></div>
+      <div class="info">
+        <div class="code">RE220766</div>
+        <div class="name">TAMBOR ACIONAMENTO SERIE</div>
+        <div class="meta">Verde · p.6 · ocr 84.0</div>
+        <div class="meta">TAMBOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c2_6000_7000.png" alt=""></div>
+      <div class="info">
+        <div class="code">6000/7000</div>
+        <div class="name">PINO MESTRE LE LD CARCACA DO DIFERENCIAL DIANTEIRO 679,5MM APOIO</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">PINO · 679,5MM</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c2_AT350318.png" alt=""></div>
+      <div class="info">
+        <div class="code">AT350318</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c1_CBN467355.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN467355</div>
+        <div class="name">CHICOTE ALTERNADOR</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">CHICOTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c0_CQ43008.png" alt=""></div>
+      <div class="info">
+        <div class="code">CQ43008</div>
+        <div class="name">GARFO DUPLO</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">GARFO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c0_DQ34217.png" alt=""></div>
+      <div class="info">
+        <div class="code">DQ34217</div>
+        <div class="name">CABO COMANDO</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">CABO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c3_MNI10029.png" alt=""></div>
+      <div class="info">
+        <div class="code">MNI10029</div>
+        <div class="name">PINO MUNHAO RIZIBIO RE FAROL DIANTEIRO TRATOR 6000/7000</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">PINO · 6000/7000</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c1_R134415.png" alt=""></div>
+      <div class="info">
+        <div class="code">R134415</div>
+        <div class="name">EIXO DIFERENCIAL TRASEIRO 6000/7000</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">EIXO · 6000/7000</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c1_R153307.png" alt=""></div>
+      <div class="info">
+        <div class="code">R153307</div>
+        <div class="name">GARFO LONGO TRATOR</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">GARFO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p07_c0_RE60720.png" alt=""></div>
+      <div class="info">
+        <div class="code">RE60720</div>
+        <div class="name">COXIM REFORCADO</div>
+        <div class="meta">Verde · p.7 · ocr 82.9</div>
+        <div class="meta">COXIM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c3_AXTI9537.png" alt=""></div>
+      <div class="info">
+        <div class="code">AXTI9537</div>
+        <div class="name">DISCO CORTE BASE 22POL REV CROMO DURO</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">DISCO · 22POL</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c0_AXTIB203.png" alt=""></div>
+      <div class="info">
+        <div class="code">AXTIB203</div>
+        <div class="name">CONE PIRULITO</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">CONE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c1_AXTIB993.png" alt=""></div>
+      <div class="info">
+        <div class="code">AXTIB993</div>
+        <div class="name">LINHA JD</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">LINHA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c1_CE32684.png" alt=""></div>
+      <div class="info">
+        <div class="code">CE32684</div>
+        <div class="name">DT PICADOR</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">PICADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c0_CE337IO.png" alt=""></div>
+      <div class="info">
+        <div class="code">CE337IO</div>
+        <div class="name">FLANGE DA CAIXA PICADOR</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">FLANGE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c2_CH950_CH960.png" alt=""></div>
+      <div class="info">
+        <div class="code">CH950/CH960</div>
+        <div class="name">LS ELEVADOR</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">ELEVADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c0_CXT21665.png" alt=""></div>
+      <div class="info">
+        <div class="code">CXT21665</div>
+        <div class="name">ENGR ELEVADOR Z11 CUBO</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">ENGR · Z11</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c1_CXT25412.png" alt=""></div>
+      <div class="info">
+        <div class="code">CXT25412</div>
+        <div class="name">ENGR ELEVADOR Z15 CUBO</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">ENGR · Z15</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c2_CXT29703.png" alt=""></div>
+      <div class="info">
+        <div class="code">CXT29703</div>
+        <div class="name">CAVALETE MENOR AXTIGOBZ CUBO MOTRIZ</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta">CAVALETE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p09_c2_CXT30949.png" alt=""></div>
+      <div class="info">
+        <div class="code">CXT30949</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.9 · ocr 84.0</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p11_c3_AXTI7583.png" alt=""></div>
+      <div class="info">
+        <div class="code">AXTI7583</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.11 · ocr 87.3</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p11_c3_AXTIB407.png" alt=""></div>
+      <div class="info">
+        <div class="code">AXTIB407</div>
+        <div class="name">3/16 JD</div>
+        <div class="meta">Verde · p.11 · ocr 87.3</div>
+        <div class="meta"> · 3/16</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p11_c3_CH950.png" alt=""></div>
+      <div class="info">
+        <div class="code">CH950</div>
+        <div class="name">PERF 3/16</div>
+        <div class="meta">Verde · p.11 · ocr 87.3</div>
+        <div class="meta">PERF · 3/16</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c0_0121322176.png" alt=""></div>
+      <div class="info">
+        <div class="code">0121322176</div>
+        <div class="name">SUSPENSAO DO TRUCK COM ROTULA JD</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">SUSPENSAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c2_CB01437885.png" alt=""></div>
+      <div class="info">
+        <div class="code">CB01437885</div>
+        <div class="name">PINHAO CORTE</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">PINHAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c2_CBO1429730.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBO1429730</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c3_CBOI429730.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBOI429730</div>
+        <div class="name">TS CORTE BASE ETA VAU</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">CORTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c1_CE31720.png" alt=""></div>
+      <div class="info">
+        <div class="code">CE31720</div>
+        <div class="name">CAIXA CORTE BASE</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">CAIXA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c3_CE31728.png" alt=""></div>
+      <div class="info">
+        <div class="code">CE31728</div>
+        <div class="name">EIXO DO VOLANTE PICADOR</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">EIXO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c0_DE32368.png" alt=""></div>
+      <div class="info">
+        <div class="code">DE32368</div>
+        <div class="name">RA ENGR CORTE BASE CJ ENGRENAGENS CUBO DO ROL</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">ENGR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c1_SAE_1020.png" alt=""></div>
+      <div class="info">
+        <div class="code">SAE-1020</div>
+        <div class="name">VENTOINHA EXTRATOR PRIMARIO</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">VENTOINHA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c2_SAE_1020.png" alt=""></div>
+      <div class="info">
+        <div class="code">SAE-1020</div>
+        <div class="name">FUROS JD TIRANTE MAIOR PERNA CORTE BASE</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">FUROS </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p13_c3_YZ59013.png" alt=""></div>
+      <div class="info">
+        <div class="code">YZ59013</div>
+        <div class="name">DO FUROS JD</div>
+        <div class="meta">Verde · p.13 · ocr 80.6</div>
+        <div class="meta">FUROS </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c0_0300048144.png" alt=""></div>
+      <div class="info">
+        <div class="code">0300048144</div>
+        <div class="name">FLANGE ABAULADA DENTE RETO</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">FLANGE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c1_0300048145.png" alt=""></div>
+      <div class="info">
+        <div class="code">0300048145</div>
+        <div class="name">PINHAO REFORCADO DENTE ABAULADO</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">PINHAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c2_3520_3522_CH570_CH670.png" alt=""></div>
+      <div class="info">
+        <div class="code">3520/3522/CH570/CH670</div>
+        <div class="name">ADAPTADOR DA CAIXA</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">ADAPTADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c3_CBN469332B.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN469332B</div>
+        <div class="name">VE RR BLOCO DO PICADOR</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">BLOCO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c0_CBN492769.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN492769</div>
+        <div class="name">CHICOTE PRINCIPAL DO MOTOR 3520/3522</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">CHICOTE · 3520/3522</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c1_CE35797.png" alt=""></div>
+      <div class="info">
+        <div class="code">CE35797</div>
+        <div class="name">ADAPTADOR CX PICADOR</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">ADAPTADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c0_CE3INB.png" alt=""></div>
+      <div class="info">
+        <div class="code">CE3INB</div>
+        <div class="name">CAPA CX ENGR PICADOR</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">CAPA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c3_CXT20594.png" alt=""></div>
+      <div class="info">
+        <div class="code">CXT20594</div>
+        <div class="name">PAR CHAPA SUPERIOR DA MESA GIRATORIA</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">PAR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p14_c2_CXT20596.png" alt=""></div>
+      <div class="info">
+        <div class="code">CXT20596</div>
+        <div class="name">CHAPA INFERIOR DA MESA GIRATORIA</div>
+        <div class="meta">Verde · p.14 · ocr 74.8</div>
+        <div class="meta">CHAPA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p15_c3_DE20510.png" alt=""></div>
+      <div class="info">
+        <div class="code">DE20510</div>
+        <div class="name">PICADOR MODERNA</div>
+        <div class="meta">Verde · p.15 · ocr 77.2</div>
+        <div class="meta">PICADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p15_c3_PAG8480.png" alt=""></div>
+      <div class="info">
+        <div class="code">PAG8480</div>
+        <div class="name">EIXO CHARLYNN LUBRIFICADO</div>
+        <div class="meta">Verde · p.15 · ocr 77.2</div>
+        <div class="meta">EIXO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p16_c2_0205100415.png" alt=""></div>
+      <div class="info">
+        <div class="code">0205100415</div>
+        <div class="name">APOIO ELEVADOR</div>
+        <div class="meta">Verde · p.16 · ocr 86.6</div>
+        <div class="meta">APOIO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p16_c3_0290248605.png" alt=""></div>
+      <div class="info">
+        <div class="code">0290248605</div>
+        <div class="name">JD PICADOR ENGRENAGEM Z17 JD</div>
+        <div class="meta">Verde · p.16 · ocr 86.6</div>
+        <div class="meta">PICADOR · Z17</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p16_c1_CB01437522.png" alt=""></div>
+      <div class="info">
+        <div class="code">CB01437522</div>
+        <div class="name">POLIA JD COM ROLAMENTO</div>
+        <div class="meta">Verde · p.16 · ocr 86.6</div>
+        <div class="meta">POLIA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p16_c1_CBN421303.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN421303</div>
+        <div class="name">Z11 ENGR ELEVADOR</div>
+        <div class="meta">Verde · p.16 · ocr 86.6</div>
+        <div class="meta">ENGR · Z11</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p16_c0_CBN464244.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN464244</div>
+        <div class="name">INFEINITY TALISCA ELEVADOR</div>
+        <div class="meta">Verde · p.16 · ocr 86.6</div>
+        <div class="meta">INFEINITY </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p16_c1_PAG7703.png" alt=""></div>
+      <div class="info">
+        <div class="code">PAG7703</div>
+        <div class="name">JD BASE DO ELEVADOR</div>
+        <div class="meta">Verde · p.16 · ocr 86.6</div>
+        <div class="meta">BASE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p16_c0_PAG8073.png" alt=""></div>
+      <div class="info">
+        <div class="code">PAG8073</div>
+        <div class="name">KIT REFORCO DO CHASSI TRASEIRO</div>
+        <div class="meta">Verde · p.16 · ocr 86.6</div>
+        <div class="meta">KIT </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p17_c1_0291370448.png" alt=""></div>
+      <div class="info">
+        <div class="code">0291370448</div>
+        <div class="name">PRIMARIO BIPARTIDO JD EM HARDOX</div>
+        <div class="meta">Verde · p.17 · ocr 76.0</div>
+        <div class="meta">PRIMARIO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p17_c3_0908800240.png" alt=""></div>
+      <div class="info">
+        <div class="code">0908800240</div>
+        <div class="name">ROLOS JD ROLOS</div>
+        <div class="meta">Verde · p.17 · ocr 76.0</div>
+        <div class="meta">ROLOS </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p17_c3_CBO1432582.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBO1432582</div>
+        <div class="name">PRIMARIO BIPARTIDO EM HARDOX</div>
+        <div class="meta">Verde · p.17 · ocr 76.0</div>
+        <div class="meta">PRIMARIO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p17_c3_PAGI0908.png" alt=""></div>
+      <div class="info">
+        <div class="code">PAGI0908</div>
+        <div class="name">VENEZIANA</div>
+        <div class="meta">Verde · p.17 · ocr 76.0</div>
+        <div class="meta">VENEZIANA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p18_c3_CBN472169.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN472169</div>
+        <div class="name">ELEVADOR LD JD</div>
+        <div class="meta">Verde · p.18 · ocr 89.2</div>
+        <div class="meta">ELEVADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p18_c3_CBN473168.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN473168</div>
+        <div class="name">EXTRATOR SECUNDARIO ALONGADA 3/16 POL ELEVADOR LD JD</div>
+        <div class="meta">Verde · p.18 · ocr 89.2</div>
+        <div class="meta">EXTRATOR · 3/16</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p19_c3_CBN472869.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN472869</div>
+        <div class="name">ELEVADOR LE JD INFERIOR JD</div>
+        <div class="meta">Verde · p.19 · ocr 84.2</div>
+        <div class="meta">ELEVADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p19_c3_CBN472870.png" alt=""></div>
+      <div class="info">
+        <div class="code">CBN472870</div>
+        <div class="name">ELEVADOR LD JD</div>
+        <div class="meta">Verde · p.19 · ocr 84.2</div>
+        <div class="meta">ELEVADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c2_00407250.png" alt=""></div>
+      <div class="info">
+        <div class="code">00407250</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c1_48150466.png" alt=""></div>
+      <div class="info">
+        <div class="code">48150466</div>
+        <div class="name">BANDEJA SUPERIOR CASE</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">BANDEJA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c1_51427905.png" alt=""></div>
+      <div class="info">
+        <div class="code">51427905</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c0_51427973.png" alt=""></div>
+      <div class="info">
+        <div class="code">51427973</div>
+        <div class="name">ENGRENAGEM CORTE</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c0_87217726.png" alt=""></div>
+      <div class="info">
+        <div class="code">87217726</div>
+        <div class="name">PINHAO VOLANTE PICADOR CASE</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">PINHAO </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c0_87232772.png" alt=""></div>
+      <div class="info">
+        <div class="code">87232772</div>
+        <div class="name">ENGRENAGEM CAIXA FUROS CASE</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c2_87239618.png" alt=""></div>
+      <div class="info">
+        <div class="code">87239618</div>
+        <div class="name">ENGRENAGEM PICADOR CASE FURO OBLONGO ACOPLAMENTO</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c3_87474224.png" alt=""></div>
+      <div class="info">
+        <div class="code">87474224</div>
+        <div class="name">MANCAL BLINDADO JA BLOCO</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">MANCAL </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c1_87550077.png" alt=""></div>
+      <div class="info">
+        <div class="code">87550077</div>
+        <div class="name">ENGRENAGEM CENTRAL</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">ENGRENAGEM </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p21_c3_B719M00.png" alt=""></div>
+      <div class="info">
+        <div class="code">B719M00</div>
+        <div class="name">DO CORTE BASE CR</div>
+        <div class="meta">Verde · p.21 · ocr 80.1</div>
+        <div class="meta">CORTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p22_c3_84197807.png" alt=""></div>
+      <div class="info">
+        <div class="code">84197807</div>
+        <div class="name">NI</div>
+        <div class="meta">Verde · p.22 · ocr 79.2</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p22_c3_87240210.png" alt=""></div>
+      <div class="info">
+        <div class="code">87240210</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.22 · ocr 79.2</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p23_c3_47864190.png" alt=""></div>
+      <div class="info">
+        <div class="code">47864190.</div>
+        <div class="name">LD</div>
+        <div class="meta">Verde · p.23 · ocr 82.9</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p23_c3_84183675.png" alt=""></div>
+      <div class="info">
+        <div class="code">84183675</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.23 · ocr 82.9</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p23_c3_B7246195.png" alt=""></div>
+      <div class="info">
+        <div class="code">B7246195</div>
+        <div class="name">PRIMARIO 1/8</div>
+        <div class="meta">Verde · p.23 · ocr 82.9</div>
+        <div class="meta">PRIMARIO · 1/8</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p24_c1_87233603.png" alt=""></div>
+      <div class="info">
+        <div class="code">87233603</div>
+        <div class="name">AN EL</div>
+        <div class="meta">Verde · p.24 · ocr 86.8</div>
+        <div class="meta"> </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p24_c2_87241797.png" alt=""></div>
+      <div class="info">
+        <div class="code">87241797</div>
+        <div class="name">ELEVADOR Z19</div>
+        <div class="meta">Verde · p.24 · ocr 86.8</div>
+        <div class="meta">ELEVADOR · Z19</div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p24_c3_87242847.png" alt=""></div>
+      <div class="info">
+        <div class="code">87242847</div>
+        <div class="name">ELEVADOR CUBO</div>
+        <div class="meta">Verde · p.24 · ocr 86.8</div>
+        <div class="meta">ELEVADOR </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p24_c1_87246778.png" alt=""></div>
+      <div class="info">
+        <div class="code">87246778</div>
+        <div class="name">ANEL DESGASTE</div>
+        <div class="meta">Verde · p.24 · ocr 86.8</div>
+        <div class="meta">ANEL </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p24_c0_87254793.png" alt=""></div>
+      <div class="info">
+        <div class="code">87254793</div>
+        <div class="name">SUPORTE MANIVELA CASE REFORCADO</div>
+        <div class="meta">Verde · p.24 · ocr 86.8</div>
+        <div class="meta">SUPORTE </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p24_c0_87404864.png" alt=""></div>
+      <div class="info">
+        <div class="code">87404864</div>
+        <div class="name">ANEL REVESTIMENTO EXTR SECUN CASE EM HARDOX BANDEJA INFERIOR DIVISOR LINHA REFORCADA</div>
+        <div class="meta">Verde · p.24 · ocr 86.8</div>
+        <div class="meta">ANEL </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card" data-linha="Verde" data-rev="0">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p24_c1_87404865.png" alt=""></div>
+      <div class="info">
+        <div class="code">87404865</div>
+        <div class="name">DO BANDEJA DIVISOR LINHA REFORCADA</div>
+        <div class="meta">Verde · p.24 · ocr 86.8</div>
+        <div class="meta">BANDEJA </div>
+        <span class="badge ok">ok</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p27_c3_3213_9300.png" alt=""></div>
+      <div class="info">
+        <div class="code">3213-9300</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.27 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p27_c2_3232_4200.png" alt=""></div>
+      <div class="info">
+        <div class="code">3232-4200</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.27 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p27_c1_3592_1250.png" alt=""></div>
+      <div class="info">
+        <div class="code">3592-1250</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.27 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div>
+    <div class="card flagged" data-linha="Verde" data-rev="1">
+      <div class="imgwrap"><img loading="lazy" src="images/Verde/Verde_p27_c2_4042_3775.png" alt=""></div>
+      <div class="info">
+        <div class="code">4042-3775</div>
+        <div class="name">—</div>
+        <div class="meta">Verde · p.27 · ocr 94.4</div>
+        <div class="meta"> </div>
+        <span class="badge rev">revisar: nome ausente/curto</span>
+      </div>
+    </div></div>
+<script>
+let onlyRev=false;
+function toggleRev(){onlyRev=!onlyRev;document.getElementById('revbtn').textContent=onlyRev?'Mostrar todas':'Mostrar só p/ revisar';apply();}
+function apply(){
+  const l=document.getElementById('linha').value.toLowerCase();
+  const q=document.getElementById('q').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(c=>{
+    const okL=!l||c.dataset.linha.toLowerCase()===l;
+    const okR=!onlyRev||c.dataset.rev==='1';
+    const okQ=!q||c.textContent.toLowerCase().includes(q);
+    c.style.display=(okL&&okR&&okQ)?'':'none';
+  });
+}
+</script></body></html>
