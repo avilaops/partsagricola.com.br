@@ -104,7 +104,18 @@ async function getCountryCode(
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
-  let redirectUrl = request.nextUrl.href
+  // Atras do Caddy (reverse proxy) o server.js standalone do Next nao
+  // enxerga o Host real da requisicao ao montar request.nextUrl.origin —
+  // ele cai no hostname/porta interno (localhost:3006). Usamos os headers
+  // encaminhados pelo proxy pra montar a URL externa correta.
+  const forwardedProto = request.headers.get("x-forwarded-proto")
+  const forwardedHost =
+    request.headers.get("x-forwarded-host") || request.headers.get("host")
+  const externalOrigin = forwardedHost
+    ? `${forwardedProto || "https"}://${forwardedHost}`
+    : request.nextUrl.origin
+
+  let redirectUrl = `${externalOrigin}${request.nextUrl.pathname}${request.nextUrl.search}`
 
   let response = NextResponse.redirect(redirectUrl, 307)
 
@@ -145,7 +156,7 @@ export async function middleware(request: NextRequest) {
 
   // If no country code is set, we redirect to the relevant region.
   if (!urlHasCountryCode && countryCode) {
-    redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
+    redirectUrl = `${externalOrigin}/${countryCode}${redirectPath}${queryString}`
     response = NextResponse.redirect(`${redirectUrl}`, 307)
   } else if (!urlHasCountryCode && !countryCode) {
     // Handle case where no valid country code exists (empty regions)
