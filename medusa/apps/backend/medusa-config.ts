@@ -7,7 +7,7 @@ loadEnv(process.env.NODE_ENV || "development", process.cwd())
 // (mesmo padrao usado pelo projeto irmao pkvedacoes-medusa).
 const TENANT = process.env.TENANT_SLUG || "agricola"
 
-const modules: NonNullable<Parameters<typeof defineConfig>[0]["modules"]> = []
+const modules: Record<string, unknown>[] = []
 
 // Imagens de produto no Cloudflare R2 (S3-compatible). Sem isso o Medusa
 // guarda upload no disco local do servidor, que nao queremos aqui.
@@ -93,5 +93,5 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET,
     },
   },
-  modules: modules.length ? modules : undefined,
+  modules: modules.length ? (modules as any) : undefined,
 })

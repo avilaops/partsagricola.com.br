@@ -143,12 +143,12 @@ export default async function agricola_store_seed({
     entity: "shipping_profile",
     fields: ["id"],
   })
-  let shippingProfile = shippingProfileResultExisting[0]
+  let shippingProfile: { id: string } = shippingProfileResultExisting[0]
   if (!shippingProfile) {
-    shippingProfile = await fulfillmentModuleService.createShippingProfiles({
+    shippingProfile = (await fulfillmentModuleService.createShippingProfiles({
       name: "Default",
       type: "default",
-    })
+    })) as unknown as { id: string }
   }
 
   const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
