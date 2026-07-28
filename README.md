@@ -116,24 +116,46 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 
 - Database: `agricola` · role: `agricola` (senha gerada, guardada só com o
   Nicolas — não está neste repo). Schema `catalogo` dentro do database.
-- DNS: `agricola.avilaops.com` → `178.105.82.48` (registro A, DNS-only, sem
-  proxy Cloudflare — mesmo padrão do `pkvedacoes.avilaops.com`, pra permitir
-  o Caddy emitir certificado TLS próprio via Let's Encrypt).
-- Caddy: bloco placeholder em `/etc/caddy/Caddyfile` respondendo 200 em
-  `agricola.avilaops.com` até o site/app real ser deployado (aí é só trocar
-  o `respond` por `reverse_proxy 127.0.0.1:<porta>`).
+- DNS: `agricola.avilaops.com` e `api-agricola.avilaops.com` → `178.105.82.48`
+  (registro A, DNS-only, sem proxy Cloudflare — mesmo padrão do
+  `pkvedacoes.avilaops.com`, pra permitir o Caddy emitir certificado TLS
+  próprio via Let's Encrypt).
 - **Marca no banco continua `Geomaq`** (é o fabricante real das peças —
-  trocar isso corromperia o dado). "Agricola" é o nome de exibição do
-  site/loja quando ele existir, não do fabricante.
-- **SEO**: não há nada para configurar ainda — este repo não tem código de
-  site/frontend (ver "Próximas fases" abaixo). Meta tags, sitemap.xml,
-  robots.txt, dados estruturados (schema.org Product) etc. entram junto com
-  o site/Medusa.
+  trocar isso corromperia o dado). "Agricola" é o nome de exibição da loja.
+
+### Marketplace (Medusa + storefront) — no ar
+
+- **Loja**: <https://agricola.avilaops.com> (storefront Next.js, `storefront/`
+  neste repo — fork do `nextjs-starter-medusa` oficial, rebrandeado, com
+  landing page própria).
+- **Admin/API**: <https://api-agricola.avilaops.com> (backend Medusa v2,
+  `medusa/` neste repo). Login: e-mail/senha combinados com o Nicolas — não
+  estão neste repo.
+- Deploy: build de produção feito localmente (`medusa build` /
+  `next build` com `output: standalone`) e transferido pro VPS — evita rodar
+  `npm install` pesado no servidor compartilhado. Rodando como serviços
+  systemd nativos (`agricola-medusa.service` na porta 9002,
+  `agricola-storefront.service` na porta 3006), mesmo padrão do
+  `pkvedacoes-medusa`/`pkvedacoes-site`.
+- Redis: reaproveita o `redis-server` nativo do VPS, namespaced por
+  `TENANT_SLUG=agricola` (mesmo padrão do pkvedacoes, não colide entre
+  projetos no mesmo Redis).
+- Imagens de produto: bucket Cloudflare R2 (`agricola-catalogo`), file
+  provider S3-compatible do Medusa.
+- Banco `agricola_medusa` (separado do `agricola` que guarda o catálogo bruto
+  extraído): loja "Agricola", região Brasil/BRL, canal de venda e
+  publishable key já seedados. Produtos reais (os 281 do catálogo Geomaq)
+  ainda não foram importados pro Medusa — próximo passo.
+- **SEO**: título/description customizados, robots.ts, next-sitemap já
+  incluído no starter. Dados estruturados (schema.org Product) por página de
+  produto ainda ficam pra quando os produtos reais forem importados.
 
 ## Próximas fases (fora deste escopo)
 
-1. Grupo **vedação** (gaxetas, automotivo, o-rings) — o-rings entram como
+1. Importar os 281 produtos do catálogo (`data/geomaq_parts.csv`) pro Medusa
+   (categorias por linha, imagens no R2, metadata `fabricante: Geomaq`).
+2. Gateway de pagamento Efí Pay (PIX/Boleto) — provider custom do Medusa,
+   ainda não implementado.
+3. Grupo **vedação** (gaxetas, automotivo, o-rings) — o-rings entram como
    `product` + `product_variant` (Ø interno, espessura, material) usando as
    tabelas já existentes.
-2. Medusa + site agricola.avilaops.com (loja/vitrine) — é aí que entra SEO
-   (meta tags, sitemap, robots.txt, dados estruturados).
