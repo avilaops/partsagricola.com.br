@@ -72,7 +72,8 @@ psql postgresql://catalogo:catalogo@localhost:5432/catalogo_db
 ```
 
 > `docker-compose.yml` aplica `sql/schema.sql` e depois `sql/seed.sql`
-> automaticamente na 1ª inicialização. O `seed.sql` já contém os 294 registros.
+> automaticamente na 1ª inicialização. O `seed.sql` já contém os 281 registros
+> (pós-revisão; ver seção "Revisão" abaixo).
 
 ### Opção B — carregar via Python (idempotente, recria atributos/imagens)
 
@@ -93,18 +94,46 @@ e rode `scripts/load.py`, ou aplique `sql/seed.sql`.
 
 ## Revisão (importante)
 
-Abra **`review.html`** no navegador (a partir desta pasta, para as imagens
-carregarem). Botão “Mostrar só p/ revisar” filtra os **95** registros marcados —
-concentrados no **Algodão** (linha John Deere, rótulos que o OCR lê mal). Cada
-card mostra a imagem da célula ao lado do código/nome extraído; corrija o `nome`
-direto no `data/geomaq_parts.csv` e recarregue com `load.py`.
+Uma primeira rodada de revisão manual (conferindo cada recorte de imagem) já
+foi feita: de **294** registros extraídos, **12 foram removidos** (números de
+telefone da contracapa dos catálogos, capturados por engano como se fossem
+peças) e **83 nomes** foram corrigidos/completados a partir da imagem. Vários
+**códigos** também tinham erro de OCR (ex.: `NN18289`→`N118289`,
+`ID8804`→`JD8804`, `BE1368`→`8E1368`) e foram corrigidos.
 
-Os **códigos** foram extraídos com boa precisão; o principal trabalho manual é
-completar/ajustar **nomes** (sobretudo do Algodão).
+Restam **12 registros** (de 281) ainda marcados `revisar: sim` — casos em que
+o recorte da imagem cortou o rótulo ou o código antes do texto completo, sem
+dado suficiente para confirmar com segurança. Abra **`review.html`** no
+navegador (a partir desta pasta, para as imagens carregarem) e use o botão
+“Mostrar só p/ revisar” para filtrá-los; cada card mostra a imagem da célula
+ao lado do código/nome. Corrija direto no `data/geomaq_parts.csv` e recarregue
+com `load.py`.
+
+## Produção (servidor)
+
+Schema + seed já aplicados no Postgres nativo do VPS Hetzner (mesmo servidor
+que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
+
+- Database: `agricola` · role: `agricola` (senha gerada, guardada só com o
+  Nicolas — não está neste repo). Schema `catalogo` dentro do database.
+- DNS: `agricola.avilaops.com` → `178.105.82.48` (registro A, DNS-only, sem
+  proxy Cloudflare — mesmo padrão do `pkvedacoes.avilaops.com`, pra permitir
+  o Caddy emitir certificado TLS próprio via Let's Encrypt).
+- Caddy: bloco placeholder em `/etc/caddy/Caddyfile` respondendo 200 em
+  `agricola.avilaops.com` até o site/app real ser deployado (aí é só trocar
+  o `respond` por `reverse_proxy 127.0.0.1:<porta>`).
+- **Marca no banco continua `Geomaq`** (é o fabricante real das peças —
+  trocar isso corromperia o dado). "Agricola" é o nome de exibição do
+  site/loja quando ele existir, não do fabricante.
+- **SEO**: não há nada para configurar ainda — este repo não tem código de
+  site/frontend (ver "Próximas fases" abaixo). Meta tags, sitemap.xml,
+  robots.txt, dados estruturados (schema.org Product) etc. entram junto com
+  o site/Medusa.
 
 ## Próximas fases (fora deste escopo)
 
 1. Grupo **vedação** (gaxetas, automotivo, o-rings) — o-rings entram como
    `product` + `product_variant` (Ø interno, espessura, material) usando as
    tabelas já existentes.
-2. Medusa + site agrícola.avilaops.com.
+2. Medusa + site agricola.avilaops.com (loja/vitrine) — é aí que entra SEO
+   (meta tags, sitemap, robots.txt, dados estruturados).

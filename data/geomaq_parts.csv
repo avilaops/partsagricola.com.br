@@ -1,68 +1,64 @@
 marca,linha,familia,codigo,nome,aplicacao,specs,preco,pagina,arquivo,fonte,ocr_conf,imagem,revisar,revisar_motivo
-Geomaq,Algodão,,AN273468,ME,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c1_AN273468.png,sim,nome ausente/curto; OCR baixa confiança
-Geomaq,Algodão,,KK27794,FÊ JE,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c2_KK27794.png,sim,OCR baixa confiança
-Geomaq,Algodão,,KK27988,,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c3_KK27988.png,sim,nome ausente/curto; OCR baixa confiança
-Geomaq,Algodão,,KK27989,ES SS UN,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c0_KK27989.png,sim,OCR baixa confiança
-Geomaq,Algodão,ENGRENAGEM,L2456N,ENGRENAGEM 21Z,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c2_L2456N.png,sim,OCR baixa confiança
-Geomaq,Algodão,,L2889N,,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c3_L2889N.png,sim,nome ausente/curto; OCR baixa confiança
-Geomaq,Algodão,ENGRENAGEM,N273658,ENGRENAGEM DO TAMBOR MENOR,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c1_N273658.png,sim,OCR baixa confiança
-Geomaq,Algodão,TAMBOR,N273659,JR DO TAMBOR,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c0_N273659.png,sim,OCR baixa confiança
-Geomaq,Algodão,ENGRENAGEM,N371626,ER TX ENGRENAGEM DO FUSO,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c3_N371626.png,sim,OCR baixa confiança
-Geomaq,Algodão,,NN18289,,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c2_NN18289.png,sim,nome ausente/curto; OCR baixa confiança
-Geomaq,Algodão,,AE53298,,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c0_AE53298.png,sim,nome ausente/curto
-Geomaq,Algodão,,AKK25568,NS,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c1_AKK25568.png,sim,nome ausente/curto
-Geomaq,Algodão,,E86147,,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c2_E86147.png,sim,nome ausente/curto
+Geomaq,Algodão,ENGRENAGEM,AN273468,ENGRENAGEM Z25,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c1_AN273468.png,nao,
+Geomaq,Algodão,ENGRENAGEM,KK27794,ENGRENAGEM 100Z,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c2_KK27794.png,nao,
+Geomaq,Algodão,ENGRENAGEM,KK27988,ENGRENAGEM 70Z,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c3_KK27988.png,nao,
+Geomaq,Algodão,ENGRENAGEM,KK27989,ENGRENAGEM 54Z,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c0_KK27989.png,nao,
+Geomaq,Algodão,ENGRENAGEM,L2456N,ENGRENAGEM 21Z,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c2_L2456N.png,nao,
+Geomaq,Algodão,CALCO,L2889N,CALCO FUSO,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c3_L2889N.png,nao,
+Geomaq,Algodão,ENGRENAGEM,N273658,ENGRENAGEM DO TAMBOR MENOR,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c1_N273658.png,nao,
+Geomaq,Algodão,ENGRENAGEM,N273659,ENGRENAGEM DO TAMBOR,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c0_N273659.png,nao,
+Geomaq,Algodão,ENGRENAGEM,N371626,ENGRENAGEM DO FUSO,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c3_N371626.png,nao,
+Geomaq,Algodão,ENGRENAGEM,N118289,ENGRENAGEM Z14,,,,4,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,63.6,images/Algodao/Algodao_p04_c2_NN18289.png,nao,
+Geomaq,Algodão,PRESILHA,AE53298,PRESILHA,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c0_AE53298.png,nao,
+Geomaq,Algodão,PRESILHA,AKK25568,PRESILHA,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c1_AKK25568.png,nao,
+Geomaq,Algodão,PINO,E86147,PINO,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c2_E86147.png,nao,
 Geomaq,Algodão,FUSO,KK28390,FUSO RECOLHEDOR GARRAS,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c3_KK28390.png,nao,
 Geomaq,Algodão,GUIA,N192708,GUIA,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c1_N192708.png,nao,
-Geomaq,Algodão,,N192710,,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c0_N192710.png,sim,nome ausente/curto
+Geomaq,Algodão,GUIA,N192710,GUIA L.D,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c0_N192710.png,nao,
 Geomaq,Algodão,FUSO,N277078,FUSO RECOLHEDOR GARRAS,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c2_N277078.png,nao,
-Geomaq,Algodão,,N279372,,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c2_N279372.png,sim,nome ausente/curto
-Geomaq,Algodão,,AKK41952,,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c0_AKK41952.png,sim,nome ausente/curto
-Geomaq,Algodão,SEO,AKK49979,SEO,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c1_AKK49979.png,sim,nome ausente/curto
-Geomaq,Algodão,,AKKIGI93,,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c0_AKKIGI93.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN279609,,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c3_AN279609.png,sim,nome ausente/curto
-Geomaq,Algodão,,ID8804,,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c2_ID8804.png,sim,nome ausente/curto
-Geomaq,Algodão,,N198724,,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c1_N198724.png,sim,nome ausente/curto
-Geomaq,Algodão,,N273303,,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c2_N273303.png,sim,nome ausente/curto
-Geomaq,Algodão,,N277542,,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c3_N277542.png,sim,nome ausente/curto
-Geomaq,Algodão,,N277543,DO,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c2_N277543.png,sim,nome ausente/curto
+Geomaq,Algodão,BUCHA,N279372,BUCHA,,,,5,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,74.8,images/Algodao/Algodao_p05_c2_N279372.png,nao,
+Geomaq,Algodão,BARRA,AKK41952,BARRA ACIONADORA,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c0_AKK41952.png,nao,
+Geomaq,Algodão,BARRA,AKK49979,BARRA,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c1_AKK49979.png,nao,
+Geomaq,Algodão,EIXO,AKK16193,EIXO,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c0_AKKIGI93.png,nao,
+Geomaq,Algodão,SUPORTE,AN279609,SUPORTE,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c3_AN279609.png,nao,
+Geomaq,Algodão,ROLAMENTO,JD8804,ROLAMENTO,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c2_ID8804.png,nao,
+Geomaq,Algodão,BRACO,N198724,BRACO ACIONADOR,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c1_N198724.png,nao,
+Geomaq,Algodão,EIXO,N273303,EIXO,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c2_N273303.png,nao,
+Geomaq,Algodão,BARRA,N277542,BARRA,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c3_N277542.png,nao,
+Geomaq,Algodão,BARRA,N277543,BARRA,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c2_N277543.png,nao,
 Geomaq,Algodão,RECOLHEDOR,N279986,RECOLHEDOR,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c3_N279986.png,nao,
 Geomaq,Algodão,FUSO,N371572,DO FUSO,,,,6,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,73.6,images/Algodao/Algodao_p06_c1_N371572.png,nao,
-Geomaq,Algodão,,AN273676,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c0_AN273676.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN273838,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c1_AN273838.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN372217,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c2_AN372217.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN373216,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c2_AN373216.png,sim,nome ausente/curto
-Geomaq,Algodão,,KK65432,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c2_KK65432.png,sim,nome ausente/curto
-Geomaq,Algodão,,N275607,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c1_N275607.png,sim,nome ausente/curto
-Geomaq,Algodão,,N276745,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c0_N276745.png,sim,nome ausente/curto
-Geomaq,Algodão,,N276746,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c1_N276746.png,sim,nome ausente/curto
-Geomaq,Algodão,,N372970,,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c0_N372970.png,sim,nome ausente/curto
-Geomaq,Algodão,,AKKIT562,,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c2_AKKIT562.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN272152,,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c2_AN272152.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN272736,,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c2_AN272736.png,sim,nome ausente/curto
+Geomaq,Algodão,ANEL,AN273676,ANEL RETENTOR,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c0_AN273676.png,nao,
+Geomaq,Algodão,ANEL,AN273838,ANEL RETENTOR,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c1_AN273838.png,nao,
+Geomaq,Algodão,PROTECAO,AN372217,PROTECAO,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c2_AN372217.png,sim,nome truncado no recorte da imagem; confirmar texto completo
+Geomaq,Algodão,CORREIA,AN373216,CORREIA,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c2_AN373216.png,sim,nome truncado no recorte da imagem; confirmar texto completo
+Geomaq,Algodão,CAPA,KK65432,CAPA,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c2_KK65432.png,nao,
+Geomaq,Algodão,ESCOVA,N275607,ESCOVA DE BORRACHA,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c1_N275607.png,nao,
+Geomaq,Algodão,CONEXAO,N276745,CONEXAO,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c0_N276745.png,nao,
+Geomaq,Algodão,PLACA,N276746,PLACA,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c1_N276746.png,nao,
+Geomaq,Algodão,PLACA,N372970,PLACA,,,,7,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.3,images/Algodao/Algodao_p07_c0_N372970.png,nao,
+Geomaq,Algodão,TAMBOR,AKK17562,TAMBOR DE DESCARREGAMENTO,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c2_AKKIT562.png,sim,nome truncado no recorte da imagem; confirmar texto completo
+Geomaq,Algodão,TAMBOR,AN272152,TAMBOR DE DESCARREGAMENTO,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c2_AN272152.png,sim,nome truncado no recorte da imagem; confirmar texto completo
+Geomaq,Algodão,TAMBOR,AN272736,TAMBOR,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c2_AN272736.png,nao,
 Geomaq,Algodão,TAMBOR,AN272737,TAMBOR,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c2_AN272737.png,nao,
-Geomaq,Algodão,,AN406038,,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c0_AN406038.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN273019,,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c2_AN273019.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN277607,,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c2_AN277607.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN372202,,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c0_AN372202.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN374159,,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c1_AN374159.png,sim,nome ausente/curto
-Geomaq,Algodão,,N378789,,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c0_N378789.png,sim,nome ausente/curto
-Geomaq,Algodão,,N378790,,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c1_N378790.png,sim,nome ausente/curto
-Geomaq,Algodão,,AKK46326,,,,,11,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,80.7,images/Algodao/Algodao_p11_c2_AKK46326.png,sim,nome ausente/curto
-Geomaq,Algodão,,AKK46327,,,,,11,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,80.7,images/Algodao/Algodao_p11_c0_AKK46327.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN273000,,,,,12,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,77.4,images/Algodao/Algodao_p12_c2_AN273000.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN273515,,,,,12,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,77.4,images/Algodao/Algodao_p12_c3_AN273515.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN273516,,,,,12,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,77.4,images/Algodao/Algodao_p12_c2_AN273516.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN276679,,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c0_AN276679.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN276688,SE,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c2_AN276688.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN276830,,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c2_AN276830.png,sim,nome ausente/curto
-Geomaq,Algodão,,AN405636,,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c0_AN405636.png,sim,nome ausente/curto
-Geomaq,Algodão,CHAPA,AN276819,CHAPA,,,,14,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,68.5,images/Algodao/Algodao_p14_c3_AN276819.png,sim,OCR baixa confiança
-Geomaq,Algodão,,AN373565,,,,,14,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,68.5,images/Algodao/Algodao_p14_c3_AN373565.png,sim,nome ausente/curto; OCR baixa confiança
-Geomaq,Algodão,,3213-9300,,,,,15,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,94.4,images/Algodao/Algodao_p15_c3_3213_9300.png,sim,nome ausente/curto
-Geomaq,Algodão,,3232-4200,,,,,15,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,94.4,images/Algodao/Algodao_p15_c2_3232_4200.png,sim,nome ausente/curto
-Geomaq,Algodão,,3592-1250,,,,,15,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,94.4,images/Algodao/Algodao_p15_c1_3592_1250.png,sim,nome ausente/curto
-Geomaq,Algodão,,4042-3775,,,,,15,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,94.4,images/Algodao/Algodao_p15_c2_4042_3775.png,sim,nome ausente/curto
+Geomaq,Algodão,TAMBOR,AN406038,TAMBOR,,,,8,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,70.1,images/Algodao/Algodao_p08_c0_AN406038.png,nao,
+Geomaq,Algodão,ROLAMENTO,AN273019,ROLAMENTO C/ MANCAL,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c2_AN273019.png,nao,
+Geomaq,Algodão,PORTA,AN277607,PORTA COLETOR,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c2_AN277607.png,sim,nome inferido por contexto; recorte cortou o rotulo
+Geomaq,Algodão,ROLAMENTO,AN372202,ROLAMENTO C/ MANCAL,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c0_AN372202.png,nao,
+Geomaq,Algodão,ROLAMENTO,AN374159,ROLAMENTO C/ MANCAL,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c1_AN374159.png,nao,
+Geomaq,Algodão,CAME,N378789,CAME MENOR,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c0_N378789.png,nao,
+Geomaq,Algodão,CAME,N378790,CAME MAIOR,,,,10,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,78.1,images/Algodao/Algodao_p10_c1_N378790.png,nao,
+Geomaq,Algodão,ESTRUTURA,AKK46326,ESTRUTURA L.E,,,,11,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,80.7,images/Algodao/Algodao_p11_c2_AKK46326.png,sim,nome inferido pelo par (L.D/L.E); recorte cortou o rotulo
+Geomaq,Algodão,ESTRUTURA,AKK46327,ESTRUTURA L.D,,,,11,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,80.7,images/Algodao/Algodao_p11_c0_AKK46327.png,nao,
+Geomaq,Algodão,TAMPA,AN273000,TAMPA ESPELHO,,,,12,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,77.4,images/Algodao/Algodao_p12_c2_AN273000.png,sim,nome truncado no recorte da imagem; confirmar texto completo
+Geomaq,Algodão,PORTA,AN273515,PORTA,,,,12,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,77.4,images/Algodao/Algodao_p12_c3_AN273515.png,nao,
+Geomaq,Algodão,TAMPA,AN273516,TAMPA PROTETORA,,,,12,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,77.4,images/Algodao/Algodao_p12_c2_AN273516.png,sim,nome truncado no recorte da imagem; confirmar texto completo
+Geomaq,Algodão,PORTA,AN276679,PORTA,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c0_AN276679.png,nao,
+Geomaq,Algodão,PORTA,AN276688,PORTA,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c2_AN276688.png,nao,
+Geomaq,Algodão,BLINDAGEM,AN276830,BLINDAGEM,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c2_AN276830.png,nao,
+Geomaq,Algodão,CORREIA,AN405636,CORREIA CHATA,,,,13,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,83.2,images/Algodao/Algodao_p13_c0_AN405636.png,nao,
+Geomaq,Algodão,CHAPA,AN276819,CHAPA,,,,14,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,68.5,images/Algodao/Algodao_p14_c3_AN276819.png,nao,
+Geomaq,Algodão,ESTRUTURA,AN373565,ESTRUTURA,,,,14,Catálogo Geomaq  Linha Algodão 2025.pdf,ocr,68.5,images/Algodao/Algodao_p14_c3_AN373565.png,nao,
 Geomaq,Amendoim,ENGRENAGEM,02014000004,ENGRENAGEM Z31 5/8,Amendoim,5/8; Z31,,4,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p04_c3_02014000004.png,nao,
 Geomaq,Amendoim,ENGRENAGEM,0211129,ENGRENAGEM ACO 30Z 60/2 F40,Amendoim,60/2; F40,,4,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p04_c2_0211129.png,nao,
 Geomaq,Amendoim,ENGRENAGEM,03120010003,ENGRENAGEM 15Z 3/4 ESTICADORA,Amendoim,3/4,,4,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p04_c0_03120010003.png,nao,
@@ -79,7 +75,7 @@ Geomaq,Amendoim,CORREIA,02011000022,CORREIA RODA DENTADA BIPARTIDA 1.1/4,Amendoi
 Geomaq,Amendoim,TURBINA,0375572,TURBINA TENSOR RECOLHEDORA,Amendoim,,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c2_0375572.png,nao,
 Geomaq,Amendoim,CANECA,0728870,CANECA MASTER,Amendoim,,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c0_0728870.png,nao,
 Geomaq,Amendoim,COROA,1426510,COROA ACO 60/1 Z30 70MM,Amendoim,60/1; 70MM; Z30,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c3_1426510.png,nao,
-Geomaq,Amendoim,,1587838,,Amendoim,,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c1_1587838.png,sim,nome ausente/curto
+Geomaq,Amendoim,TURBINA,1587838,PA TURBINA RECOLHEDORA SAE-1020,Amendoim,,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c1_1587838.png,nao,
 Geomaq,Amendoim,RODA,30410769,RODA DENTADA BIPARTIDA 1.1/2,Amendoim,1/2,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c0_30410769.png,nao,
 Geomaq,Amendoim,CORREIA,B092,CORREIA,Amendoim,,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c2_B092.png,nao,
 Geomaq,Amendoim,CORREIA,B103,CORREIA,Amendoim,,,5,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p05_c0_B103.png,nao,
@@ -107,10 +103,10 @@ Geomaq,Amendoim,BASE,HP102226,BASE LAMINA,Amendoim,,,7,Catálogo Geomaq  Linha 
 Geomaq,Amendoim,FACAO,030005,FACAO,Amendoim,,,8,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p08_c2_030005.png,nao,
 Geomaq,Amendoim,FACAO,030070,FACAO LADO ESQUERDO,Amendoim,,,8,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p08_c2_030070.png,nao,
 Geomaq,Amendoim,FACAO,030071,FACAO LADO DIREITO,Amendoim,,,8,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p08_c2_030071.png,nao,
-Geomaq,Amendoim,,CA550,,Amendoim,,,9,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p09_c3_CA550.png,sim,nome ausente/curto
+Geomaq,Amendoim,CORRENTE,CA550,CORRENTE CA550 4X4 KMC,Amendoim,,,9,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p09_c3_CA550.png,nao,
 Geomaq,Amendoim,CORRENTE,CA550K1,CORRENTE,Amendoim,,,9,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p09_c2_CA550K1.png,nao,
 Geomaq,Amendoim,CORRENTE,CA557,CORRENTE CORRENTE AGRICOLA KMC,Amendoim,,,9,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p09_c2_CA557.png,nao,
-Geomaq,Amendoim,KMC,CA557-4X4,KMC,Amendoim,,,9,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p09_c3_CA557_4X4.png,sim,nome ausente/curto
+Geomaq,Amendoim,CORRENTE,CA557-4X4,CORRENTE CA557 - 4X4 KMC,Amendoim,,,9,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p09_c3_CA557_4X4.png,nao,
 Geomaq,Amendoim,GADANHO,1396660,GADANHO,Amendoim,,,10,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p10_c2_1396660.png,nao,
 Geomaq,Amendoim,GADANHO,1396716,GADANHO,Amendoim,,,10,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p10_c2_1396716.png,nao,
 Geomaq,Amendoim,GADANHO,1396750,GADANHO,Amendoim,,,10,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p10_c2_1396750.png,nao,
@@ -123,17 +119,17 @@ Geomaq,Amendoim,BARRA,K203080531,BARRA TOMBADORA ESQUERDA,Amendoim,,,13,Catálo
 Geomaq,Amendoim,BARRA,K203080532,BARRA DIREITA,Amendoim,,,13,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p13_c0_K203080532.png,nao,
 Geomaq,Amendoim,TALISCA,2104344,TALISCA ARRANCADOR,Amendoim,,,14,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p14_c2_2104344.png,nao,
 Geomaq,Amendoim,TALISCA,2104361,TALISCA ESQUERDA ARRANCADOR,Amendoim,,,14,Catálogo Geomaq  Linha Amendoim 2025.pdf,text,,images/Amendoim/Amendoim_p14_c0_2104361.png,nao,
-Geomaq,Construção,ROLAMENTO,12743122,ROLAMENTO MOTONIVELADORA,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c2_12743122.png,sim,OCR baixa confiança
-Geomaq,Construção,ACOPLAMENTO,1628434,ACOPLAMENTO EIXO CARDAN CARDAN TRASEIRO,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c3_1628434.png,sim,OCR baixa confiança
-Geomaq,Construção,CUBO,266336,CUBO DO EIXO TANDEM,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c3_266336.png,sim,OCR baixa confiança
-Geomaq,Construção,,553091,,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c0_553091.png,sim,nome ausente/curto; OCR baixa confiança
-Geomaq,Construção,ENGRENAGEM,73125509,7/00 ME ENGRENAGEM GIRO DA LAMINA,,7/00,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c0_73125509.png,sim,OCR baixa confiança
-Geomaq,Construção,ENGRENAGEM,75201847,EM ENGRENAGEM ROLAMENTO SEPARADOR BRONZE DD COROA PINHAO CENTRAL,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c1_75201847.png,sim,OCR baixa confiança
-Geomaq,Construção,COROA,75312403,SS EA COROA PINHAO CENTRAL,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c2_75312403.png,sim,OCR baixa confiança
-Geomaq,Construção,PLATO,BE1368,PÁ PLATO EMBREAGEM,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c0_BE1368.png,sim,OCR baixa confiança
-Geomaq,Construção,ENGRENAGEM,TI84228,ENGRENAGEM BRONZE,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c2_TI84228.png,sim,OCR baixa confiança
+Geomaq,Construção,ROLAMENTO,12743122,ROLAMENTO MOTONIVELADORA,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c2_12743122.png,nao,
+Geomaq,Construção,CARDAN,1628434,CARDAN TRASEIRO,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c3_1628434.png,nao,
+Geomaq,Construção,CUBO,2G6336,CUBO DO EIXO TANDEM,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c3_266336.png,nao,
+Geomaq,Construção,ROLAMENTO,553091,ROLAMENTO,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c0_553091.png,nao,
+Geomaq,Construção,ENGRENAGEM,73125509,ENGRENAGEM GIRO DA LAMINA,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c0_73125509.png,nao,
+Geomaq,Construção,COROA,75201847,COROA E PINHAO CENTRAL 13X55,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c1_75201847.png,nao,
+Geomaq,Construção,COROA,75312403,COROA E PINHAO CENTRAL 8X28,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c2_75312403.png,nao,
+Geomaq,Construção,PLATO,8E1368,PLATO DE EMBREAGEM,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c0_BE1368.png,nao,
+Geomaq,Construção,ENGRENAGEM,T184228,ENGRENAGEM BRONZE JOHN DEERE,,,,4,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,65.9,images/Construcao/Construcao_p04_c2_TI84228.png,nao,
 Geomaq,Construção,EIXO,1080803,EIXO DA BARRA DO PIVO,,,,5,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.0,images/Construcao/Construcao_p05_c2_1080803.png,nao,
-Geomaq,Construção,,1281013,,,,,5,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.0,images/Construcao/Construcao_p05_c1_1281013.png,sim,nome ausente/curto
+Geomaq,Construção,COTOVELO,1281013,COTOVELO,,,,5,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.0,images/Construcao/Construcao_p05_c1_1281013.png,nao,
 Geomaq,Construção,PONTA,1473309,PONTA EIXO TRASEIRO,,,,5,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.0,images/Construcao/Construcao_p05_c3_1473309.png,nao,
 Geomaq,Construção,EIXO,1666761,EIXO CARDAN,,,,5,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.0,images/Construcao/Construcao_p05_c1_1666761.png,nao,
 Geomaq,Construção,HASTE,2478904,HASTE DO CILINDRO,,,,5,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.0,images/Construcao/Construcao_p05_c3_2478904.png,nao,
@@ -151,10 +147,10 @@ Geomaq,Construção,CRUZETA,456256,CRUZETA DIFERENCIAL DO PORCA DO MOTRIZ,,,,6,C
 Geomaq,Construção,FORCA,6G5533,FORCA SEN ZEN ENGRENAGEM,,,,6,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,70.7,images/Construcao/Construcao_p06_c1_6G5533.png,nao,
 Geomaq,Construção,CAMISA,9G9180,CAMISA DO ESTICADOR ESTEIRA CUBO,,,,6,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,70.7,images/Construcao/Construcao_p06_c3_9G9180.png,nao,
 Geomaq,Construção,CARCACA,9R2480,TO CARCACA DO EIXO TRASEIRO,,,,6,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,70.7,images/Construcao/Construcao_p06_c0_9R2480.png,nao,
-Geomaq,Construção,,2101500011,,,,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c1_2101500011.png,sim,nome ausente/curto
+Geomaq,Construção,CACAMBA,2101500011,CACAMBA RETRO 214E/3CX/4CX,,,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c1_2101500011.png,nao,
 Geomaq,Construção,PROTETOR,2101500115,PROTETOR RODA LÍ RE EX CACAMBA RETRO 12POL,,12POL,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c0_2101500115.png,nao,
 Geomaq,Construção,CACAMBA,2101500236,NH CACAMBA 18POL,,18POL,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c1_2101500236.png,nao,
-Geomaq,Construção,,2101500237,,,,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c0_2101500237.png,sim,nome ausente/curto
+Geomaq,Construção,CACAMBA,2101500237,CACAMBA RETRO NH B90B/B95B/B110B,,,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c0_2101500237.png,nao,
 Geomaq,Construção,CACAMBA,2101500571,CACAMBA MINI ESCAV 12POL,,12POL,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c3_2101500571.png,nao,
 Geomaq,Construção,CACAMBA,2101500675,CACAMBA CARREG HYUNDAI,,,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c3_2101500675.png,nao,
 Geomaq,Construção,RIPPER,2107703647,RIPPER,,,,7,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,73.3,images/Construcao/Construcao_p07_c1_2107703647.png,nao,
@@ -173,15 +169,15 @@ Geomaq,Construção,DENTE,1634143,DENTE ESQ DIR FB MEL EA EN ROLETE INFERIOR,,,,
 Geomaq,Construção,UNHA,2085235,UNHA,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c3_2085235.png,nao,
 Geomaq,Construção,RETENTOR,2M2858,RETENTOR DA RODA GUIA,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c0_2M2858.png,nao,
 Geomaq,Construção,RETENTOR,4K6049,RETENTOR DA RODA MOTRIZ,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c1_4K6049.png,nao,
-Geomaq,Construção,,5MN77,,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c2_5MN77.png,sim,nome ausente/curto
+Geomaq,Construção,RETENTOR,5M1177,RETENTOR,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c2_5MN77.png,nao,
 Geomaq,Construção,DENTE,6Y6335,DENTE DIANTEIRO,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c1_6Y6335.png,nao,
-Geomaq,Construção,,71418383,,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c3_71418383.png,sim,nome ausente/curto
+Geomaq,Construção,RETENTOR,71418383,RETENTOR,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c3_71418383.png,nao,
 Geomaq,Construção,ARO,7K2514,ARO MOTRIZ,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c1_7K2514.png,nao,
 Geomaq,Construção,UNHA,84168135,UNHA,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c0_84168135.png,nao,
 Geomaq,Construção,ESTEIRA,9W9353,ESTEIRA,,,,10,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,78.3,images/Construcao/Construcao_p10_c0_9W9353.png,nao,
 Geomaq,Construção,POLIA,1079579,POLIA MOTOR,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c1_1079579.png,nao,
 Geomaq,Construção,CARCACA,1913235,AD KO CARCACA DO COMANDO FINAL,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c3_1913235.png,nao,
-Geomaq,Construção,,2258016,,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c2_2258016.png,sim,nome ausente/curto
+Geomaq,Construção,BOMBA,2258016,BOMBA DAGUA,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c2_2258016.png,nao,
 Geomaq,Construção,POLIA,2666229,GE POLIA,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c0_2666229.png,nao,
 Geomaq,Construção,JAR,3073063,JAR BOMBA HIDRAULICA CAT,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c1_3073063.png,nao,
 Geomaq,Construção,BOMBA,3500666,PR BOMBA HIDRAULICA CAT,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c0_3500666.png,nao,
@@ -190,10 +186,6 @@ Geomaq,Construção,RETENTOR,4N25N,RETENTOR COM LUVA BOMBA COMBUSTIVEL,,,,11,Cat
 Geomaq,Construção,TURBINA,6N7203,TURBINA,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c1_6N7203.png,nao,
 Geomaq,Construção,RETENTOR,7C4297,RETENTOR TRAS,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c2_7C4297.png,nao,
 Geomaq,Construção,DISCO,8K7630,DISCO FREIO FUROS,,,,11,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,75.4,images/Construcao/Construcao_p11_c2_8K7630.png,nao,
-Geomaq,Construção,,3213-9300,,,,,15,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,94.4,images/Construcao/Construcao_p15_c3_3213_9300.png,sim,nome ausente/curto
-Geomaq,Construção,,3232-4200,,,,,15,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,94.4,images/Construcao/Construcao_p15_c2_3232_4200.png,sim,nome ausente/curto
-Geomaq,Construção,,3592-1250,,,,,15,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,94.4,images/Construcao/Construcao_p15_c1_3592_1250.png,sim,nome ausente/curto
-Geomaq,Construção,,4042-3775,,,,,15,Catálogo Geomaq  Linha Construção 2025.pdf,ocr,94.4,images/Construcao/Construcao_p15_c2_4042_3775.png,sim,nome ausente/curto
 Geomaq,Verde,COROA,L204844,COROA ANELAR,,,,4,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,81.3,images/Verde/Verde_p04_c2_L204844.png,nao,
 Geomaq,Verde,EIXO,L204863,EIXO COM PINHAO TRATOR 6000/7000,,6000/7000,,4,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,81.3,images/Verde/Verde_p04_c0_L204863.png,nao,
 Geomaq,Verde,ENGRENAGEM,R216294,ENGRENAGEM AR EIXO TRASEIRO PLATO DA EMBREAGEM,,,,4,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,81.3,images/Verde/Verde_p04_c2_R216294.png,nao,
@@ -204,13 +196,13 @@ Geomaq,Verde,ENGR,R237713,ENGR CX SATELITE TRATOR SERIE 6000/7000,,6000/7000,,4,
 Geomaq,Verde,COROA,R63477,COROA ESTRIAS DIFERENCIAL TRASEIRO 6000/7000,,6000/7000,,4,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,81.3,images/Verde/Verde_p04_c3_R63477.png,nao,
 Geomaq,Verde,TRATOR,R96805,TRATOR AGR SERIE,,,,4,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,81.3,images/Verde/Verde_p04_c1_R96805.png,nao,
 Geomaq,Verde,POLIA,RI33296,POLIA DO,,,,4,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,81.3,images/Verde/Verde_p04_c0_RI33296.png,nao,
-Geomaq,Verde,TRASEIRO,6000/7000,TRASEIRO,,,,6,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p06_c2_6000_7000.png,nao,
-Geomaq,Verde,,ALIS3972,,,,,6,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p06_c2_ALIS3972.png,sim,nome ausente/curto
+Geomaq,Verde,TRASEIRO,6000/7000-P06,BLINDAGEM 6000/7000 PLASTICO,,,,6,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p06_c2_6000_7000.png,sim,codigo real nao capturado pelo parser (confundiu com faixa de modelo do trator 6000/7000); confirmar no catalogo original
+Geomaq,Verde,,ALIS3972,,,,,6,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p06_c2_ALIS3972.png,sim,recorte da imagem nao capturou o rotulo do produto
 Geomaq,Verde,EMBREAGEM,R305695,EMBREAGEM EIXO DIRETO TRATOR,,,,6,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p06_c1_R305695.png,nao,
 Geomaq,Verde,SILENCIOSO,RE200884,SILENCIOSO 6000/7000 BLINDAGEM CARDAN SILENCIOSO TRATOR,,6000/7000,,6,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p06_c3_RE200884.png,nao,
 Geomaq,Verde,TAMBOR,RE220766,TAMBOR ACIONAMENTO SERIE,,,,6,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p06_c0_RE220766.png,nao,
-Geomaq,Verde,PINO,6000/7000,"PINO MESTRE LE LD CARCACA DO DIFERENCIAL DIANTEIRO 679,5MM APOIO",,"679,5MM",,7,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p07_c2_6000_7000.png,nao,
-Geomaq,Verde,,AT350318,,,,,7,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p07_c2_AT350318.png,sim,nome ausente/curto
+Geomaq,Verde,PINO,6000/7000-P07,"PINO MESTRE LE LD CARCACA DO DIFERENCIAL DIANTEIRO 679,5MM APOIO",,"679,5MM",,7,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p07_c2_6000_7000.png,sim,codigo real nao capturado pelo parser (confundiu com faixa de modelo do trator 6000/7000); confirmar no catalogo original
+Geomaq,Verde,,AT350318,,,,,7,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p07_c2_AT350318.png,sim,recorte da imagem nao capturou o rotulo do produto
 Geomaq,Verde,CHICOTE,CBN467355,CHICOTE ALTERNADOR,,,,7,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p07_c1_CBN467355.png,nao,
 Geomaq,Verde,GARFO,CQ43008,GARFO DUPLO,,,,7,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p07_c0_CQ43008.png,nao,
 Geomaq,Verde,CABO,DQ34217,CABO COMANDO,,,,7,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p07_c0_DQ34217.png,nao,
@@ -227,19 +219,18 @@ Geomaq,Verde,ELEVADOR,CH950/CH960,LS ELEVADOR,,,,9,Catálogo Geomaq  Linha Verd
 Geomaq,Verde,ENGR,CXT21665,ENGR ELEVADOR Z11 CUBO,,Z11,,9,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p09_c0_CXT21665.png,nao,
 Geomaq,Verde,ENGR,CXT25412,ENGR ELEVADOR Z15 CUBO,,Z15,,9,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p09_c1_CXT25412.png,nao,
 Geomaq,Verde,CAVALETE,CXT29703,CAVALETE MENOR AXTIGOBZ CUBO MOTRIZ,,,,9,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p09_c2_CXT29703.png,nao,
-Geomaq,Verde,,CXT30949,,,,,9,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p09_c2_CXT30949.png,sim,nome ausente/curto
-Geomaq,Verde,,AXTI7583,,,,,11,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,87.3,images/Verde/Verde_p11_c3_AXTI7583.png,sim,nome ausente/curto
+Geomaq,Verde,POLIA,CXT30949,POLIA SISTEMA ELEVADOR CH950/CH960,,,,9,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.0,images/Verde/Verde_p09_c2_CXT30949.png,nao,
+Geomaq,Verde,ASSOALHO,AXT17583,ASSOALHO SUPERIOR MAIOR PERF 3/16 CH950,,,,11,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,87.3,images/Verde/Verde_p11_c3_AXTI7583.png,nao,
 Geomaq,Verde,,AXTIB407,3/16 JD,,3/16,,11,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,87.3,images/Verde/Verde_p11_c3_AXTIB407.png,nao,
 Geomaq,Verde,PERF,CH950,PERF 3/16,,3/16,,11,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,87.3,images/Verde/Verde_p11_c3_CH950.png,nao,
 Geomaq,Verde,SUSPENSAO,0121322176,SUSPENSAO DO TRUCK COM ROTULA JD,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c0_0121322176.png,nao,
 Geomaq,Verde,PINHAO,CB01437885,PINHAO CORTE,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c2_CB01437885.png,nao,
-Geomaq,Verde,,CBO1429730,,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c2_CBO1429730.png,sim,nome ausente/curto
+Geomaq,Verde,TIRANTE,CBO1429730,TIRANTE MAIOR PERNA CORTE BASE 3/4POL SAE-1020,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c2_CBO1429730.png,nao,
 Geomaq,Verde,CORTE,CBOI429730,TS CORTE BASE ETA VAU,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c3_CBOI429730.png,nao,
 Geomaq,Verde,CAIXA,CE31720,CAIXA CORTE BASE,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c1_CE31720.png,nao,
 Geomaq,Verde,EIXO,CE31728,EIXO DO VOLANTE PICADOR,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c3_CE31728.png,nao,
 Geomaq,Verde,ENGR,DE32368,RA ENGR CORTE BASE CJ ENGRENAGENS CUBO DO ROL,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c0_DE32368.png,nao,
-Geomaq,Verde,VENTOINHA,SAE-1020,VENTOINHA EXTRATOR PRIMARIO,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c1_SAE_1020.png,nao,
-Geomaq,Verde,FUROS,SAE-1020,FUROS JD TIRANTE MAIOR PERNA CORTE BASE,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c2_SAE_1020.png,nao,
+Geomaq,Verde,VENTOINHA,CB01422414,VENTOINHA EXTRATOR PRIMARIO 1/4POL SAE-1020,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c1_SAE_1020.png,nao,
 Geomaq,Verde,FUROS,YZ59013,DO FUROS JD,,,,13,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.6,images/Verde/Verde_p13_c3_YZ59013.png,nao,
 Geomaq,Verde,FLANGE,0300048144,FLANGE ABAULADA DENTE RETO,,,,14,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,74.8,images/Verde/Verde_p14_c0_0300048144.png,nao,
 Geomaq,Verde,PINHAO,0300048145,PINHAO REFORCADO DENTE ABAULADO,,,,14,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,74.8,images/Verde/Verde_p14_c1_0300048145.png,nao,
@@ -267,9 +258,9 @@ Geomaq,Verde,ELEVADOR,CBN472169,ELEVADOR LD JD,,,,18,Catálogo Geomaq  Linha Ve
 Geomaq,Verde,EXTRATOR,CBN473168,EXTRATOR SECUNDARIO ALONGADA 3/16 POL ELEVADOR LD JD,,3/16,,18,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,89.2,images/Verde/Verde_p18_c3_CBN473168.png,nao,
 Geomaq,Verde,ELEVADOR,CBN472869,ELEVADOR LE JD INFERIOR JD,,,,19,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.2,images/Verde/Verde_p19_c3_CBN472869.png,nao,
 Geomaq,Verde,ELEVADOR,CBN472870,ELEVADOR LD JD,,,,19,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,84.2,images/Verde/Verde_p19_c3_CBN472870.png,nao,
-Geomaq,Verde,,00407250,,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c2_00407250.png,sim,nome ausente/curto
+Geomaq,Verde,EIXO,00407250,EIXO CHARLYN C/ ROLAM-CASE,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c2_00407250.png,nao,
 Geomaq,Verde,BANDEJA,48150466,BANDEJA SUPERIOR CASE,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c1_48150466.png,nao,
-Geomaq,Verde,,51427905,,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c1_51427905.png,sim,nome ausente/curto
+Geomaq,Verde,ENGRENAGEM,51427905,ENGRENAGEM CORTE DE BASE 52Z,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c1_51427905.png,nao,
 Geomaq,Verde,ENGRENAGEM,51427973,ENGRENAGEM CORTE,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c0_51427973.png,nao,
 Geomaq,Verde,PINHAO,87217726,PINHAO VOLANTE PICADOR CASE,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c0_87217726.png,nao,
 Geomaq,Verde,ENGRENAGEM,87232772,ENGRENAGEM CAIXA FUROS CASE,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c0_87232772.png,nao,
@@ -277,10 +268,10 @@ Geomaq,Verde,ENGRENAGEM,87239618,ENGRENAGEM PICADOR CASE FURO OBLONGO ACOPLAMENT
 Geomaq,Verde,MANCAL,87474224,MANCAL BLINDADO JA BLOCO,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c3_87474224.png,nao,
 Geomaq,Verde,ENGRENAGEM,87550077,ENGRENAGEM CENTRAL,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c1_87550077.png,nao,
 Geomaq,Verde,CORTE,B719M00,DO CORTE BASE CR,,,,21,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,80.1,images/Verde/Verde_p21_c3_B719M00.png,nao,
-Geomaq,Verde,,84197807,NI,,,,22,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,79.2,images/Verde/Verde_p22_c3_84197807.png,sim,nome ausente/curto
-Geomaq,Verde,,87240210,,,,,22,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,79.2,images/Verde/Verde_p22_c3_87240210.png,sim,nome ausente/curto
-Geomaq,Verde,,47864190.,LD,,,,23,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p23_c3_47864190.png,sim,nome ausente/curto
-Geomaq,Verde,,84183675,,,,,23,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p23_c3_84183675.png,sim,nome ausente/curto
+Geomaq,Verde,CUBO,84197807,CUBO REDUTOR CASE 7800 RELACAO 42.4,,,,22,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,79.2,images/Verde/Verde_p22_c3_84197807.png,nao,
+Geomaq,Verde,PERNA,87240210,PERNA CORTE BASE C/ DESARME - CASE,,,,22,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,79.2,images/Verde/Verde_p22_c3_87240210.png,nao,
+Geomaq,Verde,SAPATA,47864190.,SAPATA DESLIZANTE CASE 8000 / 8800 LD,,,,23,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p23_c3_47864190.png,nao,
+Geomaq,Verde,EIXO,84183675,EIXO EXTRATOR ARANHA CASE,,,,23,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p23_c3_84183675.png,nao,
 Geomaq,Verde,PRIMARIO,B7246195,PRIMARIO 1/8,,1/8,,23,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,82.9,images/Verde/Verde_p23_c3_B7246195.png,nao,
 Geomaq,Verde,,87233603,AN EL,,,,24,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,86.8,images/Verde/Verde_p24_c1_87233603.png,nao,
 Geomaq,Verde,ELEVADOR,87241797,ELEVADOR Z19,,Z19,,24,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,86.8,images/Verde/Verde_p24_c2_87241797.png,nao,
@@ -289,7 +280,3 @@ Geomaq,Verde,ANEL,87246778,ANEL DESGASTE,,,,24,Catálogo Geomaq  Linha Verde 20
 Geomaq,Verde,SUPORTE,87254793,SUPORTE MANIVELA CASE REFORCADO,,,,24,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,86.8,images/Verde/Verde_p24_c0_87254793.png,nao,
 Geomaq,Verde,ANEL,87404864,ANEL REVESTIMENTO EXTR SECUN CASE EM HARDOX BANDEJA INFERIOR DIVISOR LINHA REFORCADA,,,,24,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,86.8,images/Verde/Verde_p24_c0_87404864.png,nao,
 Geomaq,Verde,BANDEJA,87404865,DO BANDEJA DIVISOR LINHA REFORCADA,,,,24,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,86.8,images/Verde/Verde_p24_c1_87404865.png,nao,
-Geomaq,Verde,,3213-9300,,,,,27,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,94.4,images/Verde/Verde_p27_c3_3213_9300.png,sim,nome ausente/curto
-Geomaq,Verde,,3232-4200,,,,,27,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,94.4,images/Verde/Verde_p27_c2_3232_4200.png,sim,nome ausente/curto
-Geomaq,Verde,,3592-1250,,,,,27,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,94.4,images/Verde/Verde_p27_c1_3592_1250.png,sim,nome ausente/curto
-Geomaq,Verde,,4042-3775,,,,,27,Catálogo Geomaq  Linha Verde 2025.pdf,ocr,94.4,images/Verde/Verde_p27_c2_4042_3775.png,sim,nome ausente/curto
