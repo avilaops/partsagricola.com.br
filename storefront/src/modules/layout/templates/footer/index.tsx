@@ -27,7 +27,7 @@ export default async function Footer() {
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
+                  Categorias
                 </span>
                 <ul
                   className="grid grid-cols-1 gap-2"
@@ -85,7 +85,7 @@ export default async function Footer() {
             {collections && collections.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
+                  Colecoes
                 </span>
                 <ul
                   className={clx(
@@ -130,7 +130,8 @@ export default async function Footer() {
         </div>
         <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
           <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Agricola. All rights reserved.
+            © {new Date().getFullYear()} Agricola. Todos os direitos
+            reservados.
           </Text>
           <MedusaCTA />
         </div>

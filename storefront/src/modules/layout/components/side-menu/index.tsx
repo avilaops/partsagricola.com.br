@@ -11,11 +11,11 @@ import LanguageSelect from "../language-select"
 import { HttpTypes } from "@medusajs/types"
 import { Locale } from "@lib/data/locales"
 
-const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
-  Account: "/account",
-  Cart: "/cart",
+const SideMenuItems: Record<string, { href: string; label: string }> = {
+  Home: { href: "/", label: "Inicio" },
+  Store: { href: "/store", label: "Loja" },
+  Account: { href: "/account", label: "Conta" },
+  Cart: { href: "/cart", label: "Carrinho" },
 }
 
 type SideMenuProps = {
@@ -72,16 +72,16 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                       </button>
                     </div>
                     <ul className="flex flex-col gap-6 items-start justify-start">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
+                      {Object.entries(SideMenuItems).map(([name, item]) => {
                         return (
                           <li key={name}>
                             <LocalizedClientLink
-                              href={href}
+                              href={item.href}
                               className="text-3xl leading-10 hover:text-ui-fg-disabled"
                               onClick={close}
                               data-testid={`${name.toLowerCase()}-link`}
                             >
-                              {name}
+                              {item.label}
                             </LocalizedClientLink>
                           </li>
                         )
@@ -126,8 +126,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         />
                       </div>
                       <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Agricola. All rights
-                        reserved.
+                        © {new Date().getFullYear()} Agricola. Todos os
+                        direitos reservados.
                       </Text>
                     </div>
                   </div>

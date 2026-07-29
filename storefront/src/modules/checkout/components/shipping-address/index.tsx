@@ -97,7 +97,7 @@ const ShippingAddress = ({
       {customer && (addressesInRegion?.length || 0) > 0 && (
         <Container className="mb-6 flex flex-col gap-y-4 p-5">
           <p className="text-small-regular">
-            {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
+            {`Ola ${customer.first_name}, quer usar um dos enderecos salvos?`}
           </p>
           <AddressSelect
             addresses={customer.addresses}
@@ -174,7 +174,7 @@ const ShippingAddress = ({
           data-testid="shipping-country-select"
         />
         <Input
-          label="State / Province"
+          label="Estado"
           name="shipping_address.province"
           autoComplete="address-level1"
           value={formData["shipping_address.province"]}
@@ -184,7 +184,7 @@ const ShippingAddress = ({
       </div>
       <div className="my-8">
         <Checkbox
-          label="Billing address same as shipping address"
+          label="Endereco de cobranca igual ao de entrega"
           name="same_as_billing"
           checked={checked}
           onChange={onChange}
@@ -196,7 +196,7 @@ const ShippingAddress = ({
           label="Email"
           name="email"
           type="email"
-          title="Enter a valid email address."
+          title="Digite um e-mail valido."
           autoComplete="email"
           value={formData.email}
           onChange={handleChange}
