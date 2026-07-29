@@ -36,7 +36,7 @@ const ProductLines = () => {
           Navegue por linha
         </Heading>
         <Text className="text-ui-fg-subtle mt-2">
-          Catálogo Geomaq organizado pelas 4 linhas do fabricante
+          Catálogo organizado em 4 linhas
         </Text>
       </div>
       <div className="grid grid-cols-1 xsmall:grid-cols-2 small:grid-cols-4 gap-4">

@@ -11,8 +11,8 @@ import { listRegions } from "@lib/data/regions"
 import { retrieveCustomer } from "@lib/data/customer"
 
 export const metadata: Metadata = {
-  title: "Profile",
-  description: "View and edit your Agricola profile.",
+  title: "Perfil",
+  description: "Veja e edite seu perfil na Agricola.",
 }
 
 export default async function Profile() {

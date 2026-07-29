@@ -9,9 +9,9 @@ import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Agricola — Peças Geomaq | Algodão, Amendoim, Construção e Verde",
+  title: "Agricola — Peças | Algodão, Amendoim, Construção e Verde",
   description:
-    "Marketplace de peças originais Geomaq para máquinas agrícolas e de construção. Busque por código, navegue por linha (Algodão, Amendoim, Construção, Verde) e solicite orçamento direto.",
+    "Marketplace de peças originais para máquinas agrícolas e de construção. Busque por código, navegue por linha (Algodão, Amendoim, Construção, Verde) e solicite orçamento direto.",
 }
 
 export default async function Home(props: {

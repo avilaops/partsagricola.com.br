@@ -41,7 +41,7 @@ export default async function agricola_store_seed({
       salesChannelsData: [
         {
           name: "Agricola",
-          description: "Marketplace de pecas Geomaq",
+          description: "Marketplace de pecas agricolas e de construcao",
         },
       ],
     },

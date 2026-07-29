@@ -4,7 +4,7 @@ import { Heading, Text } from "@medusajs/ui"
 export const metadata: Metadata = {
   title: "Fale com a gente | Agricola",
   description:
-    "Não achou a peça que precisa no catálogo Geomaq? Fale com a gente pelo código, nome ou foto da peça.",
+    "Não achou a peça que precisa no catálogo? Fale com a gente pelo código, nome ou foto da peça.",
 }
 
 export default function ContatoPage() {
@@ -14,7 +14,7 @@ export default function ContatoPage() {
         Fale com a gente
       </Heading>
       <Text className="text-ui-fg-subtle mt-4">
-        Procurando uma peça Geomaq que não está no catálogo, ou precisa de
+        Procurando uma peça que não está no catálogo, ou precisa de
         ajuda para confirmar o código certo? Manda pra gente o código, nome ou
         até uma foto da peça que a gente confirma disponibilidade e ajuda a
         fechar o pedido.

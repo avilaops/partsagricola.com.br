@@ -121,7 +121,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <span className="txt-small">
-                    Peças originais Geomaq
+                    Peças originais
                   </span>
                 </li>
               </ul>

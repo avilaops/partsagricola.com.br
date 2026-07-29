@@ -2,7 +2,7 @@ import { Text } from "@medusajs/ui"
 
 const STATS = [
   { value: "281+", label: "peças catalogadas" },
-  { value: "100%", label: "peças originais Geomaq" },
+  { value: "100%", label: "peças originais" },
   { value: "4", label: "linhas de máquinas" },
   { value: "Direto", label: "com quem monta o pedido" },
 ]

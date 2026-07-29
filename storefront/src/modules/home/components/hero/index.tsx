@@ -6,13 +6,13 @@ const Hero = () => {
     <div className="w-full border-b border-ui-border-base relative bg-[#0b6b3a] text-white">
       <div className="content-container py-20 small:py-28 flex flex-col items-center text-center gap-6">
         <span className="uppercase tracking-widest text-sm text-white/70">
-          Peças Geomaq
+          Peças agrícolas e de construção
         </span>
         <Heading
           level="h1"
           className="text-3xl small:text-5xl leading-tight font-semibold max-w-3xl"
         >
-          O marketplace de peças para máquinas agrícolas Geomaq
+          O marketplace de peças para máquinas agrícolas e de construção
         </Heading>
         <Text className="text-white/80 max-w-2xl text-base small:text-lg">
           Algodão, Amendoim, Construção e Verde — encontre a peça certa pelo

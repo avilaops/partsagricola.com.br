@@ -214,7 +214,6 @@ export default async function import_geomaq({
                 },
               ],
               metadata: {
-                fabricante: "Geomaq",
                 geomaq_codigo: codigo,
                 familia: row.familia || undefined,
                 aplicacao: row.aplicacao || undefined,
