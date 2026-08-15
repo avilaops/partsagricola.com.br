@@ -1,0 +1,68 @@
+"use client"
+
+import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
+import { useParams } from "next/navigation"
+
+type ProductPreviewQuoteButtonProps = {
+  product: {
+    id: string
+    handle: string
+    title: string
+    code: string
+    thumbnail?: string | null
+  }
+}
+
+const ProductPreviewQuoteButton = ({
+  product,
+}: ProductPreviewQuoteButtonProps) => {
+  const countryCode = useParams().countryCode as string
+  const { addItem, hasItem, openList } = useQuoteList()
+  const isAdded = hasItem(product.id)
+
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (isAdded) {
+          openList()
+          return
+        }
+
+        addItem({
+          id: product.id,
+          handle: product.handle,
+          title: product.title,
+          code: product.code,
+          thumbnail: product.thumbnail,
+          url: `/${countryCode}/products/${product.handle}`,
+        })
+      }}
+      className="absolute bottom-3 right-3 z-10 flex min-h-10 items-center gap-2 rounded-full border border-white/80 bg-white/95 px-3.5 text-xs font-semibold text-[#0b6b3a] shadow-lg backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
+      aria-label={
+        isAdded
+          ? `Abrir cotação com ${product.title}`
+          : `Adicionar ${product.title} à cotação`
+      }
+      data-testid="product-preview-quote-button"
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="h-4 w-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        {isAdded ? (
+          <path d="m5 12 4 4L19 6" />
+        ) : (
+          <path d="M12 5v14M5 12h14" />
+        )}
+      </svg>
+      <span>{isAdded ? "Na cotação" : "Cotar"}</span>
+    </button>
+  )
+}
+
+export default ProductPreviewQuoteButton

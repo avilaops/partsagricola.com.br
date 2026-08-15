@@ -1,0 +1,17 @@
+{
+  "mode": "curated_snapshot",
+  "source_file": "data/geomaq_online.csv",
+  "sha256": "25a626fe6656fd9bf5a072dab1a19e09cf112004133b0c4973bdd54e15a04f22",
+  "expected_rows": 19089,
+  "category_counts": {
+    "270": 4800,
+    "2709": 116,
+    "271": 4800,
+    "2710": 693,
+    "2711": 421,
+    "272": 4800,
+    "273": 1161,
+    "274": 2298
+  },
+  "decision": "Publicar o lote fechado solicitado de aproximadamente 29 mil registros brutos. A coleta online completa, estimada em mais de 89 mil itens, fica fora deste deploy para evitar expansão não aprovada e risco operacional no VPS."
+}

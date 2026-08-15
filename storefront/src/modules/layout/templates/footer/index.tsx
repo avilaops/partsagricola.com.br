@@ -121,7 +121,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <span className="txt-small">
-                    Peças originais
+                    Confirmação técnica
                   </span>
                 </li>
               </ul>

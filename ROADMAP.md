@@ -1,35 +1,38 @@
 # Roadmap — Marketplace Agricola
 
-> Última atualização: 28/07/2026. Este documento acompanha o progresso do
+> Última atualização: 03/08/2026. Este documento acompanha o progresso do
 > projeto de ponta a ponta: da extração do catálogo até a loja em produção.
 > Mantenha atualizado conforme cada fase avança.
 
 ## Visão geral
 
-Marketplace de peças agrícolas e de construção. Nasceu da extração
-estruturada de catálogos em PDF (281 peças, com fotos, código, linha e
-família) e evoluiu para uma loja completa (Medusa v2 + Next.js) já em
-produção em **https://agricola.avilaops.com**.
+Marketplace de peças agrícolas, construção e vedação. Nasceu da extração
+estruturada de catálogos e evoluiu para uma loja Medusa v2 + Next.js com
+**25.520 produtos publicados** em
+**https://partsagricola.com.br**.
 
-A empresa vai se chamar **Parts Agricola** (domínio futuro:
-`partsagricola.com.br`) — a troca de domínio/marca ainda não foi feita,
-fica para uma fase futura por decisão do Nicolas.
+A empresa se chama **Parts Agricola** e o domínio oficial é
+`partsagricola.com.br`. O código do repositório já aponta pro domínio novo;
+a migração de DNS/Caddy/certificado e os 301 do `agricola.avilaops.com`
+são passos manuais no VPS (checklist em `README.md` → "Troca de domínio").
+O nome de exibição da loja no Medusa ainda é "Agricola".
 
 ## Arquitetura (produção)
 
 ```
                          ┌─────────────────────────┐
                          │   Cloudflare DNS (A)     │
-                         │  agricola.avilaops.com   │
-                         │ api-agricola.avilaops.com│
+                         │   partsagricola.com.br   │
+                         │ api.partsagricola.com.br │
                          └───────────┬─────────────┘
                                      │ DNS-only (sem proxy laranja)
                                      ▼
                     VPS Hetzner (178.105.82.48, Ubuntu 26.04)
                     ─────────────────────────────────────────
                     Caddy (reverse proxy + TLS automático)
-                    ├─ agricola.avilaops.com     → 127.0.0.1:3006
-                    └─ api-agricola.avilaops.com → 127.0.0.1:9002
+                    ├─ partsagricola.com.br     → 127.0.0.1:3006
+                    ├─ api.partsagricola.com.br → 127.0.0.1:9002
+                    └─ *.avilaops.com (antigos)  → 301 pro domínio novo
 
                     systemd services:
                     ├─ agricola-storefront.service (Next.js standalone, :3006)
@@ -63,7 +66,7 @@ agricola/
 ├── medusa/              ← backend Medusa v2 (Turborepo)
 │   └── apps/backend/src/migration-scripts/
 │       ├── agricola-store-seed.ts   ← loja/região/canal de venda
-│       └── import-geomaq.ts          ← importa data/geomaq_parts.csv pro Medusa
+│       └── import-catalogos.ts       ← importa a base tratada e auditada
 ├── storefront/           ← Next.js (fork do nextjs-starter-medusa oficial)
 ├── .env.production        ← credenciais gerais (gitignored)
 ├── README.md              ← detalhes técnicos de cada fase
@@ -86,7 +89,8 @@ agricola/
 
 ### Fase 2 — Infraestrutura base
 - Banco `agricola` criado no Postgres do VPS, schema+seed aplicados.
-- DNS `agricola.avilaops.com` → VPS, Caddy com TLS automático.
+- DNS `agricola.avilaops.com` → VPS, Caddy com TLS automático (domínio
+  provisório; substituído por `partsagricola.com.br`).
 - `.env`/`.env.production` protegidos no `.gitignore`.
 - Repositório sincronizado com GitHub.
 
@@ -108,11 +112,14 @@ agricola/
   compartilhado (já causou um susto de memória numa tentativa anterior).
 
 ### Fase 4 — Importação dos dados reais
-- Script `import-geomaq.ts`: lê `data/geomaq_parts.csv`, cria 1 categoria
-  por linha e 1 produto por peça (preço R$ 0,00 — catálogo de papel não tem
-  preço —, imagem sobe pro R2, metadata com os campos originais da
-  extração). Processamento paralelo (8 workers), idempotente.
-- **281/281 peças importadas e publicadas** em produção.
+- `scripts/process_catalogs.py` consolida as fontes em uma base canônica,
+  preserva proveniência, valida contagens e separa registros inseguros.
+- Auditoria aprovada: **25.239 itens importáveis**, **196 em quarentena** e
+  nenhum registro sem classificação.
+- Importador idempotente por `import_key`, com paginação, concorrência
+  controlada e tratamento determinístico de colisões globais de SKU.
+- Produção validada com **25.520 produtos**: 25.239 do lote tratado mais 281
+  produtos anteriores, sem `import_key` duplicada.
 
 ### Fase 5 — Correções críticas pós-deploy
 - **Bug de redirecionamento**: o `server.js` standalone do Next, atrás do
@@ -126,7 +133,7 @@ agricola/
 - **Handle inválido**: 1 peça com código terminando em ponto
   (`47864190.`) gerava um handle inválido — corrigido o sanitizador.
 
-### Fase 6 — Marca e idioma (em andamento)
+### Fase 6 — Marca, idioma e descoberta
 - Confirmado com o Nicolas: **Geomaq não tem relação com a empresa** —
   removidas todas as menções a "Geomaq" do site e do banco (texto/metadata;
   as fotos das peças, recortadas do catálogo impresso, continuam como
@@ -137,6 +144,23 @@ agricola/
   cadastro, endereços, perfil, senha, pedidos), carrinho, checkout
   (endereços, entrega, pagamento, revisão, cupom). Falta uma
   passada final de conferência visual.
+- Busca pública por código e nome integrada à Store API, com paginação real
+  sobre todo o catálogo.
+- SEO técnico publicado: canonicals, JSON-LD `Product` e `BreadcrumbList`,
+  `robots.txt`, sitemap index, 26 sitemaps de produtos, imagens e `llms.txt`.
+- Sitemaps validados com **25.520 URLs de produto** e **3.806 imagens**.
+- Cotação técnica multi-item persistente, com inclusão direta nos cards do
+  catálogo, ajuste de quantidades e envio consolidado por WhatsApp ou e-mail.
+- Faixa de produtos vistos recentemente, persistente entre páginas e integrada
+  à cotação rápida para recuperar pesquisas anteriores.
+- Comparador técnico de até quatro peças, com códigos, aplicações, categorias,
+  medidas disponíveis e envio conjunto para a lista de cotação.
+- Lista persistente de peças salvas, integrada ao catálogo, páginas de produto,
+  histórico recente e cotação em lote.
+- Autocomplete de busca com histórico local, limpeza, seleção por teclado e
+  navegação consistente por botão ou Enter.
+- Barra de conversão mobile fixa nas páginas de produto, integrada à cotação e
+  ao comparador, com transição automática para evitar sobreposição de ações.
 
 ## Pendências / próximas fases
 
@@ -146,17 +170,16 @@ agricola/
    integração oficial com Efí). Credenciais em
    `D:/administrativo/financeiro/.env.production.efi` +
    certificados `.p12` (homologação e produção).
-2. **Preços reais** — os 281 produtos estão a R$ 0,00 (decisão do Nicolas
+2. **Preços reais** — os produtos estão a R$ 0,00 (catálogo para consulta
    pra fase atual). Alguém precisa definir preço de verdade pelo admin
    antes de vender de fato.
 
 ### Qualidade / acabamento
-3. **SEO avançado** — título/description/robots/sitemap básico já
-   funcionam (via `next-sitemap`, incluso no starter); falta dado
-   estruturado (schema.org `Product`) por página de produto.
-4. **12 peças ainda marcadas "revisar"** no catálogo — ninguém confirmou
-   manualmente ainda (ver `review.html` ou `data/geomaq_parts.csv`,
-   coluna `revisar_motivo`).
+3. **Indexação externa** — enviar o sitemap no Google Search Console e
+   acompanhar cobertura; a preparação técnica não garante rastreamento
+   imediato pelo Google.
+4. **196 registros em quarentena** — revisar
+   `data/processed/catalog_quarantine.csv` antes de qualquer nova carga.
 5. **Rebuild não é automático** — páginas de produto/categoria são
    estáticas (SSG). Mudanças grandes no catálogo pelo admin merecem um
    rebuild+redeploy do storefront pra manter a geração estática correta
@@ -177,16 +200,15 @@ agricola/
 9. **Rebrand pra Parts Agricola** — trocar nome de exibição, domínio
    (`partsagricola.com.br`) e DNS/Caddy quando o Nicolas decidir seguir
    com isso.
-10. **Grupo Vedação** (gaxetas, automotivo, o-rings) — o schema já foi
-    pensado pra comportar isso via `product_variant` (Ø interno, espessura,
-    material) sem precisar remodelar.
+10. **Ampliação do catálogo** — novas fontes devem passar pelo mesmo snapshot,
+    auditoria, quarentena e validação antes/depois da importação.
 
 ## Acessos
 
 | O quê | Onde |
 |---|---|
-| Loja | https://agricola.avilaops.com |
-| Admin Medusa | https://api-agricola.avilaops.com/app |
+| Loja | https://partsagricola.com.br |
+| Admin Medusa | https://api.partsagricola.com.br/app |
 | Login admin | combinado com o Nicolas (não versionado) |
 | Servidor | VPS Hetzner `178.105.82.48`, chave SSH `hetzner_avilaops` |
 | Banco `agricola` (catálogo bruto) | Postgres nativo do VPS, schema `catalogo` |

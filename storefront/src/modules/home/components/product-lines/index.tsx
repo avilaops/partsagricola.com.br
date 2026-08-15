@@ -1,67 +1,146 @@
-import { Heading, Text } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
 
-const LINES = [
+const DEPARTMENT_DETAILS: Record<
+  string,
   {
-    slug: "algodao",
-    name: "Algodão",
-    description:
-      "Colhedoras de algodão — tambores, engrenagens, correias e componentes de coleta.",
+    eyebrow: string
+    accent: string
+    surface: string
+    image: string
+    imageAlt: string
+  }
+> = {
+  "pecas-agricolas": {
+    eyebrow: "Plantio e colheita",
+    accent: "#0b6b3a",
+    surface: "bg-[#eef7f1]",
+    image: "/images/departments/pecas-agricolas.webp",
+    imageAlt: "Colheitadeira trabalhando em uma lavoura de grãos",
   },
-  {
-    slug: "amendoim",
-    name: "Amendoim",
-    description:
-      "Colhedoras de amendoim — correntes, turbinas e peças de recolhimento.",
+  "maquinas-pesadas": {
+    eyebrow: "Construção e rodante",
+    accent: "#a65b16",
+    surface: "bg-[#fff5e9]",
+    image: "/images/departments/maquinas-pesadas.webp",
+    imageAlt: "Escavadeira de esteiras em uma obra de terraplenagem",
   },
-  {
-    slug: "construcao",
-    name: "Construção",
-    description:
-      "Máquinas de construção — rolamentos, coroas e pinhões, cardans e caçambas.",
+  "vedacoes-e-selagem": {
+    eyebrow: "Hidráulica e industrial",
+    accent: "#2857a4",
+    surface: "bg-[#eef4ff]",
+    image: "/images/departments/vedacoes-e-selagem.webp",
+    imageAlt: "Conjunto de vedações, retentores e componentes hidráulicos",
   },
-  {
-    slug: "verde",
-    name: "Verde",
-    description:
-      "Linha verde (tratores/implementos) — engrenagens, eixos e peças de corte de base.",
+  "kits-e-reparos": {
+    eyebrow: "Manutenção técnica",
+    accent: "#6c3ca2",
+    surface: "bg-[#f6f0fb]",
+    image: "/images/departments/kits-e-reparos.webp",
+    imageAlt: "Kit técnico de reparo com ferramentas e componentes de precisão",
   },
-]
+}
 
-const ProductLines = () => {
+const ProductLines = ({
+  categories,
+}: {
+  categories: HttpTypes.StoreProductCategory[]
+}) => {
   return (
-    <div className="content-container py-16">
-      <div className="text-center mb-10">
-        <Heading level="h2" className="text-2xl small:text-3xl font-semibold">
-          Navegue por linha
-        </Heading>
-        <Text className="text-ui-fg-subtle mt-2">
-          Catálogo organizado em 4 linhas
-        </Text>
-      </div>
-      <div className="grid grid-cols-1 xsmall:grid-cols-2 small:grid-cols-4 gap-4">
-        {LINES.map((line) => (
+    <section className="border-b border-ui-border-base bg-white py-16 small:py-20">
+      <div className="content-container">
+        <div className="mb-10 flex flex-col justify-between gap-5 small:flex-row small:items-end">
+          <div className="max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0b6b3a]">
+              Catálogo organizado para comprar melhor
+            </p>
+            <h2 className="text-3xl font-semibold tracking-tight small:text-4xl">
+              Encontre pela máquina, sistema ou aplicação
+            </h2>
+            <p className="mt-3 text-base text-ui-fg-subtle">
+              Comece por um departamento e refine até chegar à peça correta.
+            </p>
+          </div>
           <LocalizedClientLink
-            key={line.slug}
-            href={`/categories/${line.slug}`}
-            className="group border border-ui-border-base rounded-large p-6 flex flex-col gap-3 hover:border-[#0b6b3a] hover:shadow-md transition-all bg-ui-bg-base"
+            href="/store"
+            className="font-medium text-[#0b6b3a] hover:underline"
           >
-            <span className="inline-flex items-center justify-center w-10 h-10 rounded-base bg-[#0b6b3a]/10 text-[#0b6b3a] font-bold">
-              {line.name.charAt(0)}
-            </span>
-            <Text className="font-semibold text-ui-fg-base text-lg">
-              {line.name}
-            </Text>
-            <Text className="text-ui-fg-subtle text-sm leading-relaxed">
-              {line.description}
-            </Text>
-            <span className="text-[#0b6b3a] text-sm font-medium mt-auto group-hover:underline">
-              Ver peças →
-            </span>
+            Ver catálogo completo →
           </LocalizedClientLink>
-        ))}
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 small:grid-cols-2">
+          {categories.map((category) => {
+            const details = DEPARTMENT_DETAILS[category.handle] || {
+              eyebrow: "Catálogo técnico",
+              accent: "#0b6b3a",
+              surface: "bg-ui-bg-subtle",
+              image: "/images/departments/pecas-agricolas.webp",
+              imageAlt: "Máquinas e componentes técnicos",
+            }
+            const children = category.category_children || []
+
+            return (
+              <article
+                key={category.id}
+                className={`overflow-hidden rounded-2xl border border-ui-border-base ${details.surface}`}
+              >
+                <LocalizedClientLink
+                  href={`/categories/${category.handle}`}
+                  className="group block"
+                >
+                  <div className="relative h-52 overflow-hidden small:h-60">
+                    <Image
+                      src={details.image}
+                      alt={details.imageAlt}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/10" />
+                    <span className="absolute left-6 bottom-5 text-xs font-semibold uppercase tracking-[0.16em] text-white small:left-8">
+                      {details.eyebrow}
+                    </span>
+                    <span className="absolute right-5 top-5 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ui-fg-base shadow-sm backdrop-blur-sm">
+                      {children.length} {children.length === 1 ? "linha" : "linhas"}
+                    </span>
+                  </div>
+                  <div className="p-6 small:p-8">
+                    <h3 className="text-2xl font-semibold tracking-tight text-ui-fg-base small:text-3xl">
+                      {category.name}
+                    </h3>
+                    <p className="mt-3 max-w-xl text-sm leading-relaxed text-ui-fg-subtle small:text-base">
+                      {category.description}
+                    </p>
+                    <span
+                      className="mt-6 inline-block text-sm font-semibold group-hover:underline"
+                      style={{ color: details.accent }}
+                    >
+                      Explorar departamento →
+                    </span>
+                  </div>
+                </LocalizedClientLink>
+
+                {children.length > 0 && (
+                  <div className="flex flex-wrap gap-2 border-t border-black/5 bg-white/60 px-6 py-4 small:px-8">
+                    {children.slice(0, 7).map((child) => (
+                      <LocalizedClientLink
+                        key={child.id}
+                        href={`/categories/${child.handle}`}
+                        className="rounded-full border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium text-ui-fg-subtle transition-colors hover:border-[#0b6b3a] hover:text-[#0b6b3a]"
+                      >
+                        {child.name}
+                      </LocalizedClientLink>
+                    ))}
+                  </div>
+                )}
+              </article>
+            )
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 

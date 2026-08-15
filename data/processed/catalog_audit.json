@@ -1,0 +1,62 @@
+{
+  "blank_required_fields": {
+    "category": 0,
+    "import_key": 0,
+    "source": 0,
+    "source_code": 0,
+    "title": 0
+  },
+  "catalog_scope": {
+    "category_counts": {
+      "270": 4800,
+      "2709": 116,
+      "271": 4800,
+      "2710": 693,
+      "2711": 421,
+      "272": 4800,
+      "273": 1161,
+      "274": 2298
+    },
+    "decision": "Publicar o lote fechado solicitado de aproximadamente 29 mil registros brutos. A coleta online completa, estimada em mais de 89 mil itens, fica fora deste deploy para evitar expansão não aprovada e risco operacional no VPS.",
+    "expected_rows": 19089,
+    "mode": "curated_snapshot",
+    "sha256": "25a626fe6656fd9bf5a072dab1a19e09cf112004133b0c4973bdd54e15a04f22",
+    "source_file": "data/geomaq_online.csv"
+  },
+  "checks_passed": true,
+  "deployment_ready": true,
+  "duplicate_import_keys": [],
+  "duplicate_source_skus": [],
+  "import_by_source": {
+    "gaxetas_raspadores": 126,
+    "geomaq_online": 19079,
+    "kits_catalogo": 371,
+    "orings": 1130,
+    "retentores": 45,
+    "rpv_industrial": 4488
+  },
+  "input_by_source": {
+    "gaxetas_raspadores": 126,
+    "geomaq_online": 19089,
+    "kits_catalogo": 372,
+    "orings": 1130,
+    "retentores": 230,
+    "rpv_industrial": 4488
+  },
+  "quarantine_by_source": {
+    "geomaq_online": 10,
+    "kits_catalogo": 1,
+    "retentores": 185
+  },
+  "quarantine_reasons": {
+    "altura_nao_confirmada": 183,
+    "codigo_ausente": 10,
+    "dimensoes_principais_ausentes": 2,
+    "referencia_mercado_contaminada": 1
+  },
+  "source_warnings": [],
+  "total_import": 25239,
+  "total_input": 25435,
+  "total_quarantine": 196,
+  "unclassified": 0
+}

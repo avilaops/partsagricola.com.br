@@ -1,10 +1,10 @@
 import { Text } from "@medusajs/ui"
 
 const STATS = [
-  { value: "281+", label: "peças catalogadas" },
-  { value: "100%", label: "peças originais" },
-  { value: "4", label: "linhas de máquinas" },
-  { value: "Direto", label: "com quem monta o pedido" },
+  { value: "25,5 mil", label: "itens publicados" },
+  { value: "24,7 mil", label: "códigos distintos" },
+  { value: "4", label: "departamentos técnicos" },
+  { value: "Busca técnica", label: "por código e aplicação" },
 ]
 
 const TrustRow = () => {

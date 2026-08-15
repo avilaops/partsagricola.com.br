@@ -22,9 +22,15 @@ type SideMenuProps = {
   regions: HttpTypes.StoreRegion[] | null
   locales: Locale[] | null
   currentLocale: string | null
+  categories: HttpTypes.StoreProductCategory[]
 }
 
-const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
+const SideMenu = ({
+  regions,
+  locales,
+  currentLocale,
+  categories,
+}: SideMenuProps) => {
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
 
@@ -71,13 +77,13 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         <XMark />
                       </button>
                     </div>
-                    <ul className="flex flex-col gap-6 items-start justify-start">
+                    <ul className="flex flex-col gap-5 items-start justify-start">
                       {Object.entries(SideMenuItems).map(([name, item]) => {
                         return (
                           <li key={name}>
                             <LocalizedClientLink
                               href={item.href}
-                              className="text-3xl leading-10 hover:text-ui-fg-disabled"
+                              className="text-2xl leading-9 hover:text-ui-fg-disabled"
                               onClick={close}
                               data-testid={`${name.toLowerCase()}-link`}
                             >
@@ -86,6 +92,24 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           </li>
                         )
                       })}
+                      <li className="mt-2 w-full border-t border-white/20 pt-5">
+                        <p className="mb-3 text-xs uppercase tracking-[0.16em] text-white/60">
+                          Departamentos
+                        </p>
+                        <ul className="flex flex-col gap-3">
+                          {categories.map((category) => (
+                            <li key={category.id}>
+                              <LocalizedClientLink
+                                href={`/categories/${category.handle}`}
+                                className="text-lg text-white/90 hover:text-white"
+                                onClick={close}
+                              >
+                                {category.name}
+                              </LocalizedClientLink>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
                     </ul>
                     <div className="flex flex-col gap-y-6">
                       {!!locales?.length && (

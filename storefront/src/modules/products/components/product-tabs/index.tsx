@@ -6,6 +6,7 @@ import Refresh from "@modules/common/icons/refresh"
 
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
+import { getTechnicalAttributes } from "@lib/util/product-technical"
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
@@ -14,11 +15,11 @@ type ProductTabsProps = {
 const ProductTabs = ({ product }: ProductTabsProps) => {
   const tabs = [
     {
-      label: "Informacoes do produto",
+      label: "Ficha técnica",
       component: <ProductInfoTab product={product} />,
     },
     {
-      label: "Envio e devolucoes",
+      label: "Atendimento e entrega",
       component: <ShippingInfoTab />,
     },
   ]
@@ -42,37 +43,17 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
+  const attributes = getTechnicalAttributes(product)
+
   return (
     <div className="text-small-regular py-8">
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Material</span>
-            <p>{product.material ? product.material : "-"}</p>
+      <div className="grid grid-cols-1 gap-4 xsmall:grid-cols-2">
+        {attributes.map((attribute) => (
+          <div key={attribute.label}>
+            <span className="font-semibold">{attribute.label}</span>
+            <p className="mt-1 text-ui-fg-subtle">{attribute.value}</p>
           </div>
-          <div>
-            <span className="font-semibold">Pais de origem</span>
-            <p>{product.origin_country ? product.origin_country : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Tipo</span>
-            <p>{product.type ? product.type.value : "-"}</p>
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Peso</span>
-            <p>{product.weight ? `${product.weight} g` : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Dimensoes</span>
-            <p>
-              {product.length && product.width && product.height
-                ? `${product.length}L x ${product.width}W x ${product.height}H`
-                : "-"}
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   )
@@ -85,30 +66,30 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Entrega rapida</span>
+            <span className="font-semibold">Prazo confirmado na cotação</span>
             <p className="max-w-sm">
-              Seu pedido chega em 3-5 dias uteis no local escolhido ou no
-              conforto da sua casa.
+              Disponibilidade, prazo de separação e transporte são informados
+              antes do fechamento.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Refresh />
           <div>
-            <span className="font-semibold">Trocas simples</span>
+            <span className="font-semibold">Validação de aplicação</span>
             <p className="max-w-sm">
-              A peca nao e a que voce precisava? Sem problemas - trocamos por
-              outra.
+              Envie o código e os dados da máquina para nossa equipe confirmar
+              a compatibilidade.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Back />
           <div>
-            <span className="font-semibold">Devolucao facil</span>
+            <span className="font-semibold">Condição comercial transparente</span>
             <p className="max-w-sm">
-              Basta devolver o produto que reembolsamos seu dinheiro. Sem
-              perguntas - vamos garantir que sua devolucao seja tranquila.
+              Preço, pagamento, frete e política aplicável seguem registrados
+              na proposta enviada para você.
             </p>
           </div>
         </div>

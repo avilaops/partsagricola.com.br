@@ -7,21 +7,33 @@ import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
+import { listCategories } from "@lib/data/categories"
+import QuoteListButton from "@modules/quote-list/components/quote-list-button"
+import SavedProductsButton from "@modules/saved-products/components/saved-products-button"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions, locales, currentLocale, categories] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
+    listCategories(),
   ])
+  const departments = categories
+    .filter((category) => !category.parent_category)
+    .sort((first, second) => (first.rank || 0) - (second.rank || 0))
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
+      <header className="relative mx-auto border-b duration-200 bg-white border-ui-border-base">
+        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex h-16 items-center justify-between w-full text-small-regular">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
-              <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+              <SideMenu
+                regions={regions}
+                locales={locales}
+                currentLocale={currentLocale}
+                categories={departments}
+              />
             </div>
           </div>
 
@@ -45,6 +57,8 @@ export default async function Nav() {
                 Conta
               </LocalizedClientLink>
             </div>
+            <SavedProductsButton />
+            <QuoteListButton />
             <Suspense
               fallback={
                 <LocalizedClientLink
@@ -52,7 +66,22 @@ export default async function Nav() {
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
-                  Carrinho (0)
+                  <span className="hidden small:inline">Carrinho (0)</span>
+                  <span className="flex items-center gap-1 small:hidden">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                    >
+                      <path d="M3.5 4.5h2l1.7 10.2a2 2 0 0 0 2 1.7h7.9a2 2 0 0 0 1.9-1.5l1.3-6.4H6.2" />
+                      <circle cx="9.5" cy="19.2" r="1.1" />
+                      <circle cx="17.2" cy="19.2" r="1.1" />
+                    </svg>
+                    <span>(0)</span>
+                  </span>
                 </LocalizedClientLink>
               }
             >
@@ -60,6 +89,31 @@ export default async function Nav() {
             </Suspense>
           </div>
         </nav>
+        <div className="hidden border-t border-ui-border-base bg-[#fafcfb] medium:block">
+          <div className="content-container flex h-11 items-center justify-center gap-8 text-sm">
+            {departments.map((category) => (
+              <LocalizedClientLink
+                key={category.id}
+                href={`/categories/${category.handle}`}
+                className="font-medium text-ui-fg-subtle transition-colors hover:text-[#0b6b3a]"
+              >
+                {category.name}
+              </LocalizedClientLink>
+            ))}
+            <LocalizedClientLink
+              href="/medidas"
+              className="font-medium text-ui-fg-subtle transition-colors hover:text-[#0b6b3a]"
+            >
+              Buscar por medidas
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/store"
+              className="font-semibold text-[#0b6b3a]"
+            >
+              Todas as peças
+            </LocalizedClientLink>
+          </div>
+        </div>
       </header>
     </div>
   )

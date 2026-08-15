@@ -1,8 +1,32 @@
-# Banco de Peças — Grupo Geomaq (Fase 1)
+# Marketplace Agricola
 
-Extração estruturada + imagens dos 4 catálogos Geomaq 2025 (Algodão, Amendoim,
-Construção, Verde) e modelagem/carga em Postgres. Medusa e o site
-(agrícola.avilaops.com) são fases posteriores — **não** incluídos aqui.
+Pipeline de extração, tratamento e publicação de catálogos agrícolas e de
+vedação no Medusa, com storefront Next.js em
+<https://partsagricola.com.br>.
+
+## Estado atual — 30/07/2026
+
+- **25.239 itens tratados e importados**, sem `import_key` duplicada.
+- **25.520 produtos publicados** no Medusa, contando os 281 produtos anteriores.
+- **196 registros em quarentena**, preservados para revisão e fora da loja.
+- Busca pública por código, nome ou aplicação em `/br/store`.
+- Localizador técnico por medidas exatas de O-rings, retentores e gaxetas em
+  `/br/medidas`.
+- Lista de cotação persistente com ação rápida nos cards, múltiplas peças,
+  quantidades e envio consolidado por WhatsApp ou e-mail.
+- Histórico persistente de peças vistas recentemente, disponível na home e
+  nas páginas de produto para facilitar a retomada da pesquisa.
+- Comparação técnica persistente de até quatro peças, com atributos lado a
+  lado e inclusão de todos os itens na mesma cotação.
+- Peças salvas persistentes com acesso pelo cabeçalho, coração nos cards e
+  transferência individual ou em lote para a cotação.
+- Busca inteligente com autocomplete por produto, pesquisas recentes,
+  navegação por teclado e acesso direto ao catálogo completo.
+- Barra fixa de conversão nas páginas de produto em celulares, com acesso
+  imediato à cotação e à comparação sem cobrir o conteúdo técnico.
+- 26 sitemaps de produtos com **25.520 URLs** e **3.806 referências de imagem**.
+- `robots.txt`, sitemap index, canonicals, JSON-LD de produto/breadcrumb e
+  `llms.txt` publicados.
 
 ## O que tem nesta pasta
 
@@ -12,6 +36,8 @@ agricola/
 ├── review.html                ← GALERIA DE REVISÃO (abra no navegador)
 ├── docker-compose.yml         ← sobe Postgres 16 + aplica schema/seed
 ├── data/
+│   ├── processed/               ← base canônica, quarentena e auditoria
+│   ├── catalog_scope.json       ← snapshot aprovado das fontes
 │   ├── geomaq_parts.csv        ← todos os registros (revisão) + flag revisar
 │   ├── geomaq_parts.json       ← mesmo conteúdo em JSON
 │   └── parts_*.json            ← parciais por catálogo (intermediário)
@@ -21,6 +47,7 @@ agricola/
 │   ├── schema.sql              ← DDL limpo (marca/linha/família/produto/variante/atributo/imagem)
 │   └── seed.sql                ← INSERTs data-only (rodar após schema.sql)
 └── scripts/
+    ├── process_catalogs.py      ← normaliza, deduplica, audita e põe em quarentena
     ├── extract_common.py       ← parser em grade (nome+código por célula)
     ├── extract_all.py          ← pipeline de extração (texto + OCR)
     ├── combine.py              ← consolida parciais → CSV/JSON + flag revisar
@@ -116,19 +143,21 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 
 - Database: `agricola` · role: `agricola` (senha gerada, guardada só com o
   Nicolas — não está neste repo). Schema `catalogo` dentro do database.
-- DNS: `agricola.avilaops.com` e `api-agricola.avilaops.com` → `178.105.82.48`
-  (registro A, DNS-only, sem proxy Cloudflare — mesmo padrão do
+- DNS: `partsagricola.com.br` (+ `www`) e `api.partsagricola.com.br` →
+  `178.105.82.48` (registro A, DNS-only, sem proxy Cloudflare — mesmo padrão do
   `pkvedacoes.avilaops.com`, pra permitir o Caddy emitir certificado TLS
-  próprio via Let's Encrypt).
+  próprio via Let's Encrypt). Os antigos `agricola.avilaops.com` /
+  `api-agricola.avilaops.com` seguem apontando pro mesmo VPS e devem
+  redirecionar 301 pro domínio novo (ver "Troca de domínio" abaixo).
 - **Marca no banco continua `Geomaq`** (é o fabricante real das peças —
   trocar isso corromperia o dado). "Agricola" é o nome de exibição da loja.
 
 ### Marketplace (Medusa + storefront) — no ar
 
-- **Loja**: <https://agricola.avilaops.com> (storefront Next.js, `storefront/`
+- **Loja**: <https://partsagricola.com.br> (storefront Next.js, `storefront/`
   neste repo — fork do `nextjs-starter-medusa` oficial, rebrandeado, com
   landing page própria).
-- **Admin/API**: <https://api-agricola.avilaops.com> (backend Medusa v2,
+- **Admin/API**: <https://api.partsagricola.com.br> (backend Medusa v2,
   `medusa/` neste repo). Login: e-mail/senha combinados com o Nicolas — não
   estão neste repo.
 - Deploy: build de produção feito localmente (`medusa build` /
@@ -144,18 +173,49 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
   provider S3-compatible do Medusa.
 - Banco `agricola_medusa` (separado do `agricola` que guarda o catálogo bruto
   extraído): loja "Agricola", região Brasil/BRL, canal de venda e
-  publishable key já seedados. Produtos reais (os 281 do catálogo Geomaq)
-  ainda não foram importados pro Medusa — próximo passo.
-- **SEO**: título/description customizados, robots.ts, next-sitemap já
-  incluído no starter. Dados estruturados (schema.org Product) por página de
-  produto ainda ficam pra quando os produtos reais forem importados.
+  publishable key já seedados. O catálogo público tem **25.520 produtos**.
+- Importação canônica: `data/processed/catalog_import.csv`, auditada por
+  `data/processed/catalog_audit.json` e carregada de forma idempotente por
+  `medusa/apps/backend/src/migration-scripts/import-catalogos.ts`.
+- **SEO**: metadados canônicos, `robots.txt`, sitemap index segmentado,
+  sitemaps de imagem, JSON-LD `Product`/`BreadcrumbList` e `llms.txt`.
+- **Busca por medidas**: o endpoint Medusa `/store/technical-search` filtra
+  metadados dimensionais exatos e alimenta o localizador público sem depender
+  da busca textual por números.
+- **Cotação multi-item**: produtos podem ser reunidos em uma lista persistente,
+  ajustados por quantidade e enviados juntos para confirmação técnica.
+
+### Troca de domínio (`avilaops.com` → `partsagricola.com.br`)
+
+O repositório já aponta pro domínio novo (JSON-LD, e-mail de contato, CORS do
+Medusa, `SITE_URL`). O que **não** dá pra fazer pelo repo e precisa ser feito no
+servidor/DNS, nesta ordem:
+
+1. Registrar `partsagricola.com.br` (Registro.br) e apontar os nameservers
+   pro Cloudflare da Avila Ops.
+2. Criar os registros A `partsagricola.com.br`, `www` e `api` →
+   `178.105.82.48`, **DNS-only** (nuvem cinza), senão o Caddy não emite o
+   certificado.
+3. No `Caddyfile` do VPS: trocar os blocos `agricola.avilaops.com` /
+   `api-agricola.avilaops.com` pelos novos hosts (mesmos upstreams `:3006` e
+   `:9002`) e deixar os antigos só com `redir https://partsagricola.com.br{uri}
+   permanent` — 301 preserva o SEO já indexado. Depois `caddy reload`.
+4. Nos serviços systemd (ou no `.env` de produção do storefront):
+   `NEXT_PUBLIC_BASE_URL=https://partsagricola.com.br` e
+   `MEDUSA_BACKEND_URL=https://api.partsagricola.com.br`. É daí que saem
+   `metadataBase`, `robots.txt` e todos os `sitemap.xml` — sem isso o domínio
+   novo continua publicando URLs antigas.
+5. Subir o `.env` novo do Medusa (CORS) e reiniciar `agricola-medusa.service`
+   e `agricola-storefront.service`.
+6. Criar a caixa `contato@partsagricola.com.br` (as páginas de cotação já
+   apontam pra ela) e configurar MX/SPF/DKIM.
+7. Google Search Console: adicionar a nova propriedade, usar a ferramenta de
+   **Mudança de endereço** e reenviar o sitemap.
 
 ## Próximas fases (fora deste escopo)
 
-1. Importar os 281 produtos do catálogo (`data/geomaq_parts.csv`) pro Medusa
-   (categorias por linha, imagens no R2, metadata `fabricante: Geomaq`).
+1. Revisar os 196 registros em `data/processed/catalog_quarantine.csv`.
 2. Gateway de pagamento Efí Pay (PIX/Boleto) — provider custom do Medusa,
    ainda não implementado.
-3. Grupo **vedação** (gaxetas, automotivo, o-rings) — o-rings entram como
-   `product` + `product_variant` (Ø interno, espessura, material) usando as
-   tabelas já existentes.
+3. Cadastrar preços comerciais, estoque e regras de frete.
+4. Enviar o sitemap no Google Search Console e acompanhar cobertura/indexação.

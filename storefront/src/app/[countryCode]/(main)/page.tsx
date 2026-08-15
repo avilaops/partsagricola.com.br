@@ -7,11 +7,20 @@ import TrustRow from "@modules/home/components/trust-row"
 import CtaBanner from "@modules/home/components/cta-banner"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
+import { listCategories } from "@lib/data/categories"
+import DimensionFinderCta from "@modules/home/components/dimension-finder-cta"
+import RecentlyViewedProducts from "@modules/recently-viewed/components/recently-viewed-products"
 
 export const metadata: Metadata = {
-  title: "Agricola — Peças | Algodão, Amendoim, Construção e Verde",
+  title: "Peças agrícolas, industriais e para máquinas pesadas",
   description:
-    "Marketplace de peças originais para máquinas agrícolas e de construção. Busque por código, navegue por linha (Algodão, Amendoim, Construção, Verde) e solicite orçamento direto.",
+    "Catálogo pesquisável de peças agrícolas, industriais, máquinas pesadas, retentores, O-Rings, gaxetas e kits de reparo.",
+  alternates: {
+    canonical: "/br",
+    languages: {
+      "pt-BR": "/br",
+    },
+  },
 }
 
 export default async function Home(props: {
@@ -23,9 +32,14 @@ export default async function Home(props: {
 
   const region = await getRegion(countryCode)
 
-  const { collections } = await listCollections({
-    fields: "id, handle, title",
-  })
+  const [{ collections }, categories] = await Promise.all([
+    listCollections({ fields: "id, handle, title" }),
+    listCategories(),
+  ])
+
+  const departments = categories
+    .filter((category) => !category.parent_category)
+    .sort((first, second) => (first.rank || 0) - (second.rank || 0))
 
   if (!collections || !region) {
     return null
@@ -33,14 +47,16 @@ export default async function Home(props: {
 
   return (
     <>
-      <Hero />
+      <Hero countryCode={countryCode} />
       <TrustRow />
-      <ProductLines />
+      <ProductLines categories={departments} />
+      <DimensionFinderCta />
       <div className="py-4">
         <ul className="flex flex-col gap-x-6">
           <FeaturedProducts collections={collections} region={region} />
         </ul>
       </div>
+      <RecentlyViewedProducts />
       <CtaBanner />
     </>
   )

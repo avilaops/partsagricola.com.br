@@ -23,10 +23,11 @@ export default async function RelatedProducts({
   if (region?.id) {
     queryParams.region_id = region.id
   }
-  if (product.collection_id) {
+  if (product.categories?.length) {
+    queryParams.category_id = product.categories.map((category) => category.id)
+  } else if (product.collection_id) {
     queryParams.collection_id = [product.collection_id]
-  }
-  if (product.tags) {
+  } else if (product.tags) {
     queryParams.tag_id = product.tags
       .map((t) => t.id)
       .filter(Boolean) as string[]
@@ -53,7 +54,7 @@ export default async function RelatedProducts({
           Produtos relacionados
         </span>
         <p className="text-2xl-regular text-ui-fg-base max-w-lg">
-          Voce tambem pode gostar destes produtos.
+          Peças da mesma linha ou aplicação.
         </p>
       </div>
 
