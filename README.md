@@ -143,12 +143,15 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 
 - Database: `agricola` · role: `agricola` (senha gerada, guardada só com o
   Nicolas — não está neste repo). Schema `catalogo` dentro do database.
-- DNS: `partsagricola.com.br` (+ `www`) e `api.partsagricola.com.br` →
-  `178.105.82.48` (registro A, DNS-only, sem proxy Cloudflare — mesmo padrão do
-  `pkvedacoes.avilaops.com`, pra permitir o Caddy emitir certificado TLS
-  próprio via Let's Encrypt). Os antigos `agricola.avilaops.com` /
-  `api-agricola.avilaops.com` seguem apontando pro mesmo VPS e devem
-  redirecionar 301 pro domínio novo (ver "Troca de domínio" abaixo).
+- DNS: `partsagricola.com.br` (+ `www`) e `api.partsagricola.com.br` no
+  Cloudflare (nameservers `dora`/`donald.ns.cloudflare.com`), **com proxy
+  ligado** (nuvem laranja) apontando pro `178.105.82.48`. O Caddy mantém
+  certificado Let's Encrypt próprio na origem — os dois convivem, o visitante
+  vê o certificado da Cloudflare e a conexão Cloudflare→VPS usa o do Caddy.
+  Difere do `pkvedacoes.avilaops.com`, que é DNS-only.
+- Os antigos `agricola.avilaops.com` e `api-agricola.avilaops.com` **foram
+  removidos do DNS** — não resolvem mais e não redirecionam. Os blocos deles
+  ainda existem no Caddyfile do VPS, inertes (ver "Troca de domínio" abaixo).
 - **Marca no banco continua `Geomaq`** (é o fabricante real das peças —
   trocar isso corromperia o dado). "Agricola" é o nome de exibição da loja.
 
@@ -185,32 +188,44 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 - **Cotação multi-item**: produtos podem ser reunidos em uma lista persistente,
   ajustados por quantidade e enviados juntos para confirmação técnica.
 
-### Troca de domínio (`avilaops.com` → `partsagricola.com.br`)
+### Troca de domínio (`avilaops.com` → `partsagricola.com.br`) — concluída
 
-O repositório já aponta pro domínio novo (JSON-LD, e-mail de contato, CORS do
-Medusa, `SITE_URL`). O que **não** dá pra fazer pelo repo e precisa ser feito no
-servidor/DNS, nesta ordem:
+DNS e Caddy já tinham sido migrados antes; o que faltava era a aplicação, feita
+em **15/08/2026**:
 
-1. Registrar `partsagricola.com.br` (Registro.br) e apontar os nameservers
-   pro Cloudflare da Avila Ops.
-2. Criar os registros A `partsagricola.com.br`, `www` e `api` →
-   `178.105.82.48`, **DNS-only** (nuvem cinza), senão o Caddy não emite o
-   certificado.
-3. No `Caddyfile` do VPS: trocar os blocos `agricola.avilaops.com` /
-   `api-agricola.avilaops.com` pelos novos hosts (mesmos upstreams `:3006` e
-   `:9002`) e deixar os antigos só com `redir https://partsagricola.com.br{uri}
-   permanent` — 301 preserva o SEO já indexado. Depois `caddy reload`.
-4. Nos serviços systemd (ou no `.env` de produção do storefront):
-   `NEXT_PUBLIC_BASE_URL=https://partsagricola.com.br` e
-   `MEDUSA_BACKEND_URL=https://api.partsagricola.com.br`. É daí que saem
-   `metadataBase`, `robots.txt` e todos os `sitemap.xml` — sem isso o domínio
-   novo continua publicando URLs antigas.
-5. Subir o `.env` novo do Medusa (CORS) e reiniciar `agricola-medusa.service`
-   e `agricola-storefront.service`.
-6. Criar a caixa `contato@partsagricola.com.br` (as páginas de cotação já
-   apontam pra ela) e configurar MX/SPF/DKIM.
-7. Google Search Console: adicionar a nova propriedade, usar a ferramenta de
-   **Mudança de endereço** e reenviar o sitemap.
+- `NEXT_PUBLIC_BASE_URL` no `/opt/agricola-storefront/.env` do VPS ainda era
+  `https://agricola.avilaops.com` — um domínio que já **não resolvia mais**.
+  Como essa variável é `NEXT_PUBLIC_*`, ela é **compilada no bundle**: trocar
+  o `.env` sem rebuildar não resolve nada. Efeito enquanto durou: `robots.txt`,
+  os 26 sitemaps e todos os `canonical` apontavam pra um domínio inexistente.
+- CORS do Medusa (`STORE_CORS`/`ADMIN_CORS`/`AUTH_CORS`) trocado pros domínios
+  novos; os antigos saíram porque não existem mais no DNS.
+- Storefront rebuildado localmente com o `NEXT_PUBLIC_BASE_URL` certo e
+  transferido pro VPS; `agricola-medusa` e `agricola-storefront` reiniciados.
+
+Backup de tudo que foi tocado (build anterior, os dois `.env` e o Caddyfile):
+`/opt/backups/agricola-dominio-20260815-220133/` no VPS.
+
+**Ponto de atenção pra qualquer rebuild futuro:** o `.env.local` do repo tem
+`NEXT_PUBLIC_BASE_URL=http://localhost:8000`. Buildar sem sobrescrever isso
+compila `localhost` no bundle de produção — foi o bug do commit `80496b8`.
+Use um `.env.production.local` temporário (tem precedência sobre o `.env.local`)
+ou exporte a variável no shell antes do `next build`, e confirme depois com
+`grep -rl "localhost:8000" .next`.
+
+Ainda em aberto:
+
+1. Criar a caixa `contato@partsagricola.com.br` — as páginas de cotação já
+   apontam pra ela, então hoje o e-mail cai numa caixa inexistente. Falta
+   MX/SPF/DKIM.
+2. Google Search Console: adicionar a propriedade nova e reenviar o sitemap.
+   A ferramenta de **Mudança de endereço** não se aplica: ela exige que o
+   domínio antigo responda com 301, e o `agricola.avilaops.com` já saiu do DNS
+   — a reindexação vai acontecer por descoberta normal, mais devagar.
+3. Remover do Caddyfile do VPS os blocos mortos `agricola.avilaops.com` e
+   `api-agricola.avilaops.com`. Não quebram nada hoje (os certificados valem
+   até o fim de setembro/2026), mas a partir daí o Caddy vai falhar a
+   renovação e encher o log de erro.
 
 ## Próximas fases (fora deste escopo)
 

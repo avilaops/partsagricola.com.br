@@ -12,9 +12,9 @@ estruturada de catálogos e evoluiu para uma loja Medusa v2 + Next.js com
 **https://partsagricola.com.br**.
 
 A empresa se chama **Parts Agricola** e o domínio oficial é
-`partsagricola.com.br`. O código do repositório já aponta pro domínio novo;
-a migração de DNS/Caddy/certificado e os 301 do `agricola.avilaops.com`
-são passos manuais no VPS (checklist em `README.md` → "Troca de domínio").
+`partsagricola.com.br`. Migração concluída em 15/08/2026 — DNS, Caddy,
+build e CORS já estão no domínio novo, e o `agricola.avilaops.com` saiu do
+DNS. Detalhes e pendências em `README.md` → "Troca de domínio".
 O nome de exibição da loja no Medusa ainda é "Agricola".
 
 ## Arquitetura (produção)
@@ -30,9 +30,9 @@ O nome de exibição da loja no Medusa ainda é "Agricola".
                     VPS Hetzner (178.105.82.48, Ubuntu 26.04)
                     ─────────────────────────────────────────
                     Caddy (reverse proxy + TLS automático)
-                    ├─ partsagricola.com.br     → 127.0.0.1:3006
-                    ├─ api.partsagricola.com.br → 127.0.0.1:9002
-                    └─ *.avilaops.com (antigos)  → 301 pro domínio novo
+                    ├─ partsagricola.com.br      → 127.0.0.1:3006
+                    ├─ www.partsagricola.com.br  → 301 pro apex
+                    └─ api.partsagricola.com.br  → 127.0.0.1:9002
 
                     systemd services:
                     ├─ agricola-storefront.service (Next.js standalone, :3006)
