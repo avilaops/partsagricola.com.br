@@ -7,6 +7,22 @@ data/parts_*.json
 # dados de instância Postgres local
 pgdata*/
 
+# builds de produção arquivados antes de cada deploy (~2,2 GB, recriáveis
+# com `next build`; ficam só na máquina local e no VPS)
+storefront/.deploy/
+# uploads servidos pelo file provider local do Medusa (~153 MB) — em produção
+# as imagens vivem no bucket R2 `agricola-catalogo`, não no repo
+medusa/apps/backend/static/
+
+# scraping: progresso parcial, logs e PDFs de catálogo de fornecedores.
+# Os PDFs são material de terceiros (não redistribuir) e os parciais são
+# recriáveis com os scripts em data/scrapers/.
+data/geomaq_online_partial/
+data/pdfs/
+data/*.log
+data/*.stdout.log
+data/*.stderr.log
+
 # NUNCA versionar segredos — este arquivo contém credenciais de
 # infraestrutura não relacionadas a este projeto (PayPal, Cloudflare,
 # SMTP, OAuth Google/Facebook, Sentry, Discord, Mercado Pago, JWT, etc.)
