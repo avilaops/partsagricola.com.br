@@ -331,6 +331,43 @@ Ainda em aberto:
 2. O nome de exibição da loja no Medusa e o `<title>` ainda são "Agricola".
    O `llms.txt` já foi corrigido pra "Parts Agricola"; o resto da marca não.
 
+### Retentores: perda silenciosa na extração (corrigida em 16/08/2026)
+
+O catálogo tinha **45 retentores publicados**. Os PDFs de origem têm ~3.200.
+A auditoria dizia `APROVADA / Pronto para deploy: SIM` o tempo todo, porque ela
+conta linhas do CSV — e a perda acontecia **antes** do CSV existir, no parser.
+
+Duas causas, ambas no `data/scrapers/parse_retentores.py`:
+
+1. **`HEADER_RE` com `re.IGNORECASE`.** O catálogo da Rio Preto tem parágrafos
+   explicativos ("…a escolha do material elastomérico é de suma importância…").
+   A palavra `material` no meio da prosa era lida como cabeçalho de coluna e o
+   parágrafo inteiro entrava como valor de Material, inflando o bloco em até 16
+   tokens. Como `build_rows` exigia Material do mesmo tamanho que Código, a
+   página inteira era descartada — **37 das 42 páginas, 1.668 peças**.
+2. **O número da página** impresso no rodapé entrava como valor de Altura,
+   deixando o bloco com um item a mais que o de Código. Resultado: altura vazia
+   e `revisar: sim` em página que estava perfeita.
+
+E o catálogo da **Agel não tem layout transposto** — é uma peça por linha
+(`AG7581 20,00 47,10 10,00`). O parser procurava blocos `Eixo`/`Externo` que
+esse PDF não tem, então rendia **zero linhas**. Ganhou uma função própria.
+
+| | antes | depois |
+|---|---:|---:|
+| Rio Preto extraídos | 230 | 1.898 |
+| Agel extraídos | 0 | 1.320 |
+| Retentores publicados | 45 | 2.949 |
+| Catálogo total | 25.520 | 28.424 |
+
+**Como foi validado.** As 46 linhas que o parser antigo dava como confiáveis
+saem idênticas do novo, e `eixo`/`externo` das 230 antigas não mudaram — o
+conserto é aditivo, não reinterpreta o que já estava certo. Coluna desalinhada
+continua virando campo vazio em vez de ser aproveitada por posição: retentor com
+a altura do vizinho é peça errada vendida com aparência de dado conferido.
+`medidas_coerentes()` recusa furo maior que o diâmetro externo, que é o único
+jeito de uma medida trocada passar despercebida.
+
 ## Próximas fases (fora deste escopo)
 
 1. Revisar os 196 registros em `data/processed/catalog_quarantine.csv`.

@@ -2,9 +2,9 @@
 
 ## Resultado
 
-- Linhas de origem: **25435**
-- Aprovadas para importação: **25239**
-- Enviadas para quarentena: **196**
+- Linhas de origem: **28423**
+- Aprovadas para importação: **28143**
+- Enviadas para quarentena: **280**
 - Linhas sem classificação: **0**
 - Validação automática: **APROVADA**
 - Pronto para deploy: **SIM**
@@ -17,14 +17,14 @@
 | geomaq_online | 19089 | 19079 | 10 |
 | kits_catalogo | 372 | 371 | 1 |
 | orings | 1130 | 1130 | 0 |
-| retentores | 230 | 45 | 185 |
+| retentores | 3218 | 2949 | 269 |
 | rpv_industrial | 4488 | 4488 | 0 |
 
 ## Motivos de quarentena
 
-- `altura_nao_confirmada`: 183
+- `altura_nao_confirmada`: 265
 - `codigo_ausente`: 10
-- `dimensoes_principais_ausentes`: 2
+- `dimensoes_principais_ausentes`: 4
 - `referencia_mercado_contaminada`: 1
 
 ## Alertas de origem

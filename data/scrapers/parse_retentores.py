@@ -14,11 +14,25 @@ import re
 from pdf_text import extract_pdf_text
 
 HEADERS = ["Código", "Eixo", "Externo", "Altura", "Modelo", "Mercado", "Material"]
+
+# SEM re.IGNORECASE de proposito.
+#
+# O catalogo tem paragrafos explicativos ("...a escolha do material elastomerico
+# e de suma importancia...", "...a velocidade periferica do eixo...") em caixa
+# baixa. Com IGNORECASE essas palavras no meio da prosa eram lidas como cabecalho
+# de coluna, e o paragrafo inteiro entrava como valor de Material — inflando o
+# bloco em ate 16 tokens. Como `build_rows` exigia Material do mesmo tamanho que
+# Codigo, a pagina inteira era descartada: 37 das 42 paginas, 1.668 pecas.
 HEADER_RE = re.compile(
-    r"^(C[oó]digo|Eixo|(?:Dimens[oõ]es\s+)?Externo|Altura|Modelo|Mercado|Material)\b(.*)$",
-    re.IGNORECASE,
+    r"^(Código|Eixo|(?:Dimensões\s+)?Externo|Altura|Modelo|Mercado|Material)\b(.*)$"
 )
 NUM_TOKEN_RE = re.compile(r"^[\d.,/]+$")
+
+# Medida sempre tem virgula decimal ("10,00", "4,00/6,00"). Inteiro solto no fim
+# de um bloco numerico e o numero da pagina impresso no rodape, que o pdftotext
+# entrega junto — era o que deixava Altura com um item a mais que Codigo.
+MEDIDA_RE = re.compile(r"^\d+(?:[.,]\d+)?(?:\s*/\s*\d+(?:[.,]\d+)?)*$")
+NUM_PAGINA_RE = re.compile(r"^\d{1,3}$")
 
 
 def normalize_header(word: str) -> str:
@@ -81,7 +95,55 @@ def tokenize_blocks(text: str):
     return blocks
 
 
+def limpar_medidas(tokens: list[str], n_rows: int) -> list[str]:
+    """Tira o numero da pagina do fim de um bloco de medidas.
+
+    So mexe quando sobra exatamente um token e ele e um inteiro sem virgula no
+    fim — o formato do rodape. Fora disso devolve o bloco intocado: um bloco com
+    duas sobras e desalinhamento de verdade, e chutar qual token remover
+    deslocaria a coluna inteira e publicaria medida errada.
+    """
+    if len(tokens) == n_rows + 1 and NUM_PAGINA_RE.match(tokens[-1] or ""):
+        return tokens[:-1]
+    return tokens
+
+
+def para_numero(valor: str):
+    """Primeiro numero de uma medida. "5,7/8,40" vira 5.7 — variantes do mesmo
+    retentor, basta uma para conferir a coerencia."""
+    valor = (valor or "").strip()
+    if not valor:
+        return None
+    try:
+        return float(valor.split("/")[0].replace(",", "."))
+    except ValueError:
+        return None
+
+
+def medidas_coerentes(eixo: str, externo: str) -> bool:
+    """Retentor tem furo menor que o diametro externo — nao existe excecao.
+
+    Linha que viola isso saiu de coluna deslocada ou de OCR trocado, e e o unico
+    caso em que uma medida errada passaria despercebida: ela *parece* dado
+    conferido. Melhor devolver para a quarentena."""
+    e, x = para_numero(eixo), para_numero(externo)
+    if e is None or x is None:
+        return False
+    return 0 < e < x
+
+
 def build_rows(blocks, marca: str, fonte_pdf: str):
+    """Reconstroi as linhas a partir dos blocos transpostos de cada pagina.
+
+    Codigo, Eixo e Externo sao as tres colunas que o pdftotext entrega sempre
+    completas — sao elas que definem se a pagina e aproveitavel. Altura, Modelo e
+    Material entram so quando a contagem bate com a de Codigo; quando nao bate,
+    a coluna fica vazia naquela pagina em vez de derrubar as 46 pecas.
+
+    Aproveitar coluna desalinhada por posicao seria pior que perder a pagina:
+    um retentor com altura do vizinho e uma peca errada vendida com aparencia de
+    dado conferido.
+    """
     rows = []
     i = 0
     n = len(blocks)
@@ -101,24 +163,28 @@ def build_rows(blocks, marca: str, fonte_pdf: str):
             j += 1
 
         codigos = batch.get("Código", [])
-        eixos = batch.get("Eixo", [])
-        externos = batch.get("Externo", [])
-        alturas = batch.get("Altura", [])
+        n_rows = len(codigos)
+
+        eixos = limpar_medidas(batch.get("Eixo", []), n_rows)
+        externos = limpar_medidas(batch.get("Externo", []), n_rows)
+        alturas = limpar_medidas(batch.get("Altura", []), n_rows)
         modelos = batch.get("Modelo", [])
         materiais = batch.get("Material", [])
 
-        n_rows = len(codigos)
         aligned = (
             n_rows > 0
             and len(eixos) == n_rows
             and len(externos) == n_rows
-            and len(modelos) == n_rows
-            and len(materiais) == n_rows
         )
 
         if aligned:
             alturas_aligned = len(alturas) == n_rows
+            modelos_aligned = len(modelos) == n_rows
+            materiais_aligned = len(materiais) == n_rows
+
             for k in range(n_rows):
+                coerente = medidas_coerentes(eixos[k], externos[k])
+                tem_altura = alturas_aligned and bool(alturas[k].strip())
                 rows.append(
                     {
                         "marca": marca,
@@ -127,9 +193,9 @@ def build_rows(blocks, marca: str, fonte_pdf: str):
                         "eixo_mm": eixos[k],
                         "externo_mm": externos[k],
                         "altura_mm": alturas[k] if alturas_aligned else "",
-                        "modelo": modelos[k],
-                        "material": materiais[k],
-                        "revisar": "nao" if alturas_aligned else "sim",
+                        "modelo": modelos[k] if modelos_aligned else "",
+                        "material": materiais[k] if materiais_aligned else "",
+                        "revisar": "nao" if (tem_altura and coerente) else "sim",
                         "fonte_pdf": fonte_pdf,
                     }
                 )
@@ -138,19 +204,94 @@ def build_rows(blocks, marca: str, fonte_pdf: str):
     return rows
 
 
-def main():
-    targets = [
-        ("data/pdfs/riopretovedacoes/Catalogo_Retentores.pdf", "Rio Preto Vedações"),
-        ("data/pdfs/agel/catalogo-retentores-2021.pdf", "Agel"),
-    ]
+# --- Agel -------------------------------------------------------------------
+#
+# Layout completamente diferente do Rio Preto: aqui o pdftotext entrega a linha
+# inteira ("AG7581 20,00 47,10 10,00"), com MAT/ORI/REF nas linhas seguintes.
+# Nao ha tabela transposta, e por isso `build_rows` nunca produziu nada deste
+# catalogo — ele procura blocos Eixo/Externo/Altura que este PDF nao tem.
 
+AGEL_COD_DIMS_RE = re.compile(
+    r"^([A-Z0-9][A-Z0-9./-]*)\s+(\d+[,.]\d+)\s+(\d+[,.]\d+)\s+(\d+[,.]\d+)$"
+)
+AGEL_DIMS_RE = re.compile(r"^(\d+[,.]\d+)\s+(\d+[,.]\d+)\s+(\d+[,.]\d+)$")
+AGEL_COD_RE = re.compile(r"^[A-Z0-9][A-Z0-9./-]{2,}$")
+AGEL_MATERIAIS = {"NBR", "FPM", "PU", "MVQ", "ACM", "PTFE", "VITON", "SIL"}
+
+
+def parse_agel(text: str, marca: str, fonte_pdf: str):
+    """Le o catalogo Agel, uma peca por registro.
+
+    A ambiguidade do formato e que tanto o codigo quanto a referencia cruzada
+    (REF) podem ser um numero solto — "5670" e um retentor, "00909" e a
+    referencia do anterior. O que separa os dois e o que vem depois: codigo e
+    seguido pelas tres medidas, referencia nao. Sem essa regra, cada REF viraria
+    uma peca fantasma sem medida nenhuma.
+    """
+    linhas = [l.strip() for l in text.split("\n") if l.strip()]
+    rows = []
+
+    i = 0
+    while i < len(linhas):
+        linha = linhas[i]
+        codigo = eixo = externo = altura = None
+
+        direto = AGEL_COD_DIMS_RE.match(linha)
+        if direto:
+            codigo, eixo, externo, altura = direto.groups()
+            i += 1
+        elif (
+            AGEL_COD_RE.match(linha)
+            and i + 1 < len(linhas)
+            and AGEL_DIMS_RE.match(linhas[i + 1])
+        ):
+            codigo = linha
+            eixo, externo, altura = AGEL_DIMS_RE.match(linhas[i + 1]).groups()
+            i += 2
+        else:
+            i += 1
+            continue
+
+        # MAT e ORI vem logo depois, as vezes na mesma linha ("NBR LI").
+        material = ""
+        for offset in range(0, 3):
+            if i + offset >= len(linhas):
+                break
+            primeiro = linhas[i + offset].split()[0] if linhas[i + offset] else ""
+            if primeiro in AGEL_MATERIAIS:
+                material = primeiro
+                break
+
+        rows.append(
+            {
+                "marca": marca,
+                "linha": "Retentores",
+                "codigo": codigo,
+                "eixo_mm": eixo,
+                "externo_mm": externo,
+                "altura_mm": altura,
+                "modelo": "",
+                "material": material,
+                "revisar": "nao" if medidas_coerentes(eixo, externo) else "sim",
+                "fonte_pdf": fonte_pdf,
+            }
+        )
+
+    return rows
+
+
+def main():
     all_rows = []
-    for pdf_path, marca in targets:
-        text = extract_text(pdf_path)
-        blocks = tokenize_blocks(text)
-        rows = build_rows(blocks, marca, pdf_path)
-        print(f"{pdf_path}: {len(rows)} retentores extraidos")
-        all_rows.extend(rows)
+
+    rp_pdf = "data/pdfs/riopretovedacoes/Catalogo_Retentores.pdf"
+    rp_rows = build_rows(tokenize_blocks(extract_text(rp_pdf)), "Rio Preto Vedações", rp_pdf)
+    print(f"{rp_pdf}: {len(rp_rows)} retentores extraidos")
+    all_rows.extend(rp_rows)
+
+    agel_pdf = "data/pdfs/agel/catalogo-retentores-2021.pdf"
+    agel_rows = parse_agel(extract_text(agel_pdf), "Agel", agel_pdf)
+    print(f"{agel_pdf}: {len(agel_rows)} retentores extraidos")
+    all_rows.extend(agel_rows)
 
     # dedupe por (marca, codigo, eixo, externo) -- o mesmo codigo pode repetir
     # entre paginas por causa de indices/sumarios

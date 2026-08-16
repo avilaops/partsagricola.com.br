@@ -32,7 +32,7 @@
     "geomaq_online": 19079,
     "kits_catalogo": 371,
     "orings": 1130,
-    "retentores": 45,
+    "retentores": 2949,
     "rpv_industrial": 4488
   },
   "input_by_source": {
@@ -40,23 +40,23 @@
     "geomaq_online": 19089,
     "kits_catalogo": 372,
     "orings": 1130,
-    "retentores": 230,
+    "retentores": 3218,
     "rpv_industrial": 4488
   },
   "quarantine_by_source": {
     "geomaq_online": 10,
     "kits_catalogo": 1,
-    "retentores": 185
+    "retentores": 269
   },
   "quarantine_reasons": {
-    "altura_nao_confirmada": 183,
+    "altura_nao_confirmada": 265,
     "codigo_ausente": 10,
-    "dimensoes_principais_ausentes": 2,
+    "dimensoes_principais_ausentes": 4,
     "referencia_mercado_contaminada": 1
   },
   "source_warnings": [],
-  "total_import": 25239,
-  "total_input": 25435,
-  "total_quarantine": 196,
+  "total_import": 28143,
+  "total_input": 28423,
+  "total_quarantine": 280,
   "unclassified": 0
 }
