@@ -2,6 +2,7 @@
 
 import { SavedProduct, useSavedProducts } from "@modules/saved-products/context/saved-products-context"
 import { clx } from "@medusajs/ui"
+import { Favorites } from "@modules/common/icons/parts"
 
 const SaveProductButton = ({
   product,
@@ -44,16 +45,7 @@ const SaveProductButton = ({
       }
       data-testid="save-product-button"
     >
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        className="h-5 w-5"
-        fill={isSaved ? "currentColor" : "none"}
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <path d="M12 20.25S4.5 16 4.5 9.75A4.25 4.25 0 0 1 12 7a4.25 4.25 0 0 1 7.5 2.75C19.5 16 12 20.25 12 20.25Z" />
-      </svg>
+      <Favorites aria-hidden="true" className="h-5 w-5" />
       {variant === "panel" && <span>{isSaved ? "Ver peças salvas" : "Salvar peça"}</span>}
     </button>
   )

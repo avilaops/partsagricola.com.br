@@ -6,6 +6,8 @@ import Thumbnail from "@modules/products/components/thumbnail"
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
 import { useSavedProducts } from "@modules/saved-products/context/saved-products-context"
 import { useParams } from "next/navigation"
+import { Favorites } from "@modules/common/icons/parts"
+import { Close } from "@modules/common/icons/parts/complementos"
 
 const SavedProductsDrawer = () => {
   const {
@@ -58,9 +60,7 @@ const SavedProductsDrawer = () => {
               className="rounded-full border border-white/25 p-2 hover:bg-white/10"
               aria-label="Fechar peças salvas"
             >
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m6 6 12 12M18 6 6 18" />
-              </svg>
+              <Close aria-hidden="true" className="h-5 w-5" />
             </button>
           </div>
 
@@ -125,9 +125,7 @@ const SavedProductsDrawer = () => {
           ) : (
             <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3eb] text-[#0B6B3F]">
-                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.7">
-                  <path d="M12 20.25S4.5 16 4.5 9.75A4.25 4.25 0 0 1 12 7a4.25 4.25 0 0 1 7.5 2.75C19.5 16 12 20.25 12 20.25Z" />
-                </svg>
+                <Favorites aria-hidden="true" className="h-7 w-7" />
               </div>
               <h2 className="mt-5 text-xl font-semibold">Nenhuma peça salva</h2>
               <p className="mt-2 max-w-xs text-sm leading-relaxed text-ui-fg-subtle">

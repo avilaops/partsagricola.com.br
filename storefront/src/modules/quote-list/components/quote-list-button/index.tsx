@@ -1,6 +1,7 @@
 "use client"
 
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
+import { QuoteList } from "@modules/common/icons/parts/complementos"
 
 const QuoteListButton = () => {
   const { items, openList } = useQuoteList()
@@ -13,17 +14,7 @@ const QuoteListButton = () => {
       aria-label={`Abrir lista de cotação com ${items.length} itens`}
       data-testid="quote-list-nav-button"
     >
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        className="h-4 w-4"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
-        <path d="M7 3.75h10a2 2 0 0 1 2 2v14l-7-3-7 3v-14a2 2 0 0 1 2-2Z" />
-        <path d="M9 8h6M9 11.5h4" />
-      </svg>
+      <QuoteList aria-hidden="true" className="h-4 w-4" />
       <span className="hidden small:inline">Cotação</span>
       <span>({items.length})</span>
     </button>

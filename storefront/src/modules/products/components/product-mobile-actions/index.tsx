@@ -5,6 +5,7 @@ import { HttpTypes } from "@medusajs/types"
 import { useCompare } from "@modules/compare/context/compare-context"
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
 import { useParams } from "next/navigation"
+import { Compare } from "@modules/common/icons/parts"
 
 const ProductMobileActions = ({
   product,
@@ -47,16 +48,7 @@ const ProductMobileActions = ({
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-base border border-[#0B6B3F]/25 text-[#0B6B3F]"
           aria-label={`Comparar ${product.title}`}
         >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            className="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-          >
-            <path d="M7 4v16M17 4v16M4 7h6M14 17h6" />
-          </svg>
+          <Compare aria-hidden="true" className="h-5 w-5" />
         </button>
         <button
           type="button"

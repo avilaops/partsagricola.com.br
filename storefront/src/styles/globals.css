@@ -2,6 +2,20 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* Destaques dos ícones Parts Agrícola.
+   As classes vêm do sprite oficial (public/assets/partsagricola-icons.svg) e
+   estão aqui porque a geometria é inlinada em componente React — o <style> que
+   mora dentro do sprite só valeria se o SVG fosse carregado como documento.
+   `--pa-green` continua sobreponível: definir a variável em qualquer ancestral
+   troca o verde de destaque sem tocar no desenho. */
+.pa-accent {
+  stroke: var(--pa-green, #0b6b3f);
+}
+
+.pa-fill-accent {
+  fill: var(--pa-green, #0b6b3f);
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

@@ -5,6 +5,7 @@ import { useLeadOrigin } from "@modules/analytics/hooks/use-lead-origin"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
+import { Close, QuoteList } from "@modules/common/icons/parts/complementos"
 
 const getAbsoluteUrl = (url: string) => {
   if (url.startsWith("http")) {
@@ -74,16 +75,7 @@ const QuoteListDrawer = () => {
               className="rounded-full border border-white/25 p-2 transition-colors hover:bg-white/10"
               aria-label="Fechar lista de cotação"
             >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="m6 6 12 12M18 6 6 18" />
-              </svg>
+              <Close aria-hidden="true" className="h-5 w-5" />
             </button>
           </div>
 
@@ -186,17 +178,7 @@ const QuoteListDrawer = () => {
           ) : (
             <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3eb] text-[#0B6B3F]">
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="h-7 w-7"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                >
-                  <path d="M7 3.75h10a2 2 0 0 1 2 2v14l-7-3-7 3v-14a2 2 0 0 1 2-2Z" />
-                  <path d="M9 8h6M9 11.5h4" />
-                </svg>
+                <QuoteList aria-hidden="true" className="h-7 w-7" />
               </div>
               <h2 className="mt-5 text-xl font-semibold">Sua lista está vazia</h2>
               <p className="mt-2 max-w-xs text-sm leading-relaxed text-ui-fg-subtle">

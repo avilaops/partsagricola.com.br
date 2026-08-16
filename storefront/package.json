@@ -13,7 +13,8 @@
     "start": "next start -p 8000",
     "lint": "next lint",
     "submit:indexnow": "node scripts/submit-indexnow.mjs",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "icones": "node scripts/gerar-icones.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

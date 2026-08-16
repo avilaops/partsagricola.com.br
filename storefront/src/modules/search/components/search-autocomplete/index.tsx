@@ -5,6 +5,7 @@ import { clx } from "@medusajs/ui"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { KeyboardEvent, useEffect, useId, useRef, useState } from "react"
+import { Recent } from "@modules/common/icons/parts/complementos"
 
 const RECENT_SEARCHES_KEY = "agricola_recent_searches_v1"
 const MAX_RECENT_SEARCHES = 6
@@ -318,17 +319,7 @@ const SearchAutocomplete = ({
                       index === activeIndex && "bg-[#f1f8f4]"
                     )}
                   >
-                    <svg
-                      aria-hidden="true"
-                      viewBox="0 0 24 24"
-                      className="h-4 w-4 shrink-0 text-ui-fg-muted"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                    >
-                      <circle cx="12" cy="12" r="8.5" />
-                      <path d="M12 7.5V12l3 2" />
-                    </svg>
+                    <Recent aria-hidden="true" className="h-4 w-4 shrink-0 text-ui-fg-muted" />
                     <span className="min-w-0 flex-1 truncate text-ui-fg-base">
                       {recentSearch}
                     </span>

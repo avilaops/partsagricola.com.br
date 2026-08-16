@@ -2,6 +2,7 @@
 
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
 import { useParams } from "next/navigation"
+import { Check } from "@modules/common/icons/parts/complementos"
 
 type ProductPreviewQuoteButtonProps = {
   product: {
@@ -46,20 +47,7 @@ const ProductPreviewQuoteButton = ({
       }
       data-testid="product-preview-quote-button"
     >
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        className="h-4 w-4"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        {isAdded ? (
-          <path d="m5 12 4 4L19 6" />
-        ) : (
-          <path d="M12 5v14M5 12h14" />
-        )}
-      </svg>
+      <Check aria-hidden="true" className="h-4 w-4" />
       <span>{isAdded ? "Na cotação" : "Cotar"}</span>
     </button>
   )

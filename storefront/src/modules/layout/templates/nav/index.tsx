@@ -6,6 +6,7 @@ import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { Cart } from "@modules/common/icons/parts"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import { listCategories } from "@lib/data/categories"
@@ -79,18 +80,7 @@ export default async function Nav() {
                 >
                   <span className="hidden small:inline">Carrinho (0)</span>
                   <span className="flex items-center gap-1 small:hidden">
-                    <svg
-                      aria-hidden="true"
-                      viewBox="0 0 24 24"
-                      className="h-4 w-4"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                    >
-                      <path d="M3.5 4.5h2l1.7 10.2a2 2 0 0 0 2 1.7h7.9a2 2 0 0 0 1.9-1.5l1.3-6.4H6.2" />
-                      <circle cx="9.5" cy="19.2" r="1.1" />
-                      <circle cx="17.2" cy="19.2" r="1.1" />
-                    </svg>
+                    <Cart aria-hidden="true" className="h-4 w-4" />
                     <span>(0)</span>
                   </span>
                 </LocalizedClientLink>
