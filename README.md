@@ -213,19 +213,56 @@ Use um `.env.production.local` temporário (tem precedência sobre o `.env.local
 ou exporte a variável no shell antes do `next build`, e confirme depois com
 `grep -rl "localhost:8000" .next`.
 
+### E-mail: `contato@partsagricola.com.br`
+
+Cloudflare Email Routing, configurado em 15/08/2026: tudo que chega em
+`contato@partsagricola.com.br` é encaminhado pra `nicolasrosaab@gmail.com`
+(destino já verificado na conta Avila Ops). O catch-all continua desligado —
+e-mail pra qualquer outro endereço do domínio é recusado, não some em silêncio.
+
+A zona tinha **MX nulo** (`.`, RFC 7505 = "este domínio não recebe e-mail") e
+**SPF `v=spf1 -all`** — a configuração correta pra um domínio que não usa
+e-mail, e que agora precisava sair do caminho. A Cloudflare substituiu por MX
+`route{1,2,3}.mx.cloudflare.net`, SPF `include:_spf.mx.cloudflare.net ~all` e
+DKIM em `cf2024-1._domainkey`. O DMARC `p=reject` foi mantido.
+
+**Limitação:** Email Routing só **recebe**. Não dá pra *enviar* como
+`contato@partsagricola.com.br` — a resposta ao cliente sai do Gmail pessoal.
+Pra enviar com o endereço da empresa seria preciso um relay SMTP (Google
+Workspace, Zoho, Resend), que é outra decisão.
+
+### SEO: IndexNow (Bing, Yandex, Seznam, Naver, Yep)
+
+Chave publicada em `/partsagricola-indexnow-20260815.txt`
+(`storefront/public/`), mesma convenção dos outros sites da Avila Ops. O
+script fica em `storefront/scripts/submit-indexnow.mjs`:
+
+```bash
+npm run submit:indexnow                    # sitemap inteiro (25.574 URLs)
+npm run submit:indexnow -- --so-estaticas  # só as 54 páginas fixas
+npm run submit:indexnow -- https://partsagricola.com.br/br/medidas
+```
+
+Ele lê o sitemap **publicado** (não o build local), expande os 27 filhos do
+index, confere que a chave responde 200 antes de enviar e quebra em lotes de
+10.000 (limite do protocolo). Catálogo completo anunciado em 15/08/2026.
+
+Reenviar as 25 mil URLs a cada ajuste faz o site parecer que muda inteiro o
+tempo todo e o sinal vira ruído — lote completo é pra mudança estrutural,
+página nova quer notificação específica.
+
+Chave recém-publicada responde `403 SiteVerificationNotCompleted` até o Bing
+buscar o arquivo. Não é erro de configuração; é só esperar e rodar de novo.
+
 Ainda em aberto:
 
-1. Criar a caixa `contato@partsagricola.com.br` — as páginas de cotação já
-   apontam pra ela, então hoje o e-mail cai numa caixa inexistente. Falta
-   MX/SPF/DKIM.
-2. Google Search Console: adicionar a propriedade nova e reenviar o sitemap.
+1. Google Search Console: adicionar a propriedade nova e reenviar o sitemap.
    A ferramenta de **Mudança de endereço** não se aplica: ela exige que o
    domínio antigo responda com 301, e o `agricola.avilaops.com` já saiu do DNS
-   — a reindexação vai acontecer por descoberta normal, mais devagar.
-3. Remover do Caddyfile do VPS os blocos mortos `agricola.avilaops.com` e
-   `api-agricola.avilaops.com`. Não quebram nada hoje (os certificados valem
-   até o fim de setembro/2026), mas a partir daí o Caddy vai falhar a
-   renovação e encher o log de erro.
+   — a reindexação vai acontecer por descoberta normal, mais devagar. O Google
+   não participa do IndexNow, então esse caminho é só via Search Console.
+2. O nome de exibição da loja no Medusa e o `<title>` ainda são "Agricola".
+   O `llms.txt` já foi corrigido pra "Parts Agricola"; o resto da marca não.
 
 ## Próximas fases (fora deste escopo)
 

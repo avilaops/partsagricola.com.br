@@ -7,7 +7,7 @@ export async function GET() {
     (application) =>
       `- [Peças para ${application.name}](${baseUrl}/br/aplicacoes/${application.handle})`
   ).join("\n")
-  const content = `# Agricola
+  const content = `# Parts Agricola
 
 > Catálogo brasileiro de peças para máquinas agrícolas, máquinas pesadas e sistemas de vedação.
 

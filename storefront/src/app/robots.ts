@@ -13,6 +13,9 @@ export default function robots(): MetadataRoute.Robots {
         "/br/cart/",
         "/br/checkout/",
         "/br/order/",
+        // Endpoint interno do autocomplete: devolve JSON, nao e pagina.
+        // Rastrear isso so gasta orcamento de crawl.
+        "/api/",
         "/*?*sortBy=",
         "/*?*page=",
       ],
