@@ -2,6 +2,11 @@
 
 import { getProductCode, getTechnicalAttributes } from "@lib/util/product-technical"
 import { useLeadOrigin } from "@modules/analytics/hooks/use-lead-origin"
+import {
+  Delivery,
+  SearchCode,
+  TechnicalConfirmation,
+} from "@modules/common/icons/parts"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
@@ -132,10 +137,19 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
         </LocalizedClientLink>
       </div>
 
-      <ul className="mt-6 space-y-2 border-t border-[#0B6B3F]/15 pt-5 text-xs text-ui-fg-subtle">
-        <li>• Atendimento com o código já identificado</li>
-        <li>• Confirmação técnica antes do pedido</li>
-        <li>• Prazo e frete informados na proposta</li>
+      <ul className="mt-6 space-y-2.5 border-t border-[#0B6B3F]/15 pt-5 text-xs text-ui-fg-subtle">
+        <li className="flex items-center gap-2">
+          <SearchCode aria-hidden="true" className="h-4 w-4 shrink-0" />
+          Atendimento com o código já identificado
+        </li>
+        <li className="flex items-center gap-2">
+          <TechnicalConfirmation aria-hidden="true" className="h-4 w-4 shrink-0" />
+          Confirmação técnica antes do pedido
+        </li>
+        <li className="flex items-center gap-2">
+          <Delivery aria-hidden="true" className="h-4 w-4 shrink-0" />
+          Prazo e frete informados na proposta
+        </li>
       </ul>
     </aside>
   )

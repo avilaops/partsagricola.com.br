@@ -10,6 +10,7 @@ import {
 } from "@lib/data/catalog-applications"
 
 import SortProducts, { SortOptions } from "./sort-products"
+import { Category, Compatibility, Filter } from "@modules/common/icons/parts"
 
 type RefinementListProps = {
   sortBy: SortOptions
@@ -112,7 +113,8 @@ const RefinementList = ({
 
       {categories.length ? (
         <div>
-          <h2 className="mb-3 text-sm font-semibold text-ui-fg-base">
+          <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-ui-fg-base">
+            <Category aria-hidden="true" className="h-4 w-4 text-ui-fg-muted" />
             Departamentos
           </h2>
           <nav aria-label="Departamentos do catálogo">
@@ -140,7 +142,8 @@ const RefinementList = ({
 
       {categories.length ? (
         <div>
-          <h2 className="mb-1 text-sm font-semibold text-ui-fg-base">
+          <h2 className="mb-1 flex items-center gap-2 text-sm font-semibold text-ui-fg-base">
+            <Compatibility aria-hidden="true" className="h-4 w-4 text-ui-fg-muted" />
             Compatibilidade
           </h2>
           <p className="mb-3 text-xs leading-5 text-ui-fg-subtle">
@@ -203,7 +206,10 @@ const RefinementList = ({
     <aside className="mb-8 w-full shrink-0 small:sticky small:top-24 small:mr-10 small:w-64">
       <details className="rounded-large border border-ui-border-base bg-white p-4 shadow-sm small:hidden">
         <summary className="flex cursor-pointer list-none items-center justify-between font-semibold">
-          <span>Filtrar e ordenar</span>
+          <span className="flex items-center gap-2">
+            <Filter aria-hidden="true" className="h-4 w-4" />
+            Filtrar e ordenar
+          </span>
           <span aria-hidden="true">＋</span>
         </summary>
         <div className="mt-5 border-t border-ui-border-base pt-5">{panel}</div>

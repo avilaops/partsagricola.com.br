@@ -1,6 +1,7 @@
 "use client"
 
 import { useLeadOrigin } from "@modules/analytics/hooks/use-lead-origin"
+import { Support, Whatsapp } from "@modules/common/icons/parts"
 
 /**
  * Os dois CTAs de cotacao da pagina de contato.
@@ -50,7 +51,8 @@ export default function ContactCtas({
           rel="noreferrer"
           className="flex min-h-32 flex-col justify-between rounded-2xl bg-[#0B6B3F] p-6 text-white transition-transform hover:-translate-y-0.5"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+          <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+            <Whatsapp aria-hidden="true" className="h-4 w-4" />
             Resposta rápida
           </span>
           <strong className="text-xl">Abrir WhatsApp →</strong>
@@ -60,7 +62,8 @@ export default function ContactCtas({
         href={emailHref}
         className="flex min-h-32 flex-col justify-between rounded-2xl border border-ui-border-base bg-white p-6 transition-transform hover:-translate-y-0.5 hover:border-[#0B6B3F]"
       >
-        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
+        <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
+          <Support aria-hidden="true" className="h-4 w-4" />
           Cotação por e-mail
         </span>
         <strong className="text-xl text-ui-fg-base">
