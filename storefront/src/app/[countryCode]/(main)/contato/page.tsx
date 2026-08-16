@@ -1,3 +1,4 @@
+import ContactCtas from "@modules/analytics/components/contact-ctas"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -17,23 +18,6 @@ export default async function ContatoPage({
   const { codigo, produto } = await searchParams
   const productLabel = produto || "Peça não localizada no catálogo"
   const codeLabel = codigo || "A confirmar"
-  const message = [
-    "Olá! Gostaria de solicitar uma cotação técnica.",
-    `Produto: ${productLabel}`,
-    `Código: ${codeLabel}`,
-    "Pode confirmar aplicação, preço e disponibilidade?",
-  ].join("\n")
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
-    /\D/g,
-    ""
-  )
-  const whatsappHref = whatsappNumber
-    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
-    : undefined
-  const emailHref = `mailto:contato@partsagricola.com.br?subject=${encodeURIComponent(
-    `Cotação da peça ${codeLabel}`
-  )}&body=${encodeURIComponent(message)}`
-
   return (
     <main className="bg-[#f7faf8] py-16 small:py-24">
       <div className="content-container max-w-5xl">
@@ -62,32 +46,7 @@ export default async function ContatoPage({
           </div>
         )}
 
-        <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-4 xsmall:grid-cols-2">
-          {whatsappHref && (
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-32 flex-col justify-between rounded-2xl bg-[#0b6b3a] p-6 text-white transition-transform hover:-translate-y-0.5"
-            >
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
-                Resposta rápida
-              </span>
-              <strong className="text-xl">Abrir WhatsApp →</strong>
-            </a>
-          )}
-          <a
-            href={emailHref}
-            className="flex min-h-32 flex-col justify-between rounded-2xl border border-ui-border-base bg-white p-6 transition-transform hover:-translate-y-0.5 hover:border-[#0b6b3a]"
-          >
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
-              Cotação por e-mail
-            </span>
-            <strong className="text-xl text-ui-fg-base">
-              contato@partsagricola.com.br →
-            </strong>
-          </a>
-        </div>
+        <ContactCtas productLabel={productLabel} codeLabel={codeLabel} />
 
         <div className="mx-auto mt-10 max-w-2xl border-t border-ui-border-base pt-8">
           <h2 className="font-semibold">Para agilizar a confirmação, envie:</h2>

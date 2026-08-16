@@ -1,6 +1,7 @@
 "use client"
 
 import { getProductCode, getTechnicalAttributes } from "@lib/util/product-technical"
+import { useLeadOrigin } from "@modules/analytics/hooks/use-lead-origin"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
@@ -16,15 +17,19 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") || ""
   const productPath = `/${countryCode}/products/${product.handle}`
   const productUrl = `${baseUrl}${productPath}`
-  const message = [
-    "Olá! Gostaria de solicitar uma cotação técnica.",
-    `Produto: ${product.title}`,
-    `Código: ${code}`,
-    productUrl ? `Link: ${productUrl}` : undefined,
-    "Pode confirmar aplicação, preço e disponibilidade?",
-  ]
-    .filter(Boolean)
-    .join("\n")
+  // Campanha que trouxe a pessoa, quando houver. A venda fecha fora do site:
+  // sem isso o pedido chega na caixa de entrada sem dizer de onde veio.
+  const leadOrigin = useLeadOrigin()
+  const message =
+    [
+      "Olá! Gostaria de solicitar uma cotação técnica.",
+      `Produto: ${product.title}`,
+      `Código: ${code}`,
+      productUrl ? `Link: ${productUrl}` : undefined,
+      "Pode confirmar aplicação, preço e disponibilidade?",
+    ]
+      .filter(Boolean)
+      .join("\n") + leadOrigin
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
     /\D/g,
     ""

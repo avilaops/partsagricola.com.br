@@ -254,6 +254,49 @@ página nova quer notificação específica.
 Chave recém-publicada responde `403 SiteVerificationNotCompleted` até o Bing
 buscar o arquivo. Não é erro de configuração; é só esperar e rodar de novo.
 
+### Medição: GA4 + GTM + UTM
+
+Criados pelo **TagFlow** (`D:/Administrativo/tagflow`) — não crie propriedade
+ou container na mão:
+
+| | |
+|---|---|
+| GA4 | `G-S0LKZ4SM7K` |
+| GTM | `GTM-PXF6MB94` |
+| Cliente TagFlow | `partsagricola` |
+
+```bash
+cd D:/Administrativo/tagflow
+node index.js status --id partsagricola   # GA4, GTM, eventos, métricas 30d
+node index.js audit                       # confere o local contra o Google
+```
+
+O container é quem traduz evento em GA4, Pixel ou conversão de Ads — o site
+não escreve tag nenhuma, só empurra pro `dataLayer` (`src/lib/util/analytics.ts`).
+É isso que permite ligar um Pixel depois sem novo deploy.
+
+**Conversão.** Preço zero aqui é "sob consulta": a venda fecha no WhatsApp ou
+por e-mail, fora de qualquer medição. O clique de saída é o último sinal
+observável, então é ele que faz o papel de conversão — `generate_lead` está
+marcado como evento-chave no GA4 (`ONCE_PER_SESSION`). O listener é delegado no
+`document` (`src/modules/analytics/components/lead-tracker`), então CTA novo
+pro WhatsApp já nasce medido.
+
+**UTM.** O GA4 atribui a sessão sozinho pela URL de entrada; o que ele não
+resolve é que a conversão acontece na caixa de entrada, onde nenhuma tag
+alcança. Por isso a origem é guardada no `sessionStorage` na primeira página
+(só grava se ainda não houver nada — a segunda página não tem UTM na URL e
+sobrescrever apagaria a campanha) e colada no fim da mensagem de cotação:
+
+```
+[origem: google | midia: cpc | campanha: retentores]
+```
+
+Cobre `utm_*` e também `gclid`/`gbraid`/`wbraid`/`fbclid`, que chegam sozinhos
+quando o anúncio usa marcação automática. `sessionStorage` e não `localStorage`
+de propósito: a atribuição vale pela visita, senão a compra de daqui a três
+meses ainda seria creditada à campanha que trouxe a pessoa uma vez.
+
 Ainda em aberto:
 
 1. Google Search Console: adicionar a propriedade nova e reenviar o sitemap.

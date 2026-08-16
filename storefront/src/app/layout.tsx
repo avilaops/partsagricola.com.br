@@ -1,4 +1,8 @@
 import { getBaseURL } from "@lib/util/env"
+import {
+  GoogleTagManagerNoScript,
+  GoogleTagManagerScript,
+} from "@modules/analytics/components/google-tag-manager"
 import { Metadata } from "next"
 import "styles/globals.css"
 
@@ -35,7 +39,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" data-mode="light">
       <body>
+        <GoogleTagManagerNoScript />
         <main className="relative">{props.children}</main>
+        <GoogleTagManagerScript />
       </body>
     </html>
   )

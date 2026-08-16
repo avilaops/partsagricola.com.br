@@ -1,6 +1,7 @@
 "use client"
 
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { useLeadOrigin } from "@modules/analytics/hooks/use-lead-origin"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
@@ -27,17 +28,21 @@ const QuoteListDrawer = () => {
     ""
   )
   const totalQuantity = items.reduce((total, item) => total + item.quantity, 0)
-  const message = [
-    "Olá! Gostaria de solicitar uma cotação técnica para os itens abaixo:",
-    "",
-    ...items.flatMap((item, index) => [
-      `${index + 1}. ${item.code} — ${item.title}`,
-      `Quantidade: ${item.quantity}`,
-      `Link: ${getAbsoluteUrl(item.url)}`,
+  // Campanha que trouxe a pessoa, quando houver. A venda fecha fora do site:
+  // sem isso o pedido chega na caixa de entrada sem dizer de onde veio.
+  const leadOrigin = useLeadOrigin()
+  const message =
+    [
+      "Olá! Gostaria de solicitar uma cotação técnica para os itens abaixo:",
       "",
-    ]),
-    "Pode confirmar aplicação, preço, disponibilidade, prazo e frete?",
-  ].join("\n")
+      ...items.flatMap((item, index) => [
+        `${index + 1}. ${item.code} — ${item.title}`,
+        `Quantidade: ${item.quantity}`,
+        `Link: ${getAbsoluteUrl(item.url)}`,
+        "",
+      ]),
+      "Pode confirmar aplicação, preço, disponibilidade, prazo e frete?",
+    ].join("\n") + leadOrigin
   const whatsappHref = whatsappNumber
     ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     : undefined
