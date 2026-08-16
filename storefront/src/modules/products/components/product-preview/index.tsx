@@ -34,7 +34,17 @@ export default async function ProductPreview({
   const code = getProductCode(product)
 
   return (
-    <article className="group" data-testid="product-wrapper">
+    // Os `data-analytics-*` alimentam o `select_item` do LeadTracker, que ouve
+    // clique delegado no `document`. E o que evita transformar este componente
+    // — renderizado uma vez por peca, em listagem de ate 25 mil — num Client
+    // Component so pra empurrar um evento.
+    <article
+      className="group"
+      data-testid="product-wrapper"
+      data-analytics-item-id={product.handle}
+      data-analytics-item-name={product.title}
+      {...(code ? { "data-analytics-item-variant": code } : {})}
+    >
       <div className="relative">
         <LocalizedClientLink href={`/products/${product.handle}`}>
           <Thumbnail

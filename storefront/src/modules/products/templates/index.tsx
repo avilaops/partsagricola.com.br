@@ -10,6 +10,8 @@ import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-relat
 import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 import { getProductCode } from "@lib/util/product-technical"
+import { toAnalyticsItem } from "@lib/util/analytics"
+import ViewItemTracker from "@modules/analytics/components/view-item-tracker"
 import RecentlyViewedProducts from "@modules/recently-viewed/components/recently-viewed-products"
 import RecentlyViewedTracker from "@modules/recently-viewed/components/recently-viewed-tracker"
 import ProductMobileActions from "@modules/products/components/product-mobile-actions"
@@ -44,6 +46,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           thumbnail: product.thumbnail,
         }}
       />
+      <ViewItemTracker item={toAnalyticsItem(product)} />
       <div
         className="content-container  flex flex-col small:flex-row small:items-start py-6 relative"
         data-testid="product-container"

@@ -3,6 +3,7 @@
 import { useEffect } from "react"
 
 import {
+  ANALYTICS_CURRENCY,
   captureLeadOrigin,
   getLeadOrigin,
   pushDataLayer,
@@ -56,7 +57,32 @@ export default function LeadTracker() {
       if (!anchor) return
 
       const channel = getContactChannel(anchor.href)
-      if (!channel) return
+
+      // Clique num card de peca dentro de uma listagem. Diz qual posicao da
+      // grade converte — sem isso nao da pra saber se o resultado bom estava
+      // na primeira linha ou enterrado na quarta.
+      if (!channel) {
+        const card = anchor.closest<HTMLElement>("[data-analytics-item-id]")
+        if (!card?.dataset.analyticsItemId) return
+
+        pushDataLayer({
+          event: "select_item",
+          ecommerce: {
+            currency: ANALYTICS_CURRENCY,
+            items: [
+              {
+                item_id: card.dataset.analyticsItemId,
+                item_name: card.dataset.analyticsItemName,
+                ...(card.dataset.analyticsItemVariant
+                  ? { item_variant: card.dataset.analyticsItemVariant }
+                  : {}),
+                quantity: 1,
+              },
+            ],
+          },
+        })
+        return
+      }
 
       const origem = getLeadOrigin()
 

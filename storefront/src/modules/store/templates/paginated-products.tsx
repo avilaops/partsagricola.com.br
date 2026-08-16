@@ -1,5 +1,7 @@
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { toAnalyticsItem } from "@lib/util/analytics"
+import ListViewTracker from "@modules/analytics/components/list-view-tracker"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -81,6 +83,13 @@ export default async function PaginatedProducts({
 
   return (
     <>
+      <ListViewTracker
+        items={products.map((p, index) => toAnalyticsItem(p, index))}
+        listName={query ? `busca: ${query}` : categoryId || collectionId || "catálogo"}
+        searchTerm={query}
+        searchResults={count}
+        page={page}
+      />
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-ui-border-base pb-4">
         <p className="text-sm text-ui-fg-subtle" aria-live="polite">
           {count.toLocaleString("pt-BR")} {count === 1 ? "peça encontrada" : "peças encontradas"}

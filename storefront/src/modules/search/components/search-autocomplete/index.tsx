@@ -1,6 +1,5 @@
 "use client"
 
-import { pushDataLayer } from "@lib/util/analytics"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { clx } from "@medusajs/ui"
 import Image from "next/image"
@@ -98,12 +97,9 @@ const SearchAutocomplete = ({
     saveRecentSearch(normalizedValue)
     setIsOpen(false)
 
-    // O que a pessoa digita num catalogo de 25 mil itens diz o que falta no
-    // estoque e o que vale anunciar. Sem `search_results` de proposito: aqui
-    // so existe a contagem do autocomplete, que nao e o total da busca —
-    // mandar esse numero seria pior que nao mandar nenhum.
-    pushDataLayer({ event: "search", search_term: normalizedValue })
-
+    // O evento `search` sai da pagina de resultados, nao daqui: e la que
+    // `search_results` existe de verdade. Disparar nos dois lugares contaria a
+    // mesma busca duas vezes.
     router.push(
       `/${countryCode}/store?q=${encodeURIComponent(normalizedValue)}`
     )

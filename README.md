@@ -282,6 +282,30 @@ marcado como evento-chave no GA4 (`ONCE_PER_SESSION`). O listener é delegado no
 `document` (`src/modules/analytics/components/lead-tracker`), então CTA novo
 pro WhatsApp já nasce medido.
 
+**Eventos que o site empurra:**
+
+| Evento | Onde | Observação |
+|---|---|---|
+| `generate_lead` | clique em WhatsApp / mailto / tel | evento-chave; carrega `lead_source` e `lead_subject` |
+| `view_item` | página de peça | sem `value` — preço 0 é ausência de preço |
+| `view_item_list` | listagem, categoria e busca | `item_list_name` diz se veio de busca ou categoria |
+| `select_item` | clique num card da listagem | mostra qual posição da grade converte |
+| `search` | página de resultados | com `search_results` real |
+
+O `search` sai da página de resultados e não do autocomplete de propósito: é lá
+que a contagem existe de verdade. No autocomplete só há o número de sugestões,
+que não é o total da busca — e número errado no relatório é pior que campo
+vazio. Só dispara na primeira página, senão paginar inflaria a contagem de
+buscas.
+
+`select_item` funciona por `data-analytics-*` no card e delegação de clique,
+em vez de tornar o `product-preview` um Client Component — ele é renderizado
+uma vez por peça, numa listagem que chega a 25 mil.
+
+`add_to_cart`, `begin_checkout` e `purchase` têm tag no container mas o site
+ainda não os empurra: dependem do carrinho com preço real, que é a fase de
+"cadastrar preços comerciais" do roadmap.
+
 **UTM.** O GA4 atribui a sessão sozinho pela URL de entrada; o que ele não
 resolve é que a conversão acontece na caixa de entrada, onde nenhuma tag
 alcança. Por isso a origem é guardada no `sessionStorage` na primeira página
