@@ -71,7 +71,7 @@ const RefinementList = ({
             <button
               type="button"
               onClick={clearQuery}
-              className="text-xs font-medium text-[#0b6b3a] hover:underline"
+              className="text-xs font-medium text-[#0B6B3F] hover:underline"
             >
               Limpar
             </button>
@@ -95,7 +95,7 @@ const RefinementList = ({
             </h2>
             <LocalizedClientLink
               href="/store"
-              className="text-xs font-medium text-[#0b6b3a] hover:underline"
+              className="text-xs font-medium text-[#0B6B3F] hover:underline"
             >
               Limpar
             </LocalizedClientLink>
@@ -121,11 +121,11 @@ const RefinementList = ({
                 <li key={category.id}>
                   <LocalizedClientLink
                     href={`/categories/${category.handle}`}
-                    className="group flex items-center justify-between gap-3 rounded-rounded px-2 py-2 text-sm text-ui-fg-subtle transition-colors hover:bg-ui-bg-subtle hover:text-[#0b6b3a]"
+                    className="group flex items-center justify-between gap-3 rounded-rounded px-2 py-2 text-sm text-ui-fg-subtle transition-colors hover:bg-ui-bg-subtle hover:text-[#0B6B3F]"
                   >
                     <span>{category.name}</span>
                     <span
-                      className="text-xs text-ui-fg-muted group-hover:text-[#0b6b3a]"
+                      className="text-xs text-ui-fg-muted group-hover:text-[#0B6B3F]"
                       aria-hidden="true"
                     >
                       →
@@ -157,8 +157,8 @@ const RefinementList = ({
                   aria-current={active ? "page" : undefined}
                   className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                     active
-                      ? "border-[#0b6b3a] bg-[#0b6b3a] text-white"
-                      : "border-ui-border-base bg-white text-ui-fg-subtle hover:border-[#0b6b3a] hover:text-[#0b6b3a]"
+                      ? "border-[#0B6B3F] bg-[#0B6B3F] text-white"
+                      : "border-ui-border-base bg-white text-ui-fg-subtle hover:border-[#0B6B3F] hover:text-[#0B6B3F]"
                   }`}
                 >
                   {option.name}
@@ -211,7 +211,7 @@ const RefinementList = ({
       <div className="hidden rounded-large border border-ui-border-base bg-white p-5 shadow-sm small:block">
         <div className="mb-6 flex items-center justify-between">
           <p className="text-lg font-semibold">Filtrar catálogo</p>
-          <span className="rounded-full bg-[#edf8f1] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#0b6b3a]">
+          <span className="rounded-full bg-[#edf8f1] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#0B6B3F]">
             Técnico
           </span>
         </div>

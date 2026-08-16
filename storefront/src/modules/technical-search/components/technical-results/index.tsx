@@ -50,7 +50,7 @@ const TechnicalResults = async ({ input }: { input: TechnicalSearchInput }) => {
     <section className="mt-10" aria-labelledby="technical-results-title">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-ui-border-base pb-5">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#0b6b3a]">
+          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#0B6B3F]">
             Correspondência exata
           </p>
           <h2 id="technical-results-title" className="mt-1 text-2xl font-semibold">
@@ -92,7 +92,7 @@ const TechnicalResults = async ({ input }: { input: TechnicalSearchInput }) => {
                   </div>
                   <div className="flex flex-1 flex-col p-4">
                     {code ? (
-                      <p className="text-xs font-bold uppercase tracking-wide text-[#0b6b3a]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-[#0B6B3F]">
                         {code}
                       </p>
                     ) : null}
@@ -102,7 +102,7 @@ const TechnicalResults = async ({ input }: { input: TechnicalSearchInput }) => {
                     <p className="mt-4 rounded-rounded bg-[#edf8f1] px-3 py-2 text-xs font-semibold text-[#075b31]">
                       {formatDimensions(input.type, product.metadata)}
                     </p>
-                    <span className="mt-4 text-sm font-semibold text-[#0b6b3a] group-hover:underline">
+                    <span className="mt-4 text-sm font-semibold text-[#0B6B3F] group-hover:underline">
                       Ver detalhes →
                     </span>
                   </div>
@@ -120,7 +120,7 @@ const TechnicalResults = async ({ input }: { input: TechnicalSearchInput }) => {
           </p>
           <LocalizedClientLink
             href="/contato"
-            className="mt-5 inline-flex rounded-rounded border border-[#0b6b3a] px-5 py-2.5 text-sm font-semibold text-[#0b6b3a] hover:bg-[#edf8f1]"
+            className="mt-5 inline-flex rounded-rounded border border-[#0B6B3F] px-5 py-2.5 text-sm font-semibold text-[#0B6B3F] hover:bg-[#edf8f1]"
           >
             Solicitar ajuda técnica
           </LocalizedClientLink>

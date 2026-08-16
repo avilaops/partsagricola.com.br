@@ -11,7 +11,7 @@ const QUICK_SEARCHES = [
 
 const Hero = ({ countryCode }: { countryCode: string }) => {
   return (
-    <div className="w-full border-b border-ui-border-base relative bg-[#0b6b3a] text-white">
+    <div className="w-full border-b border-ui-border-base relative bg-[#0B6B3F] text-white">
       <div className="content-container py-20 small:py-28 flex flex-col items-center text-center gap-6">
         <span className="uppercase tracking-widest text-sm text-white/70">
           Peças agrícolas e de construção
@@ -45,7 +45,7 @@ const Hero = ({ countryCode }: { countryCode: string }) => {
 
         <LocalizedClientLink
           href="/store"
-          className="mt-2 inline-flex items-center gap-2 bg-white text-[#0b6b3a] font-semibold px-6 py-3 rounded-base hover:bg-white/90 transition-colors"
+          className="mt-2 inline-flex items-center gap-2 bg-white text-[#0B6B3F] font-semibold px-6 py-3 rounded-base hover:bg-white/90 transition-colors"
         >
           Ver catálogo completo
         </LocalizedClientLink>

@@ -268,8 +268,8 @@ const SearchAutocomplete = ({
           className={clx(
             "min-w-24 px-5 py-3 text-sm font-semibold transition-colors",
             hero
-              ? "bg-white text-[#0b6b3a] hover:bg-white/90"
-              : "bg-[#0b6b3a] text-white hover:bg-[#08552e]"
+              ? "bg-white text-[#0B6B3F] hover:bg-white/90"
+              : "bg-[#0B6B3F] text-white hover:bg-[#08552e]"
           )}
         >
           Buscar
@@ -290,7 +290,7 @@ const SearchAutocomplete = ({
               <button
                 type="button"
                 onClick={clearRecentSearches}
-                className="font-medium text-[#0b6b3a] hover:underline"
+                className="font-medium text-[#0B6B3F] hover:underline"
               >
                 Limpar
               </button>
@@ -332,7 +332,7 @@ const SearchAutocomplete = ({
                     <span className="min-w-0 flex-1 truncate text-ui-fg-base">
                       {recentSearch}
                     </span>
-                    <span className="text-[#0b6b3a]">↗</span>
+                    <span className="text-[#0B6B3F]">↗</span>
                   </LocalizedClientLink>
                 </li>
               ))}
@@ -376,13 +376,13 @@ const SearchAutocomplete = ({
                       {suggestion.title}
                     </p>
                     <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-ui-fg-muted">
-                      <span className="font-mono font-semibold text-[#0b6b3a]">
+                      <span className="font-mono font-semibold text-[#0B6B3F]">
                         {suggestion.code}
                       </span>
                       {suggestion.category && <span>{suggestion.category}</span>}
                     </div>
                   </div>
-                  <span className="text-[#0b6b3a]">→</span>
+                  <span className="text-[#0B6B3F]">→</span>
                 </LocalizedClientLink>
               </li>
             ))}
@@ -391,7 +391,7 @@ const SearchAutocomplete = ({
             <LocalizedClientLink
               href={`/store?q=${encodeURIComponent(query)}`}
               onClick={() => saveRecentSearch(query)}
-              className="block bg-ui-bg-subtle px-4 py-3 text-center text-sm font-semibold text-[#0b6b3a] hover:underline"
+              className="block bg-ui-bg-subtle px-4 py-3 text-center text-sm font-semibold text-[#0B6B3F] hover:underline"
             >
               Ver todos os resultados
             </LocalizedClientLink>

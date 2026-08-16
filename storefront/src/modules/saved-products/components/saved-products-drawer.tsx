@@ -40,7 +40,7 @@ const SavedProductsDrawer = () => {
       <div className="fixed inset-0 bg-black/35 backdrop-blur-[2px]" aria-hidden="true" />
       <div className="fixed inset-0 flex justify-end">
         <DialogPanel className="flex h-full w-full max-w-lg flex-col bg-white shadow-2xl">
-          <div className="flex items-start justify-between bg-[#0b6b3a] px-6 py-6 text-white">
+          <div className="flex items-start justify-between bg-[#0B6B3F] px-6 py-6 text-white">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
                 Sua seleção
@@ -82,11 +82,11 @@ const SavedProductsDrawer = () => {
                       <div className="min-w-0">
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <p className="font-mono text-xs font-semibold text-[#0b6b3a]">{product.code}</p>
+                            <p className="font-mono text-xs font-semibold text-[#0B6B3F]">{product.code}</p>
                             <LocalizedClientLink
                               href={`/products/${product.handle}`}
                               onClick={closeSaved}
-                              className="mt-1 line-clamp-2 text-sm font-semibold leading-snug hover:text-[#0b6b3a]"
+                              className="mt-1 line-clamp-2 text-sm font-semibold leading-snug hover:text-[#0B6B3F]"
                             >
                               {product.title}
                             </LocalizedClientLink>
@@ -99,7 +99,7 @@ const SavedProductsDrawer = () => {
                           type="button"
                           onClick={() => addToQuote(product)}
                           disabled={isInQuote}
-                          className="mt-4 text-xs font-semibold text-[#0b6b3a] disabled:text-ui-fg-muted"
+                          className="mt-4 text-xs font-semibold text-[#0B6B3F] disabled:text-ui-fg-muted"
                         >
                           {isInQuote ? "Já está na cotação" : "+ Adicionar à cotação"}
                         </button>
@@ -112,7 +112,7 @@ const SavedProductsDrawer = () => {
                 <button
                   type="button"
                   onClick={addAllToQuote}
-                  className="flex min-h-12 w-full items-center justify-center rounded-base bg-[#0b6b3a] px-5 text-sm font-semibold text-white hover:bg-[#08552e]"
+                  className="flex min-h-12 w-full items-center justify-center rounded-base bg-[#0B6B3F] px-5 text-sm font-semibold text-white hover:bg-[#08552e]"
                   data-testid="saved-add-all-to-quote"
                 >
                   Adicionar todas à cotação
@@ -124,7 +124,7 @@ const SavedProductsDrawer = () => {
             </>
           ) : (
             <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3eb] text-[#0b6b3a]">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3eb] text-[#0B6B3F]">
                 <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.7">
                   <path d="M12 20.25S4.5 16 4.5 9.75A4.25 4.25 0 0 1 12 7a4.25 4.25 0 0 1 7.5 2.75C19.5 16 12 20.25 12 20.25Z" />
                 </svg>
@@ -133,7 +133,7 @@ const SavedProductsDrawer = () => {
               <p className="mt-2 max-w-xs text-sm leading-relaxed text-ui-fg-subtle">
                 Use o coração nos produtos para montar uma seleção e retomar depois.
               </p>
-              <LocalizedClientLink href="/store" onClick={closeSaved} className="mt-6 rounded-base bg-[#0b6b3a] px-6 py-3 text-sm font-semibold text-white">
+              <LocalizedClientLink href="/store" onClick={closeSaved} className="mt-6 rounded-base bg-[#0B6B3F] px-6 py-3 text-sm font-semibold text-white">
                 Explorar catálogo
               </LocalizedClientLink>
             </div>

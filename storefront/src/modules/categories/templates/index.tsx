@@ -52,7 +52,7 @@ export default function CategoryTemplate({
     >
       <div className="mb-8 border-b border-ui-border-base pb-8">
         <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-ui-fg-subtle">
-          <LocalizedClientLink className="hover:text-[#0b6b3a]" href="/store">
+          <LocalizedClientLink className="hover:text-[#0B6B3F]" href="/store">
             Catálogo
           </LocalizedClientLink>
           <span>/</span>
@@ -62,7 +62,7 @@ export default function CategoryTemplate({
             .map((parent) => (
               <span key={parent.id} className="text-ui-fg-subtle">
                 <LocalizedClientLink
-                  className="hover:text-[#0b6b3a]"
+                  className="hover:text-[#0B6B3F]"
                   href={`/categories/${parent.handle}`}
                 >
                   {parent.name}
@@ -73,7 +73,7 @@ export default function CategoryTemplate({
           <span>{category.name}</span>
         </div>
         <div className="max-w-3xl">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0b6b3a]">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0B6B3F]">
             Departamento técnico
           </p>
           <h1
@@ -102,7 +102,7 @@ export default function CategoryTemplate({
                 <li key={c.id}>
                   <LocalizedClientLink
                     href={`/categories/${c.handle}`}
-                    className="group flex min-h-32 flex-col justify-between rounded-large border border-ui-border-base bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-[#0b6b3a] hover:shadow-md"
+                    className="group flex min-h-32 flex-col justify-between rounded-large border border-ui-border-base bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-[#0B6B3F] hover:shadow-md"
                   >
                     <div>
                       <p className="text-lg font-semibold text-ui-fg-base">
@@ -114,7 +114,7 @@ export default function CategoryTemplate({
                         </p>
                       )}
                     </div>
-                    <span className="mt-4 text-sm font-medium text-[#0b6b3a]">
+                    <span className="mt-4 text-sm font-medium text-[#0B6B3F]">
                       Explorar peças →
                     </span>
                   </LocalizedClientLink>

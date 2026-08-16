@@ -24,7 +24,7 @@ const RecentlyViewedProducts = ({
     <section className="content-container my-16 small:my-24" aria-labelledby="recently-viewed-title">
       <div className="mb-7 flex items-end justify-between gap-6 border-b border-ui-border-base pb-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0b6b3a]">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B6B3F]">
             Continue de onde parou
           </p>
           <h2 id="recently-viewed-title" className="mt-1 text-2xl font-semibold tracking-tight">
@@ -34,7 +34,7 @@ const RecentlyViewedProducts = ({
         <button
           type="button"
           onClick={clearProducts}
-          className="shrink-0 text-xs text-ui-fg-muted transition-colors hover:text-[#0b6b3a]"
+          className="shrink-0 text-xs text-ui-fg-muted transition-colors hover:text-[#0B6B3F]"
         >
           Limpar histórico
         </button>
@@ -57,10 +57,10 @@ const RecentlyViewedProducts = ({
                 <SaveProductButton product={product} />
               </div>
               <LocalizedClientLink href={`/products/${product.handle}`} className="mt-3 block">
-                <p className="font-mono text-xs font-semibold text-[#0b6b3a]">
+                <p className="font-mono text-xs font-semibold text-[#0B6B3F]">
                   {product.code}
                 </p>
-                <h3 className="mt-1 line-clamp-2 text-sm font-medium leading-snug text-ui-fg-base transition-colors group-hover:text-[#0b6b3a]">
+                <h3 className="mt-1 line-clamp-2 text-sm font-medium leading-snug text-ui-fg-base transition-colors group-hover:text-[#0B6B3F]">
                   {product.title}
                 </h3>
               </LocalizedClientLink>

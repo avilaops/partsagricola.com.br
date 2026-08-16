@@ -22,7 +22,7 @@ export default async function ContatoPage({
     <main className="bg-[#f7faf8] py-16 small:py-24">
       <div className="content-container max-w-5xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0b6b3a]">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]">
             Atendimento técnico
           </p>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight small:text-5xl">
@@ -35,8 +35,8 @@ export default async function ContatoPage({
         </div>
 
         {(codigo || produto) && (
-          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-[#0b6b3a]/20 bg-white p-6 shadow-sm">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0b6b3a]">
+          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-[#0B6B3F]/20 bg-white p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0B6B3F]">
               Item selecionado
             </p>
             <h2 className="mt-2 text-xl font-semibold">{productLabel}</h2>

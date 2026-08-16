@@ -38,7 +38,7 @@ const ProductPreviewQuoteButton = ({
           url: `/${countryCode}/products/${product.handle}`,
         })
       }}
-      className="absolute bottom-3 right-3 z-10 flex min-h-10 items-center gap-2 rounded-full border border-white/80 bg-white/95 px-3.5 text-xs font-semibold text-[#0b6b3a] shadow-lg backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
+      className="absolute bottom-3 right-3 z-10 flex min-h-10 items-center gap-2 rounded-full border border-white/80 bg-white/95 px-3.5 text-xs font-semibold text-[#0B6B3F] shadow-lg backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
       aria-label={
         isAdded
           ? `Abrir cotação com ${product.title}`

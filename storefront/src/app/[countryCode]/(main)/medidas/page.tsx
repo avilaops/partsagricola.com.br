@@ -77,7 +77,7 @@ export default async function DimensionsPage({
       />
       <div className="content-container">
         <div className="mx-auto mb-8 max-w-3xl text-center small:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0b6b3a]">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]">
             Localizador técnico de vedações
           </p>
           <h1 className="mt-3 text-3xl font-semibold tracking-tight small:text-5xl">
@@ -112,7 +112,7 @@ export default async function DimensionsPage({
               ["126", "gaxetas e raspadores"],
             ].map(([value, label]) => (
               <div key={label} className="rounded-large border border-ui-border-base bg-white p-5 text-center">
-                <p className="text-2xl font-semibold text-[#0b6b3a]">{value}</p>
+                <p className="text-2xl font-semibold text-[#0B6B3F]">{value}</p>
                 <p className="mt-1 text-sm text-ui-fg-subtle">{label}</p>
               </div>
             ))}

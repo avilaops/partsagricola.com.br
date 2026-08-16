@@ -9,7 +9,7 @@ const SavedProductsButton = () => {
     <button
       type="button"
       onClick={openSaved}
-      className="flex items-center gap-1.5 transition-colors hover:text-[#0b6b3a]"
+      className="flex items-center gap-1.5 transition-colors hover:text-[#0B6B3F]"
       aria-label={`Abrir ${items.length} peças salvas`}
       data-testid="saved-products-nav-button"
     >

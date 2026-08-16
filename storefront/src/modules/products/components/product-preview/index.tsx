@@ -80,7 +80,7 @@ export default async function ProductPreview({
             <Text className="line-clamp-2 text-ui-fg-subtle" data-testid="product-title">
               {product.title}
             </Text>
-            <p className="mt-1 font-mono text-xs font-semibold text-[#0b6b3a]">
+            <p className="mt-1 font-mono text-xs font-semibold text-[#0B6B3F]">
               {code}
             </p>
           </div>

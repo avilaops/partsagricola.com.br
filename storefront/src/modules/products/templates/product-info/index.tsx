@@ -16,7 +16,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         {product.categories?.[0] && (
           <LocalizedClientLink
             href={`/categories/${product.categories[0].handle}`}
-            className="text-sm font-medium text-[#0b6b3a] hover:underline"
+            className="text-sm font-medium text-[#0B6B3F] hover:underline"
           >
             {product.categories[0].name}
           </LocalizedClientLink>

@@ -113,7 +113,7 @@ const DimensionSearchForm = ({
           required
           placeholder={hint}
           aria-label={`${label} em milímetros`}
-          className="h-12 w-full rounded-rounded border border-ui-border-base bg-white px-4 pr-12 text-base outline-none transition focus:border-[#0b6b3a] focus:ring-2 focus:ring-[#0b6b3a]/15"
+          className="h-12 w-full rounded-rounded border border-ui-border-base bg-white px-4 pr-12 text-base outline-none transition focus:border-[#0B6B3F] focus:ring-2 focus:ring-[#0B6B3F]/15"
         />
         <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-medium text-ui-fg-muted">
           mm
@@ -138,7 +138,7 @@ const DimensionSearchForm = ({
                 aria-pressed={active}
                 className={`rounded-large border p-4 text-left transition ${
                   active
-                    ? "border-[#0b6b3a] bg-[#edf8f1] ring-1 ring-[#0b6b3a]"
+                    ? "border-[#0B6B3F] bg-[#edf8f1] ring-1 ring-[#0B6B3F]"
                     : "border-ui-border-base hover:border-[#75af8d]"
                 }`}
               >
@@ -160,7 +160,7 @@ const DimensionSearchForm = ({
           <button
             type="button"
             onClick={() => setValues(EXAMPLES[type])}
-            className="text-xs font-semibold text-[#0b6b3a] hover:underline"
+            className="text-xs font-semibold text-[#0B6B3F] hover:underline"
           >
             Preencher exemplo
           </button>
@@ -195,7 +195,7 @@ const DimensionSearchForm = ({
         </p>
         <button
           type="submit"
-          className="h-12 rounded-rounded bg-[#0b6b3a] px-7 font-semibold text-white transition hover:bg-[#075b31]"
+          className="h-12 rounded-rounded bg-[#0B6B3F] px-7 font-semibold text-white transition hover:bg-[#075b31]"
         >
           Encontrar medida exata
         </button>

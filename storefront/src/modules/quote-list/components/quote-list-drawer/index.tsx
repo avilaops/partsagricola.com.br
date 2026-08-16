@@ -55,7 +55,7 @@ const QuoteListDrawer = () => {
       <div className="fixed inset-0 bg-black/35 backdrop-blur-[2px]" aria-hidden="true" />
       <div className="fixed inset-0 flex justify-end">
         <DialogPanel className="flex h-full w-full max-w-lg flex-col bg-white shadow-2xl">
-          <div className="flex items-start justify-between bg-[#0b6b3a] px-6 py-6 text-white">
+          <div className="flex items-start justify-between bg-[#0B6B3F] px-6 py-6 text-white">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
                 Atendimento técnico
@@ -105,13 +105,13 @@ const QuoteListDrawer = () => {
                     <div className="min-w-0">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="font-mono text-xs font-semibold text-[#0b6b3a]">
+                          <p className="font-mono text-xs font-semibold text-[#0B6B3F]">
                             {item.code}
                           </p>
                           <LocalizedClientLink
                             href={`/products/${item.handle}`}
                             onClick={closeList}
-                            className="mt-1 line-clamp-2 text-sm font-semibold leading-snug text-ui-fg-base hover:text-[#0b6b3a]"
+                            className="mt-1 line-clamp-2 text-sm font-semibold leading-snug text-ui-fg-base hover:text-[#0B6B3F]"
                           >
                             {item.title}
                           </LocalizedClientLink>
@@ -130,7 +130,7 @@ const QuoteListDrawer = () => {
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="h-8 w-8 text-sm hover:text-[#0b6b3a]"
+                            className="h-8 w-8 text-sm hover:text-[#0B6B3F]"
                             aria-label={`Diminuir quantidade de ${item.title}`}
                           >
                             −
@@ -141,7 +141,7 @@ const QuoteListDrawer = () => {
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="h-8 w-8 text-sm hover:text-[#0b6b3a]"
+                            className="h-8 w-8 text-sm hover:text-[#0B6B3F]"
                             aria-label={`Aumentar quantidade de ${item.title}`}
                           >
                             +
@@ -163,14 +163,14 @@ const QuoteListDrawer = () => {
                     href={whatsappHref}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex min-h-12 items-center justify-center rounded-base bg-[#0b6b3a] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#08552e]"
+                    className="flex min-h-12 items-center justify-center rounded-base bg-[#0B6B3F] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#08552e]"
                     data-testid="quote-list-whatsapp-button"
                   >
                     Enviar cotação pelo WhatsApp
                   </a>
                 )}
                 <div className="mt-3 flex items-center justify-between gap-4 text-sm">
-                  <a href={emailHref} className="font-medium text-[#0b6b3a] hover:underline">
+                  <a href={emailHref} className="font-medium text-[#0B6B3F] hover:underline">
                     Enviar por e-mail
                   </a>
                   <button
@@ -185,7 +185,7 @@ const QuoteListDrawer = () => {
             </>
           ) : (
             <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3eb] text-[#0b6b3a]">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3eb] text-[#0B6B3F]">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"
@@ -205,7 +205,7 @@ const QuoteListDrawer = () => {
               <LocalizedClientLink
                 href="/store"
                 onClick={closeList}
-                className="mt-6 rounded-base bg-[#0b6b3a] px-6 py-3 text-sm font-semibold text-white"
+                className="mt-6 rounded-base bg-[#0B6B3F] px-6 py-3 text-sm font-semibold text-white"
               >
                 Explorar catálogo
               </LocalizedClientLink>

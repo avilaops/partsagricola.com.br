@@ -27,8 +27,8 @@ const CompareButton = ({
       }}
       className={
         variant === "panel"
-          ? "flex min-h-11 items-center justify-center gap-2 rounded-base border border-[#0b6b3a]/25 bg-white px-4 text-sm font-semibold text-[#0b6b3a] transition-colors hover:border-[#0b6b3a] disabled:cursor-not-allowed disabled:opacity-50"
-          : "mt-3 flex items-center gap-1.5 text-xs font-medium text-ui-fg-muted transition-colors hover:text-[#0b6b3a] disabled:cursor-not-allowed disabled:opacity-50"
+          ? "flex min-h-11 items-center justify-center gap-2 rounded-base border border-[#0B6B3F]/25 bg-white px-4 text-sm font-semibold text-[#0B6B3F] transition-colors hover:border-[#0B6B3F] disabled:cursor-not-allowed disabled:opacity-50"
+          : "mt-3 flex items-center gap-1.5 text-xs font-medium text-ui-fg-muted transition-colors hover:text-[#0B6B3F] disabled:cursor-not-allowed disabled:opacity-50"
       }
       aria-label={
         isAdded
@@ -40,7 +40,7 @@ const CompareButton = ({
       <span
         aria-hidden="true"
         className={`flex h-4 w-4 items-center justify-center rounded border ${
-          isAdded ? "border-[#0b6b3a] bg-[#0b6b3a] text-white" : "border-ui-border-strong"
+          isAdded ? "border-[#0B6B3F] bg-[#0B6B3F] text-white" : "border-ui-border-strong"
         }`}
       >
         {isAdded ? "✓" : ""}

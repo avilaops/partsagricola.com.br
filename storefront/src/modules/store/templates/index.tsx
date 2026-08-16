@@ -35,7 +35,7 @@ const StoreTemplate = async ({
       data-testid="category-container"
     >
       <div className="mb-8 rounded-large bg-[#f4f8f5] px-5 py-7 small:px-8 small:py-9">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0b6b3a]">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0B6B3F]">
           {application ? "Aplicação e compatibilidade" : "Catálogo técnico Ávila"}
         </p>
         <div className="flex flex-col justify-between gap-5 small:flex-row small:items-end">

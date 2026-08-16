@@ -13,7 +13,7 @@ const TrustRow = () => {
       <div className="content-container py-10 grid grid-cols-2 small:grid-cols-4 gap-6">
         {STATS.map((stat) => (
           <div key={stat.label} className="text-center">
-            <Text className="text-2xl small:text-3xl font-semibold text-[#0b6b3a]">
+            <Text className="text-2xl small:text-3xl font-semibold text-[#0B6B3F]">
               {stat.value}
             </Text>
             <Text className="text-ui-fg-subtle text-sm mt-1">

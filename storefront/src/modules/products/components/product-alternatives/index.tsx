@@ -18,7 +18,7 @@ const ProductAlternatives = ({
   return (
     <section className="content-container my-16">
       <div className="mb-8 flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0b6b3a]">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B6B3F]">
           Mesmo código técnico
         </p>
         <h2 className="text-2xl font-semibold tracking-tight">

@@ -106,20 +106,20 @@ export default async function Nav() {
               <LocalizedClientLink
                 key={category.id}
                 href={`/categories/${category.handle}`}
-                className="font-medium text-ui-fg-subtle transition-colors hover:text-[#0b6b3a]"
+                className="font-medium text-ui-fg-subtle transition-colors hover:text-[#0B6B3F]"
               >
                 {category.name}
               </LocalizedClientLink>
             ))}
             <LocalizedClientLink
               href="/medidas"
-              className="font-medium text-ui-fg-subtle transition-colors hover:text-[#0b6b3a]"
+              className="font-medium text-ui-fg-subtle transition-colors hover:text-[#0B6B3F]"
             >
               Buscar por medidas
             </LocalizedClientLink>
             <LocalizedClientLink
               href="/store"
-              className="font-semibold text-[#0b6b3a]"
+              className="font-semibold text-[#0B6B3F]"
             >
               Todas as peças
             </LocalizedClientLink>

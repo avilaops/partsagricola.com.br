@@ -42,8 +42,8 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
   )}&body=${encodeURIComponent(message)}`
 
   return (
-    <aside className="rounded-2xl border border-[#0b6b3a]/20 bg-[#f1f8f4] p-6 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0b6b3a]">
+    <aside className="rounded-2xl border border-[#0B6B3F]/20 bg-[#f1f8f4] p-6 shadow-sm">
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0B6B3F]">
         Cotação técnica
       </p>
       <h2 className="mt-2 text-2xl font-semibold tracking-tight text-ui-fg-base">
@@ -54,7 +54,7 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
         evitar a compra da peça incorreta.
       </p>
 
-      <div className="mt-5 rounded-xl border border-[#0b6b3a]/15 bg-white p-4">
+      <div className="mt-5 rounded-xl border border-[#0B6B3F]/15 bg-white p-4">
         <span className="text-xs text-ui-fg-muted">Código para atendimento</span>
         <p className="mt-1 font-mono text-lg font-semibold text-ui-fg-base">
           {code}
@@ -78,7 +78,7 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
 
             openList()
           }}
-          className="flex min-h-12 items-center justify-center rounded-base bg-[#0b6b3a] px-5 text-center text-sm font-semibold text-white transition-colors hover:bg-[#08552e]"
+          className="flex min-h-12 items-center justify-center rounded-base bg-[#0B6B3F] px-5 text-center text-sm font-semibold text-white transition-colors hover:bg-[#08552e]"
           data-testid="add-to-quote-list-button"
         >
           {isAdded ? "Ver na lista de cotação" : "Adicionar à lista de cotação"}
@@ -109,7 +109,7 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
             href={whatsappHref}
             target="_blank"
             rel="noreferrer"
-            className="flex min-h-12 items-center justify-center rounded-base border border-ui-border-base bg-white px-5 text-center text-sm font-semibold text-ui-fg-base transition-colors hover:border-[#0b6b3a]"
+            className="flex min-h-12 items-center justify-center rounded-base border border-ui-border-base bg-white px-5 text-center text-sm font-semibold text-ui-fg-base transition-colors hover:border-[#0B6B3F]"
             data-testid="quote-whatsapp-button"
           >
             Cotar somente esta peça
@@ -117,7 +117,7 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
         )}
         <a
           href={emailHref}
-          className="text-center text-sm font-medium text-[#0b6b3a] hover:underline"
+          className="text-center text-sm font-medium text-[#0B6B3F] hover:underline"
           data-testid="quote-email-button"
         >
           Solicitar por e-mail
@@ -126,13 +126,13 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
           href={`/contato?codigo=${encodeURIComponent(code)}&produto=${encodeURIComponent(
             product.title
           )}`}
-          className="text-center text-sm font-medium text-[#0b6b3a] hover:underline"
+          className="text-center text-sm font-medium text-[#0B6B3F] hover:underline"
         >
           Ver outros canais de atendimento
         </LocalizedClientLink>
       </div>
 
-      <ul className="mt-6 space-y-2 border-t border-[#0b6b3a]/15 pt-5 text-xs text-ui-fg-subtle">
+      <ul className="mt-6 space-y-2 border-t border-[#0B6B3F]/15 pt-5 text-xs text-ui-fg-subtle">
         <li>• Atendimento com o código já identificado</li>
         <li>• Confirmação técnica antes do pedido</li>
         <li>• Prazo e frete informados na proposta</li>

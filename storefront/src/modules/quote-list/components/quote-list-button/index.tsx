@@ -9,7 +9,7 @@ const QuoteListButton = () => {
     <button
       type="button"
       onClick={openList}
-      className="flex items-center gap-1.5 font-medium text-[#0b6b3a] transition-colors hover:text-[#064a28]"
+      className="flex items-center gap-1.5 font-medium text-[#0B6B3F] transition-colors hover:text-[#064a28]"
       aria-label={`Abrir lista de cotação com ${items.length} itens`}
       data-testid="quote-list-nav-button"
     >

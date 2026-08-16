@@ -14,7 +14,7 @@ const DEPARTMENT_DETAILS: Record<
 > = {
   "pecas-agricolas": {
     eyebrow: "Plantio e colheita",
-    accent: "#0b6b3a",
+    accent: "#0B6B3F",
     surface: "bg-[#eef7f1]",
     image: "/images/departments/pecas-agricolas.webp",
     imageAlt: "Colheitadeira trabalhando em uma lavoura de grãos",
@@ -52,7 +52,7 @@ const ProductLines = ({
       <div className="content-container">
         <div className="mb-10 flex flex-col justify-between gap-5 small:flex-row small:items-end">
           <div className="max-w-2xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0b6b3a]">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]">
               Catálogo organizado para comprar melhor
             </p>
             <h2 className="text-3xl font-semibold tracking-tight small:text-4xl">
@@ -64,7 +64,7 @@ const ProductLines = ({
           </div>
           <LocalizedClientLink
             href="/store"
-            className="font-medium text-[#0b6b3a] hover:underline"
+            className="font-medium text-[#0B6B3F] hover:underline"
           >
             Ver catálogo completo →
           </LocalizedClientLink>
@@ -74,7 +74,7 @@ const ProductLines = ({
           {categories.map((category) => {
             const details = DEPARTMENT_DETAILS[category.handle] || {
               eyebrow: "Catálogo técnico",
-              accent: "#0b6b3a",
+              accent: "#0B6B3F",
               surface: "bg-ui-bg-subtle",
               image: "/images/departments/pecas-agricolas.webp",
               imageAlt: "Máquinas e componentes técnicos",
@@ -128,7 +128,7 @@ const ProductLines = ({
                       <LocalizedClientLink
                         key={child.id}
                         href={`/categories/${child.handle}`}
-                        className="rounded-full border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium text-ui-fg-subtle transition-colors hover:border-[#0b6b3a] hover:text-[#0b6b3a]"
+                        className="rounded-full border border-ui-border-base bg-white px-3 py-1.5 text-xs font-medium text-ui-fg-subtle transition-colors hover:border-[#0B6B3F] hover:text-[#0B6B3F]"
                       >
                         {child.name}
                       </LocalizedClientLink>

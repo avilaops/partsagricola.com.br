@@ -48,7 +48,7 @@ export default function ContactCtas({
           href={whatsappHref}
           target="_blank"
           rel="noreferrer"
-          className="flex min-h-32 flex-col justify-between rounded-2xl bg-[#0b6b3a] p-6 text-white transition-transform hover:-translate-y-0.5"
+          className="flex min-h-32 flex-col justify-between rounded-2xl bg-[#0B6B3F] p-6 text-white transition-transform hover:-translate-y-0.5"
         >
           <span className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
             Resposta rápida
@@ -58,7 +58,7 @@ export default function ContactCtas({
       )}
       <a
         href={emailHref}
-        className="flex min-h-32 flex-col justify-between rounded-2xl border border-ui-border-base bg-white p-6 transition-transform hover:-translate-y-0.5 hover:border-[#0b6b3a]"
+        className="flex min-h-32 flex-col justify-between rounded-2xl border border-ui-border-base bg-white p-6 transition-transform hover:-translate-y-0.5 hover:border-[#0B6B3F]"
       >
         <span className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
           Cotação por e-mail

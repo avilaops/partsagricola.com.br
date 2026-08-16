@@ -44,10 +44,10 @@ const CompareTray = () => {
 
   return (
     <>
-      <div className="fixed bottom-4 left-1/2 z-[65] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 rounded-2xl border border-[#0b6b3a]/20 bg-white p-3 shadow-2xl small:p-4">
+      <div className="fixed bottom-4 left-1/2 z-[65] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 rounded-2xl border border-[#0B6B3F]/20 bg-white p-3 shadow-2xl small:p-4">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0b6b3a]">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0B6B3F]">
               Comparação técnica
             </p>
             <p className="mt-0.5 truncate text-sm text-ui-fg-subtle">
@@ -61,7 +61,7 @@ const CompareTray = () => {
             <button
               type="button"
               onClick={openCompare}
-              className="rounded-base bg-[#0b6b3a] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#08552e]"
+              className="rounded-base bg-[#0B6B3F] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#08552e]"
               data-testid="open-compare-button"
             >
               Comparar agora
@@ -74,7 +74,7 @@ const CompareTray = () => {
         <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px]" aria-hidden="true" />
         <div className="fixed inset-0 overflow-y-auto p-3 small:p-8">
           <DialogPanel className="mx-auto max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl">
-            <div className="flex items-start justify-between bg-[#0b6b3a] px-5 py-5 text-white small:px-8">
+            <div className="flex items-start justify-between bg-[#0B6B3F] px-5 py-5 text-white small:px-8">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">Decisão técnica</p>
                 <DialogTitle className="mt-1 text-2xl font-semibold">Comparar peças</DialogTitle>
@@ -87,7 +87,7 @@ const CompareTray = () => {
 
             <div className="overflow-x-auto p-4 small:p-7">
               {items.length === 1 && (
-                <p className="mb-4 rounded-xl bg-[#f1f8f4] px-4 py-3 text-sm text-[#0b6b3a]">
+                <p className="mb-4 rounded-xl bg-[#f1f8f4] px-4 py-3 text-sm text-[#0B6B3F]">
                   Adicione mais uma peça para comparar os dados lado a lado.
                 </p>
               )}
@@ -102,7 +102,7 @@ const CompareTray = () => {
                             <Thumbnail thumbnail={product.thumbnail} alt={product.title} size="square" />
                           </LocalizedClientLink>
                           <div className="min-w-0">
-                            <p className="font-mono text-xs font-semibold text-[#0b6b3a]">{product.code}</p>
+                            <p className="font-mono text-xs font-semibold text-[#0B6B3F]">{product.code}</p>
                             <p className="mt-1 line-clamp-3 font-semibold leading-snug">{product.title}</p>
                             <button type="button" onClick={() => removeProduct(product.id)} className="mt-2 text-xs font-normal text-ui-fg-muted hover:text-red-600">Remover</button>
                           </div>
@@ -128,7 +128,7 @@ const CompareTray = () => {
 
             <div className="flex flex-col gap-3 border-t border-ui-border-base bg-[#f7faf8] p-5 small:flex-row small:items-center small:justify-between small:px-8">
               <p className="text-xs text-ui-fg-subtle">A comparação ajuda na triagem; confirme a aplicação antes do pedido.</p>
-              <button type="button" onClick={addAllToQuote} className="rounded-base bg-[#0b6b3a] px-5 py-3 text-sm font-semibold text-white hover:bg-[#08552e]">
+              <button type="button" onClick={addAllToQuote} className="rounded-base bg-[#0B6B3F] px-5 py-3 text-sm font-semibold text-white hover:bg-[#08552e]">
                 Adicionar todas à cotação
               </button>
             </div>
