@@ -9,19 +9,21 @@ import "styles/globals.css"
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
   title: {
-    default: "Agricola | Peças agrícolas e industriais",
-    template: "%s | Agricola",
+    default: "Parts Agricola | Peças agrícolas e industriais",
+    template: "%s | Parts Agricola",
   },
   description:
     "Catálogo de peças para máquinas agrícolas, máquinas pesadas e sistemas de vedação. Busque por código, nome ou aplicação.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
       { url: "/favicon.ico", sizes: "any" },
     ],
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
+  manifest: "/site.webmanifest",
   robots: {
     index: true,
     follow: true,

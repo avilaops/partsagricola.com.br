@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Suspense } from "react"
 
 import { listRegions } from "@lib/data/regions"
@@ -40,10 +41,20 @@ export default async function Nav() {
           <div className="flex items-center h-full">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="flex items-center"
               data-testid="nav-store-link"
             >
-              Agricola
+              {/* `priority`: a logo esta no topo de toda pagina, entao e quase
+                  sempre o maior elemento visivel no primeiro paint. Sem isso o
+                  Next adia o carregamento e o LCP piora. */}
+              <Image
+                src="/images/marca/logo-partsagricola.png"
+                alt="Parts Agricola"
+                width={800}
+                height={138}
+                priority
+                className="h-7 w-auto small:h-8"
+              />
             </LocalizedClientLink>
           </div>
 

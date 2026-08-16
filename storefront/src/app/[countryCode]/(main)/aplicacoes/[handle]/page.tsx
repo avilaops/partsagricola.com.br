@@ -59,7 +59,7 @@ export default async function ApplicationPage({ params, searchParams }: Props) {
     url: `https://partsagricola.com.br/${countryCode}/aplicacoes/${application.handle}`,
     isPartOf: {
       "@type": "WebSite",
-      name: "Agricola",
+      name: "Parts Agricola",
       url: "https://partsagricola.com.br/br",
     },
   }
