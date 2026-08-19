@@ -56,7 +56,7 @@ Features include:
   - Product Overview Page
   - Product Collections
   - Cart
-  - Checkout with Stripe
+  - Checkout manual (pagamento combinado com a loja)
   - User Accounts
   - Order Details
 - Full Next.js 15 support:
@@ -102,15 +102,13 @@ Your site is now running at http://localhost:8000!
 
 By default this starter supports the following payment integrations
 
-- [Stripe](https://stripe.com/)
 
 To enable the integrations you need to add the following to your `.env.local` file:
 
 ```shell
-NEXT_PUBLIC_STRIPE_KEY=<your-stripe-public-key>
 ```
 
-You'll also need to setup the integrations in your Medusa server. See the [Medusa documentation](https://docs.medusajs.com) for more information on how to configure [Stripe](https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/stripe#main).
+You'll also need to setup the integrations in your Medusa server. See the [Medusa documentation](https://docs.medusajs.com) for more information.
 
 # Resources
 
