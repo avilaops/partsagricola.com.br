@@ -127,21 +127,30 @@ export async function middleware(request: NextRequest) {
 
   const countryCode = regionMap && (await getCountryCode(request, regionMap))
 
-  const urlHasCountryCode =
-    countryCode && request.nextUrl.pathname.split("/")[1].includes(countryCode)
+  const urlCountryCode = request.nextUrl.pathname
+    .split("/")[1]
+    ?.toLowerCase()
+  const urlHasCountryCode = countryCode && urlCountryCode === countryCode
 
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasCountryCode && cacheIdCookie) {
     return NextResponse.next()
   }
 
-  // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
+  // A URL ja esta regionalizada. Nao redirecione para ela mesma apenas para
+  // gravar o cookie: crawlers, validadores e clientes sem cookie entram em um
+  // ciclo 307. Entregue a pagina na primeira resposta e anexe o cache id.
   if (urlHasCountryCode && !cacheIdCookie) {
-    response.cookies.set("_medusa_cache_id", cacheId, {
+    const nextResponse = NextResponse.next()
+    nextResponse.cookies.set("_medusa_cache_id", cacheId, {
       maxAge: 60 * 60 * 24,
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
     })
 
-    return response
+    return nextResponse
   }
 
   // check if the url is a static asset
