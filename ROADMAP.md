@@ -180,9 +180,11 @@ o Postgres ficam. Estado em 19/08/2026:
 - **Conferência do catálogo (19/08/2026):** paridade total entre
   `catalogo_odoo` e o Medusa — mesmos 28.424 SKUs dos dois lados, zero
   divergências de nome, 3.806 imagens, metadata 100%.
-- **Bloqueado:** precificação (`precificar.py`) espera as chaves
-  `ANTHROPIC_API_KEY` e `BRAVE_API_KEY` no `.env` do script no VPS —
-  não estão lá, e o script recusa rodar sem elas.
+- **Precificação:** a pesquisa de mercado acontece em sessão do Claude
+  Code (sem chave de IA no servidor — o `precificar.py` que exigia
+  `ANTHROPIC_API_KEY`/`BRAVE_API_KEY` foi removido em 19/08/2026); o
+  resultado revisado é gravado no Odoo pelo `aplicar_precos.py` (CSV
+  com fonte obrigatória, procedência no chatter interno).
 - **Próximo:** trocar as páginas de vitrine/produto/busca para
   `catalogo_odoo` e, por fim, desligar o Medusa.
 
