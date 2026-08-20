@@ -1,39 +1,25 @@
 "use client"
 
 import { Popover, PopoverPanel, Transition } from "@headlessui/react"
-import { ArrowRightMini, XMark } from "@medusajs/icons"
-import { Text, clx, useToggleState } from "@medusajs/ui"
+import { XMark } from "@medusajs/icons"
+import { Text } from "@medusajs/ui"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CountrySelect from "../country-select"
-import LanguageSelect from "../language-select"
 import { HttpTypes } from "@medusajs/types"
-import { Locale } from "@lib/data/locales"
 
 const SideMenuItems: Record<string, { href: string; label: string }> = {
   Home: { href: "/", label: "Inicio" },
-  Store: { href: "/store", label: "Loja" },
-  Account: { href: "/account", label: "Conta" },
-  Cart: { href: "/cart", label: "Carrinho" },
+  Store: { href: "/store", label: "Catálogo" },
+  Medidas: { href: "/medidas", label: "Busca por medidas" },
+  Contato: { href: "/contato", label: "Contato" },
 }
 
 type SideMenuProps = {
-  regions: HttpTypes.StoreRegion[] | null
-  locales: Locale[] | null
-  currentLocale: string | null
   categories: HttpTypes.StoreProductCategory[]
 }
 
-const SideMenu = ({
-  regions,
-  locales,
-  currentLocale,
-  categories,
-}: SideMenuProps) => {
-  const countryToggleState = useToggleState()
-  const languageToggleState = useToggleState()
-
+const SideMenu = ({ categories }: SideMenuProps) => {
   return (
     <div className="h-full">
       <div className="flex items-center h-full">
@@ -112,45 +98,8 @@ const SideMenu = ({
                       </li>
                     </ul>
                     <div className="flex flex-col gap-y-6">
-                      {!!locales?.length && (
-                        <div
-                          className="flex justify-between"
-                          onMouseEnter={languageToggleState.open}
-                          onMouseLeave={languageToggleState.close}
-                        >
-                          <LanguageSelect
-                            toggleState={languageToggleState}
-                            locales={locales}
-                            currentLocale={currentLocale}
-                          />
-                          <ArrowRightMini
-                            className={clx(
-                              "transition-transform duration-150",
-                              languageToggleState.state ? "-rotate-90" : ""
-                            )}
-                          />
-                        </div>
-                      )}
-                      <div
-                        className="flex justify-between"
-                        onMouseEnter={countryToggleState.open}
-                        onMouseLeave={countryToggleState.close}
-                      >
-                        {regions && (
-                          <CountrySelect
-                            toggleState={countryToggleState}
-                            regions={regions}
-                          />
-                        )}
-                        <ArrowRightMini
-                          className={clx(
-                            "transition-transform duration-150",
-                            countryToggleState.state ? "-rotate-90" : ""
-                          )}
-                        />
-                      </div>
                       <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Agricola. Todos os
+                        © {new Date().getFullYear()} Parts Agrícola. Todos os
                         direitos reservados.
                       </Text>
                     </div>

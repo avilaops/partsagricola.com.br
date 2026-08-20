@@ -1,13 +1,9 @@
 const c = require("ansi-colors")
 
-const requiredEnvs = [
-  {
-    key: "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY",
-    // TODO: we need a good doc to point this to
-    description:
-      "Learn how to create a publishable key: https://docs.medusajs.com/v2/resources/storefront-development/publishable-api-keys",
-  },
-]
+// O Medusa saiu; o catálogo vem do Postgres (LEITURA_DSN). A variável não é
+// exigida no build porque as consultas só acontecem em runtime/ISR — mas sem
+// ela em produção o catálogo não tem de onde ler.
+const requiredEnvs = []
 
 function checkEnvVariables() {
   const missingEnvs = requiredEnvs.filter(function (env) {

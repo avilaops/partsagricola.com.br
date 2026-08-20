@@ -1,13 +1,6 @@
 import Image from "next/image"
-import { Suspense } from "react"
 
-import { listRegions } from "@lib/data/regions"
-import { listLocales } from "@lib/data/locales"
-import { getLocale } from "@lib/data/locale-actions"
-import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { Cart } from "@modules/common/icons/parts"
-import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import { listCategories } from "@lib/data/categories"
 import QuoteListButton from "@modules/quote-list/components/quote-list-button"
@@ -15,12 +8,7 @@ import SavedProductsButton from "@modules/saved-products/components/saved-produc
 import { selectPrimaryDepartments } from "@lib/catalog/departments"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale, categories] = await Promise.all([
-    listRegions().then((regions: StoreRegion[]) => regions),
-    listLocales(),
-    getLocale(),
-    listCategories(),
-  ])
+  const categories = await listCategories()
   const departments = selectPrimaryDepartments(categories)
 
   return (
@@ -29,12 +17,7 @@ export default async function Nav() {
         <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex h-16 items-center justify-between w-full text-small-regular">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
-              <SideMenu
-                regions={regions}
-                locales={locales}
-                currentLocale={currentLocale}
-                categories={departments}
-              />
+              <SideMenu categories={departments} />
             </div>
           </div>
 
@@ -68,34 +51,8 @@ export default async function Nav() {
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
-            <div className="hidden small:flex items-center gap-x-6 h-full">
-              <LocalizedClientLink
-                className="hover:text-ui-fg-base"
-                href="/account"
-                data-testid="nav-account-link"
-              >
-                Conta
-              </LocalizedClientLink>
-            </div>
             <SavedProductsButton />
             <QuoteListButton />
-            <Suspense
-              fallback={
-                <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
-                  href="/cart"
-                  data-testid="nav-cart-link"
-                >
-                  <span className="hidden small:inline">Carrinho (0)</span>
-                  <span className="flex items-center gap-1 small:hidden">
-                    <Cart aria-hidden="true" className="h-4 w-4" />
-                    <span>(0)</span>
-                  </span>
-                </LocalizedClientLink>
-              }
-            >
-              <CartButton />
-            </Suspense>
           </div>
         </nav>
         <div className="hidden border-t border-ui-border-base bg-[#fafcfb] medium:block">

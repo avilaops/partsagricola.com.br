@@ -10,17 +10,9 @@ import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { TechnicalConfirmation } from "@modules/common/icons/parts"
 import { HttpTypes } from "@medusajs/types"
+import { listCategoryTree } from "@lib/data/categories"
 
-const collectCategoryIds = (
-  category: HttpTypes.StoreProductCategory
-): string[] => [
-  category.id,
-  ...(category.category_children?.flatMap((child) =>
-    collectCategoryIds(child)
-  ) || []),
-]
-
-export default function CategoryTemplate({
+export default async function CategoryTemplate({
   category,
   sortBy,
   page,
@@ -33,7 +25,9 @@ export default function CategoryTemplate({
 }) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
-  const categoryIds = collectCategoryIds(category)
+  // A árvore vem da camada de leitura: a cópia rasa em category_children só
+  // desce um nível, e um departamento precisa listar netos também.
+  const categoryIds = await listCategoryTree(category.handle)
   const visual = getCategoryVisual(category)
 
   if (!category || !countryCode) notFound()

@@ -1,17 +1,29 @@
 "use server"
 
-import { sdk } from "@lib/config"
-import { sortProducts } from "@lib/util/sort-products"
 import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import { getAuthHeaders, getCacheOptions } from "./cookies"
-import { getRegion, retrieveRegion } from "./regions"
 
+import { paraStoreProduct } from "./catalogo-adapter"
+import {
+  listarCatalogo,
+  listarCategorias,
+  obterProdutoPorHandle,
+  obterProdutoPorSku,
+  type OrdemCatalogo,
+} from "./catalogo"
+
+/**
+ * A mesma assinatura que o starter tinha sobre o Medusa, servida pela camada
+ * `catalogo_odoo`. Os parâmetros mantêm os nomes herdados (`category_id`,
+ * `order`, `q`...) para não reescrever cada consumidor — mas a semântica de
+ * identidade mudou: `category_id` carrega handles e `id` carrega SKUs, porque
+ * os ids internos do Medusa morreram com ele.
+ */
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
-  countryCode,
-  regionId,
+  countryCode: _countryCode,
+  regionId: _regionId,
 }: {
   pageParam?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
@@ -22,67 +34,55 @@ export const listProducts = async ({
   nextPage: number | null
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
 }> => {
-  if (!countryCode && !regionId) {
-    throw new Error("Country code or region ID is required")
-  }
-
   const limit = queryParams?.limit || 12
-  const _pageParam = Math.max(pageParam, 1)
-  const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit
+  const pagina = Math.max(pageParam, 1)
 
-  let region: HttpTypes.StoreRegion | undefined | null
-
-  if (countryCode) {
-    region = await getRegion(countryCode)
-  } else {
-    region = await retrieveRegion(regionId!)
-  }
-
-  if (!region) {
+  // Um handle exato é a página de produto: caminho direto, sem listagem.
+  const handle = (queryParams as any)?.handle as string | undefined
+  if (handle) {
+    const produto = await obterProdutoPorHandle(handle)
+    const categorias = new Map(
+      (await listarCategorias()).map((c) => [c.handle, c])
+    )
     return {
-      response: { products: [], count: 0 },
+      response: {
+        products: produto ? [paraStoreProduct(produto, categorias)] : [],
+        count: produto ? 1 : 0,
+      },
       nextPage: null,
+      queryParams,
     }
   }
 
-  const headers = {
-    ...(await getAuthHeaders()),
+  const porParametro: Record<string, OrdemCatalogo> = {
+    "-created_at": "recentes",
+    preco_asc: "preco_asc",
+    preco_desc: "preco_desc",
   }
+  const ordem: OrdemCatalogo =
+    porParametro[(queryParams as any)?.order as string] ?? "nome"
 
-  const next = {
-    ...(await getCacheOptions("products")),
+  const { produtos, total } = await listarCatalogo({
+    busca: (queryParams as any)?.q || undefined,
+    categorias: (queryParams as any)?.category_id || undefined,
+    skus: (queryParams as any)?.id || undefined,
+    ordem,
+    pagina,
+    porPagina: limit,
+  })
+
+  const categorias = new Map(
+    (await listarCategorias()).map((c) => [c.handle, c])
+  )
+
+  return {
+    response: {
+      products: produtos.map((p) => paraStoreProduct(p, categorias)),
+      count: total,
+    },
+    nextPage: total > pagina * limit ? pageParam + 1 : null,
+    queryParams,
   }
-
-  return sdk.client
-    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
-      `/store/products`,
-      {
-        method: "GET",
-        query: {
-          limit,
-          offset,
-          region_id: region?.id,
-          fields:
-            "*variants.calculated_price,+variants.inventory_quantity,*variants.images,*categories,+metadata,+tags,",
-          ...queryParams,
-        },
-        headers,
-        next,
-        cache: "force-cache",
-      }
-    )
-    .then(({ products, count }) => {
-      const nextPage = count > offset + limit ? pageParam + 1 : null
-
-      return {
-        response: {
-          products,
-          count,
-        },
-        nextPage: nextPage,
-        queryParams,
-      }
-    })
 }
 
 export const listProductsWithSort = async ({
@@ -100,28 +100,35 @@ export const listProductsWithSort = async ({
   nextPage: number | null
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
 }> => {
-  const limit = queryParams?.limit || 12
+  // A ordenação agora acontece no SQL (o starter ordenava só a página
+  // carregada, o que era mentira com 28 mil itens).
+  const porPreco: Partial<Record<SortOptions, string>> = {
+    price_asc: "preco_asc",
+    price_desc: "preco_desc",
+  }
+  const ordemPreco = porPreco[sortBy]
 
   const result = await listProducts({
     pageParam: page,
     queryParams: {
       ...queryParams,
-      limit,
-    },
+      limit: queryParams?.limit || 12,
+      ...(ordemPreco ? { order: ordemPreco } : {}),
+    } as any,
     countryCode,
   })
 
-  const products =
-    sortBy === "created_at"
-      ? result.response.products
-      : sortProducts(result.response.products, sortBy)
+  return result
+}
 
-  return {
-    response: {
-      products,
-      count: result.response.count,
-    },
-    nextPage: result.nextPage,
-    queryParams,
-  }
+/** Produto por SKU no formato dos templates (ficha, cotação, contato). */
+export const getProductBySku = async (
+  sku: string
+): Promise<HttpTypes.StoreProduct | null> => {
+  const produto = await obterProdutoPorSku(sku)
+  if (!produto) return null
+  const categorias = new Map(
+    (await listarCategorias()).map((c) => [c.handle, c])
+  )
+  return paraStoreProduct(produto, categorias)
 }

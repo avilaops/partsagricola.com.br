@@ -25,6 +25,10 @@ export type ProdutoCatalogo = {
   metadata: Record<string, unknown>
   odooId: number
   atualizadoEm: string
+  /** Slug da URL pública (/products/[handle]); herdado do Medusa via sync. */
+  handle: string | null
+  /** Handle da categoria-folha; a árvore vem de `listarCategorias()`. */
+  categoria: string | null
 }
 
 // Uma pool por processo. Em dev o HMR recarrega o módulo a cada edição; sem o
@@ -52,6 +56,8 @@ type Linha = {
   metadata: Record<string, unknown>
   odoo_id: number
   atualizado_em: string
+  handle: string | null
+  categoria: string | null
 }
 
 function paraProduto(linha: Linha): ProdutoCatalogo {
@@ -65,59 +71,94 @@ function paraProduto(linha: Linha): ProdutoCatalogo {
     imagemUrl: linha.imagem_url,
     metadata: linha.metadata,
     odooId: linha.odoo_id,
-    atualizadoEm: linha.atualizado_em,
+    // O driver devolve timestamptz como Date; string ISO atravessa o cache e
+    // o JSX sem surpresa.
+    atualizadoEm: new Date(linha.atualizado_em).toISOString(),
+    handle: linha.handle,
+    categoria: linha.categoria,
   }
 }
 
 const COLUNAS =
-  "sku, nome, descricao, preco, moeda, imagem_url, metadata, odoo_id, atualizado_em"
+  "sku, nome, descricao, preco, moeda, imagem_url, metadata, odoo_id, atualizado_em, handle, categoria"
+
+export type CategoriaCatalogo = {
+  handle: string
+  nome: string
+  pai: string | null
+}
 
 // A expressão precisa ser idêntica à do índice `catalogo_odoo_busca_idx`
 // (camada_leitura.sql); qualquer diferença e o Postgres varre a tabela inteira.
 const BUSCA_TSV =
   "to_tsvector('portuguese', coalesce(nome, '') || ' ' || coalesce(sku, ''))"
 
+export type OrdemCatalogo = "nome" | "recentes" | "preco_asc" | "preco_desc"
+
 export const listarCatalogo = unstable_cache(
   async ({
     busca,
+    categorias,
+    skus,
+    ordem = "nome",
     pagina = 1,
     porPagina = 24,
   }: {
     busca?: string
+    /** handles de categoria (folha + descendentes, resolvidos por quem chama) */
+    categorias?: string[]
+    skus?: string[]
+    ordem?: OrdemCatalogo
     pagina?: number
     porPagina?: number
   } = {}): Promise<{ produtos: ProdutoCatalogo[]; total: number }> => {
     const deslocamento = (Math.max(1, pagina) - 1) * porPagina
 
+    const condicoes = ["publicado"]
+    const parametros: unknown[] = []
     if (busca?.trim()) {
-      const consulta = busca.trim()
-      const [linhas, contagem] = await Promise.all([
-        pool().query<Linha>(
-          `select ${COLUNAS} from catalogo_odoo
-           where publicado and ${BUSCA_TSV} @@ plainto_tsquery('portuguese', $1)
-           order by nome limit $2 offset $3`,
-          [consulta, porPagina, deslocamento]
-        ),
-        pool().query<{ total: string }>(
-          `select count(*) as total from catalogo_odoo
-           where publicado and ${BUSCA_TSV} @@ plainto_tsquery('portuguese', $1)`,
-          [consulta]
-        ),
-      ])
-      return {
-        produtos: linhas.rows.map(paraProduto),
-        total: Number(contagem.rows[0].total),
-      }
+      // tsquery casa palavra inteira; comprador digita código PELA METADE
+      // ("AH1294" de AH129451). O ILIKE cobre o prefixo/pedaço — varre a
+      // tabela, mas o resultado fica no cache sob a tag "catalogo".
+      parametros.push(busca.trim())
+      const n = parametros.length
+      parametros.push(`%${busca.trim()}%`)
+      condicoes.push(
+        `(${BUSCA_TSV} @@ plainto_tsquery('portuguese', $${n})
+          or sku ilike $${n + 1} or nome ilike $${n + 1})`
+      )
     }
+    if (categorias?.length) {
+      parametros.push(categorias)
+      condicoes.push(`categoria = any($${parametros.length})`)
+    }
+    if (skus?.length) {
+      parametros.push(skus)
+      condicoes.push(`sku = any($${parametros.length})`)
+    }
+    const onde = condicoes.join(" and ")
+
+    // "recentes" ordena por odoo_id: o Odoo atribui id crescente na criação, e
+    // é o único rastro de "quando entrou" que sobrevive à travessia — o
+    // atualizado_em muda a cada sync. Preço nulo vai pro fim nas duas direções:
+    // "sob consulta" não compete com preço de verdade.
+    const ordenacao = {
+      nome: "nome",
+      recentes: "odoo_id desc",
+      preco_asc: "preco asc nulls last, nome",
+      preco_desc: "preco desc nulls last, nome",
+    }[ordem]
 
     const [linhas, contagem] = await Promise.all([
       pool().query<Linha>(
-        `select ${COLUNAS} from catalogo_odoo
-         where publicado order by nome limit $1 offset $2`,
-        [porPagina, deslocamento]
+        `select ${COLUNAS} from catalogo_odoo where ${onde}
+         order by ${ordenacao}
+         limit $${parametros.length + 1} offset $${parametros.length + 2}`,
+        [...parametros, porPagina, deslocamento]
       ),
       pool().query<{ total: string }>(
-        "select count(*) as total from catalogo_odoo where publicado"
+        `select count(*) as total from catalogo_odoo where ${onde}`,
+        parametros
       ),
     ])
     return {
@@ -126,6 +167,70 @@ export const listarCatalogo = unstable_cache(
     }
   },
   ["catalogo-listar"],
+  { tags: ["catalogo"] }
+)
+
+export const obterProdutoPorHandle = unstable_cache(
+  async (handle: string): Promise<ProdutoCatalogo | null> => {
+    // Sem filtro de `publicado`, como na busca por SKU: link indexado resolve.
+    const resultado = await pool().query<Linha>(
+      `select ${COLUNAS} from catalogo_odoo where handle = $1`,
+      [handle]
+    )
+    return resultado.rows[0] ? paraProduto(resultado.rows[0]) : null
+  },
+  ["catalogo-produto-handle"],
+  { tags: ["catalogo"] }
+)
+
+/** A árvore inteira (74 nós) — quem consome monta pais/filhos em memória. */
+export const listarCategorias = unstable_cache(
+  async (): Promise<CategoriaCatalogo[]> => {
+    const resultado = await pool().query<CategoriaCatalogo>(
+      "select handle, nome, pai from categorias_catalogo order by nome"
+    )
+    return resultado.rows
+  },
+  ["catalogo-categorias"],
+  { tags: ["catalogo"] }
+)
+
+export const contarPublicados = unstable_cache(
+  async (): Promise<number> => {
+    const resultado = await pool().query<{ total: string }>(
+      "select count(*) as total from catalogo_odoo where publicado"
+    )
+    return Number(resultado.rows[0].total)
+  },
+  ["catalogo-contagem"],
+  { tags: ["catalogo"] }
+)
+
+/** Página de sitemap: só o que o XML precisa, na ordem estável do SKU. */
+export const produtosParaSitemap = unstable_cache(
+  async (
+    deslocamento: number,
+    limite: number
+  ): Promise<
+    Array<{ handle: string; atualizadoEm: string; imagemUrl: string | null }>
+  > => {
+    const resultado = await pool().query<{
+      handle: string
+      atualizado_em: string
+      imagem_url: string | null
+    }>(
+      `select handle, atualizado_em, imagem_url from catalogo_odoo
+       where publicado and handle is not null
+       order by sku limit $1 offset $2`,
+      [limite, deslocamento]
+    )
+    return resultado.rows.map((linha) => ({
+      handle: linha.handle,
+      atualizadoEm: new Date(linha.atualizado_em).toISOString(),
+      imagemUrl: linha.imagem_url,
+    }))
+  },
+  ["catalogo-sitemap"],
   { tags: ["catalogo"] }
 )
 
