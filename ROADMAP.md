@@ -1,6 +1,6 @@
 # Roadmap — Marketplace Agricola
 
-> Última atualização: 03/08/2026. Este documento acompanha o progresso do
+> Última atualização: 19/08/2026. Este documento acompanha o progresso do
 > projeto de ponta a ponta: da extração do catálogo até a loja em produção.
 > Mantenha atualizado conforme cada fase avança.
 
@@ -161,6 +161,33 @@ agricola/
   navegação consistente por botão ou Enter.
 - Barra de conversão mobile fixa nas páginas de produto, integrada à cotação e
   ao comparador, com transição automática para evitar sobreposição de ações.
+
+### Fase 7 — Odoo como fonte da verdade (em andamento)
+
+Decidido em 16/08/2026; detalhes operacionais em
+`odoo.avilaops.com/integracao-partsagricola/README.md`. O Medusa sai; o site e
+o Postgres ficam. Estado em 19/08/2026:
+
+- **Feito:** 28.424 produtos importados no Odoo (idempotente por SKU);
+  camada de leitura `catalogo_odoo` populada e sincronizada; rota
+  `POST /api/revalidar` no ar (token, falha fechado); orquestrador
+  `vitrine/atualizar.py` instalado no VPS com cron horário; fotos
+  importadas para o Odoo **com recorte de fundo** (serviço `recorte`
+  no ar, modelo u2netp).
+- **Bloqueado:** precificação (`precificar.py`) espera as chaves
+  `ANTHROPIC_API_KEY` e `BRAVE_API_KEY` no `.env` do script no VPS —
+  não estão lá, e o script recusa rodar sem elas.
+- **Próximo:** conferir o catálogo no Odoo, trocar as páginas de
+  vitrine/produto/busca para `catalogo_odoo`, pedido do site → Odoo e,
+  por fim, desligar o Medusa.
+
+### Identidade visual v2 — aplicada e no ar (19/08/2026)
+
+Tipografia oficial (Manrope/Inter via `next/font`), banners editoriais
+`*-v2.webp` sem texto embutido, seção Novidades na home, página
+`/br/confirmacao-tecnica`, metadados sociais/PWA completos e correção do
+ciclo 307 do middleware para visitantes sem cookie. Deploy feito no VPS
+no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
 
 ## Pendências / próximas fases
 
