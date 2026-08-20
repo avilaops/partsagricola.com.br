@@ -227,9 +227,11 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
    ideal de performance).
 
 ### Operacional
-6. **Sem backup configurado** pros bancos `agricola`/`agricola_medusa`
-   (o `pkvedacoes` tem um serviço de snapshot automático — os nossos
-   ainda não têm).
+6. ~~Sem backup configurado~~ — **resolvido em 20/08/2026**:
+   `partsagricola-db-snapshot.timer` (00:30) despeja os três bancos
+   (`partsagricola`, `agricola_medusa`, `agricola`) em
+   `/opt/backups/partsagricola`, retenção de 5 dias
+   (`integracao-partsagricola/backup_bancos.sh` no repo do Odoo).
 7. **Deploy é manual** — sem CI/CD; toda mudança de código precisa de
    build local + `scp` + restart do systemd, repetindo os passos da
    Fase 3.
