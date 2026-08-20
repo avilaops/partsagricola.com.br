@@ -115,6 +115,10 @@ export default async function ProductPage(props: Props) {
       )
     )
   )
+  // Preço estruturado só quando existe de verdade: peça "sob consulta" fica
+  // sem offers em vez de anunciar R$ 0,00 ao Google.
+  const precoVariante = (pricedProduct.variants?.[0] as any)?.calculated_price
+    ?.calculated_amount as number | undefined
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -123,6 +127,16 @@ export default async function ProductPage(props: Props) {
     image: productImages,
     sku: pricedProduct.variants?.[0]?.sku || undefined,
     category: pricedProduct.categories?.[0]?.name || undefined,
+    ...(precoVariante
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: precoVariante.toFixed(2),
+            priceCurrency: "BRL",
+            url: productUrl,
+          },
+        }
+      : {}),
     url: productUrl,
   }
   const breadcrumbJsonLd = {
