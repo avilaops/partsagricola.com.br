@@ -160,9 +160,11 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 - **Loja**: <https://partsagricola.com.br> (storefront Next.js, `storefront/`
   neste repo — fork do `nextjs-starter-medusa` oficial, rebrandeado, com
   landing page própria).
-- **Admin/API**: <https://api.partsagricola.com.br> (backend Medusa v2,
-  `medusa/` neste repo). Login: e-mail/senha combinados com o Nicolas — não
-  estão neste repo.
+- **Admin**: o Odoo do tenant `partsagricola` (container
+  `odoo-avilaops-partsagricola-1`, porta 8071 no VPS — ver
+  `odoo.avilaops.com/integracao-partsagricola/README.md`). O antigo
+  <https://api.partsagricola.com.br> (Medusa) está desligado desde
+  20/08/2026 e responde 502.
 - Deploy: **um comando** — `./scripts/deploy-storefront.sh` (build local com
   túnel SSH até o Postgres do VPS, verificação anti-localhost no bundle,
   empacote, backup, troca e smoke test; `--so-build` para no build). O build
@@ -330,8 +332,9 @@ Ainda em aberto:
    domínio antigo responda com 301, e o `agricola.avilaops.com` já saiu do DNS
    — a reindexação vai acontecer por descoberta normal, mais devagar. O Google
    não participa do IndexNow, então esse caminho é só via Search Console.
-2. O nome de exibição da loja no Medusa ainda é "Agricola". O `<title>` e os
-   metadados sociais do storefront já usam "Parts Agrícola".
+2. ~~O nome de exibição da loja no Medusa~~ — sem objeto: o Medusa saiu em
+   20/08/2026; `<title>`, metadados sociais e identidade já são "Parts
+   Agrícola".
 
 ### Retentores: perda silenciosa na extração (corrigida em 16/08/2026)
 
