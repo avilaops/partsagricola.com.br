@@ -143,6 +143,22 @@ export const obterProdutoPorSku = unstable_cache(
   { tags: ["catalogo"] }
 )
 
+/**
+ * handle → SKU, para o `/api/cotacao` casar o item da lista com o
+ * `default_code` do Odoo. Sem cache de propósito: cotação é rara, e o dado
+ * fresco importa mais que poupar uma consulta indexada.
+ */
+export async function mapearSkusPorHandle(
+  handles: string[]
+): Promise<Map<string, string>> {
+  if (!handles.length) return new Map()
+  const resultado = await pool().query<{ handle: string; sku: string }>(
+    "select handle, sku from catalogo_odoo where handle = any($1)",
+    [handles]
+  )
+  return new Map(resultado.rows.map((r) => [r.handle, r.sku]))
+}
+
 /** Filtro por medidas exatas dentro da metadata (localizador `/br/medidas`). */
 export const buscarPorMedidas = unstable_cache(
   async (
