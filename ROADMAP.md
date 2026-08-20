@@ -236,9 +236,10 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
    (`partsagricola`, `agricola_medusa`, `agricola`) em
    `/opt/backups/partsagricola`, retenção de 5 dias
    (`integracao-partsagricola/backup_bancos.sh` no repo do Odoo).
-7. **Deploy é manual** — sem CI/CD; toda mudança de código precisa de
-   build local + `scp` + restart do systemd, repetindo os passos da
-   Fase 3.
+7. ~~Deploy é manual~~ — **um comando desde 20/08/2026**:
+   `./scripts/deploy-storefront.sh` (túnel, build, verificação
+   anti-localhost, empacote, backup, troca, smoke test). CI/CD de
+   verdade continua fora do escopo por ora.
 8. **Fotos com marca Geomaq visível** — decisão pendente sobre re-fotografar,
    croppar ou substituir as imagens que mostram o logo Geomaq®.
 
