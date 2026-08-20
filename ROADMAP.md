@@ -218,8 +218,12 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
 3. **Indexação externa** — enviar o sitemap no Google Search Console e
    acompanhar cobertura; a preparação técnica não garante rastreamento
    imediato pelo Google.
-4. **196 registros em quarentena** — revisar
-   `data/processed/catalog_quarantine.csv` antes de qualquer nova carga.
+4. ~~Registros em quarentena~~ — **revisados em 20/08/2026**: dos 280,
+   141 eram dado bom rejeitado por rigidez do pipeline (medida dupla de
+   retentor, código no prefixo do nome, referência contaminada) — 140
+   únicos criados no Odoo e no ar. As 139 restantes têm `revisar=sim`
+   da revisão humana da extração e ficam de fora por decisão, não por
+   bug.
 5. **Rebuild não é automático** — páginas de produto/categoria são
    estáticas (SSG). Mudanças grandes no catálogo pelo admin merecem um
    rebuild+redeploy do storefront pra manter a geração estática correta
