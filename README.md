@@ -1,14 +1,21 @@
 # Marketplace Agricola
 
 Pipeline de extração, tratamento e publicação de catálogos agrícolas e de
-vedação no Medusa, com storefront Next.js em
-<https://partsagricola.com.br>.
+vedação, com storefront Next.js em <https://partsagricola.com.br>. Desde
+20/08/2026 a fonte da verdade do catálogo é o **Odoo** (o Medusa foi
+desligado) — o site lê a camada `catalogo_odoo` no Postgres; ver
+`ROADMAP.md` → Fase 7 e `odoo.avilaops.com/integracao-partsagricola/`.
 
-## Estado atual — 30/07/2026
+## Estado atual — 20/08/2026
 
-- **25.239 itens tratados e importados**, sem `import_key` duplicada.
-- **25.520 produtos publicados** no Medusa, contando os 281 produtos anteriores.
-- **196 registros em quarentena**, preservados para revisão e fora da loja.
+- **28.564 produtos publicados**, lidos da camada Odoo; 5 com preço, o resto
+  "sob consulta" (preço nasce no Odoo, gravado por `aplicar_precos.py`).
+- **3.806 fotos passaram pelo removedor de fundo com IA**; 3.438 vivem
+  recortadas no Odoo e são publicadas no R2 (`recortadas/{sku}.png`).
+- **139 registros em quarentena** (todos `revisar=sim` da revisão humana);
+  141 foram recuperados em 20/08 depois de corrigir o pipeline.
+- Deploy de um comando (`scripts/deploy-storefront.sh`), backup diário dos
+  três bancos, sync horário Odoo → site com revalidação de cache.
 - Busca pública por código, nome ou aplicação em `/br/store`.
 - Localizador técnico por medidas exatas de O-rings, retentores e gaxetas em
   `/br/medidas`.
