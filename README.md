@@ -163,12 +163,14 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 - **Admin/API**: <https://api.partsagricola.com.br> (backend Medusa v2,
   `medusa/` neste repo). Login: e-mail/senha combinados com o Nicolas — não
   estão neste repo.
-- Deploy: build de produção feito localmente (`medusa build` /
-  `next build` com `output: standalone`) e transferido pro VPS — evita rodar
-  `npm install` pesado no servidor compartilhado. Rodando como serviços
-  systemd nativos (`agricola-medusa.service` na porta 9002,
-  `agricola-storefront.service` na porta 3006), mesmo padrão do
-  `pkvedacoes-medusa`/`pkvedacoes-site`.
+- Deploy: **um comando** — `./scripts/deploy-storefront.sh` (build local com
+  túnel SSH até o Postgres do VPS, verificação anti-localhost no bundle,
+  empacote, backup, troca e smoke test; `--so-build` para no build). O build
+  é local porque rodar `npm install` no servidor compartilhado já causou
+  susto de memória. Em produção roda como serviço systemd
+  (`agricola-storefront.service` na porta 3006), mesmo padrão do
+  `pkvedacoes-site`. O `agricola-medusa.service` foi **desligado e
+  desabilitado em 20/08/2026** — o catálogo vem da camada `catalogo_odoo`.
 - Redis: reaproveita o `redis-server` nativo do VPS, namespaced por
   `TENANT_SLUG=agricola` (mesmo padrão do pkvedacoes, não colide entre
   projetos no mesmo Redis).
