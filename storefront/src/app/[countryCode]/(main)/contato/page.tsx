@@ -29,8 +29,8 @@ export default async function ContatoPage({
             Solicite sua cotação
           </h1>
           <p className="mt-4 text-base leading-relaxed text-ui-fg-subtle small:text-lg">
-            Envie o código e os dados da aplicação. Nossa equipe confirma a
-            peça correta, disponibilidade, prazo e condição comercial.
+            Envie o código e os dados da aplicação. Nossa equipe confirma a peça
+            correta, disponibilidade, prazo e condição comercial.
           </p>
         </div>
 
@@ -46,7 +46,14 @@ export default async function ContatoPage({
           </div>
         )}
 
-        <ContactCtas productLabel={productLabel} codeLabel={codeLabel} />
+        <ContactCtas
+          productLabel={productLabel}
+          codeLabel={codeLabel}
+          whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
+            /\D/g,
+            ""
+          )}
+        />
 
         <div className="mx-auto mt-10 max-w-2xl border-t border-ui-border-base pt-8">
           <h2 className="font-semibold">Para agilizar a confirmação, envie:</h2>

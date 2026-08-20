@@ -25,7 +25,7 @@ const STATS: Array<{
 }> = [
   { icone: Category, value: "28,4 mil", label: "itens publicados" },
   { icone: Compatibility, value: "2,9 mil", label: "retentores por medida" },
-  { icone: Machine, value: "5", label: "departamentos técnicos" },
+  { icone: Machine, value: "4", label: "departamentos técnicos" },
   {
     icone: TechnicalConfirmation,
     value: "Confirmação",

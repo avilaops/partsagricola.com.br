@@ -16,6 +16,7 @@ export async function GET() {
 - [Página inicial](${baseUrl}/br)
 - [Catálogo pesquisável](${baseUrl}/br/store)
 - [Busca técnica por medidas](${baseUrl}/br/medidas)
+- [Como funciona a confirmação técnica](${baseUrl}/br/confirmacao-tecnica)
 - [Contato e orçamento](${baseUrl}/br/contato)
 - [Sitemap completo](${baseUrl}/sitemap.xml)
 

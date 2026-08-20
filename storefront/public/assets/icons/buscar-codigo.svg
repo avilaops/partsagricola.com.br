@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-buscar-codigo">
+  <title id="title-buscar-codigo">Buscar por código</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10.5" cy="10.5" r="6.5"/>
+        <path d="m16 16 4.2 4.2"/>
+        <path d="M8 8.5h4.5M8 10.8h5M8 13.1h3.5"/>
+      </g>
+      <path class="pa-accent" style="stroke:#0B6B3F" fill="none" stroke-width="1.8" stroke-linecap="round" d="M8 8.5h4.5"/>
+</svg>

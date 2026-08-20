@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-cartao">
+  <title id="title-cartao">Cartão</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5.5" width="18" height="13" rx="2"/>
+        <path d="M3 9.5h18M7 13h3M7 16h5"/>
+        <rect x="15.2" y="12" width="3" height="2.4" rx=".4"/>
+      </g>
+      <path class="pa-accent" style="stroke:#0B6B3F" fill="none" stroke-width="1.8" stroke-linecap="round" d="M3 9.5h18"/>
+</svg>

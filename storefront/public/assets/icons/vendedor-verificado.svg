@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-vendedor-verificado">
+  <title id="title-vendedor-verificado">Vendedor verificado</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3.5 10 12 4l8.5 6v9.5h-17zM3.5 10h17M7 19.5v-5h10v5M9 10v2M12 10v2M15 10v2"/>
+        <path d="m17.2 15.8 1.1 1.1 2.2-2.2"/>
+      </g>
+      <circle class="pa-fill-accent" style="fill:#0B6B3F" cx="19.2" cy="15.8" r="2.8"/>
+      <path fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" d="m17.9 15.8 1 1 2-2"/>
+</svg>

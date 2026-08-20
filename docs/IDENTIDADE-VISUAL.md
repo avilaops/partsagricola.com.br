@@ -66,7 +66,8 @@ Defina `X` como a altura da pequena folha superior do símbolo.
 
 ## Notas de implementação no site
 
-O que precisou de tratamento entre o kit recebido e o que está no ar.
+O que precisou de tratamento entre o kit recebido e a implementação atual do
+site.
 
 ### Verde alinhado ao token
 
@@ -92,14 +93,20 @@ dentro. Por isso as versões usadas no site são recortadas para alfa:
 Se o kit for regerado, pedir os lockups **em PNG com transparência** resolve
 isso na origem.
 
-### Banners sem destino
+### Banners editoriais e destinos
 
-O kit traz 15 banners; o site tem 4 departamentos. Aplicados os três que casam
-por nome (`pecas-agricolas`, `maquinas-pesadas`, `vedacoes-retentores` →
-`vedacoes-e-selagem`). Os demais ficaram em `images/marca/banners/` — **fora do
-`public/`**, porque servir 26 MB de PNG que nenhuma página referencia só engorda
-o deploy. Convertidos para WebP no versionamento (26 MB → 1,5 MB); os PNG
-originais seguem no Drive.
+O kit traz 15 banners; o site tem 4 departamentos. Os três que casam por nome
+(`pecas-agricolas`, `maquinas-pesadas`, `vedacoes-retentores` →
+`vedacoes-e-selagem`) tinham título e descrição gravados na imagem. O recorte
+responsivo dos cards cortava essas palavras e ainda duplicava a copy do HTML.
+
+Por isso, os cards usam derivados editoriais `*-v2.webp`, sem logo, texto ou
+botão embutido. Título, descrição e CTA continuam em HTML, acessíveis e
+responsivos. As artes originais permanecem extraídas em
+`images/geral/partsagricola-brand-assets-v2/`, fora do `public/`; servir PNGs
+que nenhuma página referencia apenas engordaria o deploy.
+`kits-e-reparos` usa sua fotografia técnica anterior porque o kit não trouxe
+uma arte correspondente.
 
 Sem destino hoje:
 
@@ -108,13 +115,28 @@ Sem destino hoje:
 - `hidraulica`, `eletrica`, `filtros-manutencao`, `motores-transmissao`,
   `implementos-agricolas`, `pecas-construcao` — departamentos que não existem
   na taxonomia atual.
-- `confirmacao-tecnica`, `novidades`, `ofertas`, `vendedores` — seções que o
-  site ainda não tem.
+- `confirmacao-tecnica` — ganhou derivado editorial sem texto em
+  `public/images/campaigns/confirmacao-tecnica-v2.webp`, usado na home e na
+  página `/br/confirmacao-tecnica`.
+- `novidades` — virou uma seção alimentada pelos produtos realmente adicionados
+  por último; o banner raster não é usado porque cita vendedores sem comprovar
+  esse dado no catálogo.
+- `ofertas` — permanece reservado até existirem preços promocionais ou uma
+  coleção de ofertas real no Medusa.
+- `vendedores` — permanece reservado até o cadastro ter backend, operação e
+  automação n8n; não se publica um CTA de onboarding que termina sem fluxo.
 
-E `kits-e-reparos`, que existe no site, não tem banner no kit.
+### Tipografia aplicada
 
-### Tipografia ainda não aplicada
+Manrope 700/800 é carregada nos títulos e Inter 400/500/600 na interface por
+`next/font`. Os arquivos são servidos pelo próprio domínio e as métricas são
+reservadas antes do carregamento, evitando salto de layout.
 
-Manrope e Inter são a recomendação da seção 3. O site usa a pilha de fontes do
-sistema. Carregar as duas famílias é uma mudança de performance e de layout
-(altura de linha, largura de coluna) que merece uma passada própria.
+### PWA e compartilhamento
+
+- Open Graph e Twitter usam imagens 1200×630 e metadados explícitos, com texto
+  alternativo.
+- O manifest usa o grafite oficial `#1F2933`.
+- Os ícones atuais são declarados como `purpose: any`. Uma futura versão
+  `maskable` deve ser exportada separadamente, com todo o símbolo dentro da área
+  segura; não se deve declarar o arquivo atual como maskable e aceitar cortes.

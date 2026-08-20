@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-atendimento">
+  <title id="title-atendimento">Atendimento</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 13v-1a7 7 0 0 1 14 0v1M5 13H3.8v4H7v-4M19 13h1.2v4H17v-4M17 17c0 2-1.5 3-4 3"/>
+        <path d="M13.8 7.5c2.2-.1 3.5 1.1 3.7 3.1-2 .3-3.3-.8-3.7-3.1zM13.8 7.5c-.1 1.5.4 2.5 1.5 3.1"/>
+      </g>
+      <path class="pa-accent" style="stroke:#0B6B3F" fill="none" stroke-width="1.8" stroke-linecap="round" d="M13.8 7.5c-.1 1.5.4 2.5 1.5 3.1"/>
+</svg>

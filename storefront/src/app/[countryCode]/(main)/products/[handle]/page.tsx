@@ -151,7 +151,9 @@ export default async function ProductPage(props: Props) {
         )
       )
     : []
-  const productUrl = `${getBaseURL()}/${params.countryCode}/products/${pricedProduct.handle}`
+  const productUrl = `${getBaseURL()}/${params.countryCode}/products/${
+    pricedProduct.handle
+  }`
   const productImages = Array.from(
     new Set(
       [pricedProduct.thumbnail, ...images.map((image) => image.url)].filter(
@@ -214,6 +216,11 @@ export default async function ProductPage(props: Props) {
         countryCode={params.countryCode}
         images={images}
         alternatives={alternatives}
+        baseUrl={getBaseURL()}
+        whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
+          /\D/g,
+          ""
+        )}
       />
     </>
   )

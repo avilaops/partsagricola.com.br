@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-favoritos">
+  <title id="title-favoritos">Favoritos</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19.6S4.5 15.2 4.5 9.3A4 4 0 0 1 12 7.2a4 4 0 0 1 7.5 2.1c0 5.9-7.5 10.3-7.5 10.3z"/>
+        <path d="M13.8 14.4c.1-2.3 1.7-3.5 4-3.2-.2 2.4-1.6 3.5-4 3.2z"/>
+        <path d="M13.8 14.4c.8-.3 1.4-.8 1.9-1.6"/>
+      </g>
+      <path class="pa-accent" style="stroke:#0B6B3F" fill="none" stroke-width="1.8" stroke-linecap="round" d="M13.8 14.4c.8-.3 1.4-.8 1.9-1.6"/>
+</svg>

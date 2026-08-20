@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-buscar-aplicacao">
+  <title id="title-buscar-aplicacao">Buscar por aplicação</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10.5" cy="10.5" r="6.5"/>
+        <path d="m16 16 4.2 4.2"/>
+        <path d="M7.5 12.5h6v-3h-4l-1 1.5h-1zM9 12.5v1.5M12.5 12.5v1.5"/>
+        <circle cx="9" cy="14.2" r=".7"/>
+        <circle cx="12.5" cy="14.2" r=".7"/>
+      </g>
+      <path class="pa-accent" style="stroke:#0B6B3F" fill="none" stroke-width="1.8" stroke-linecap="round" d="M7.5 12.5h6"/>
+</svg>

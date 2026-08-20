@@ -2,6 +2,7 @@
 
 import { useLeadOrigin } from "@modules/analytics/hooks/use-lead-origin"
 import { Support, Whatsapp } from "@modules/common/icons/parts"
+import { useEffect, useState } from "react"
 
 /**
  * Os dois CTAs de cotacao da pagina de contato.
@@ -15,9 +16,11 @@ import { Support, Whatsapp } from "@modules/common/icons/parts"
 export default function ContactCtas({
   productLabel,
   codeLabel,
+  whatsappNumber,
 }: {
   productLabel: string
   codeLabel: string
+  whatsappNumber?: string
 }) {
   const leadOrigin = useLeadOrigin()
   const message =
@@ -28,16 +31,21 @@ export default function ContactCtas({
       "Pode confirmar aplicação, preço e disponibilidade?",
     ].join("\n") + leadOrigin
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
-    /\D/g,
-    ""
-  )
   const whatsappHref = whatsappNumber
     ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     : undefined
-  const emailHref = `mailto:contato@partsagricola.com.br?subject=${encodeURIComponent(
-    `Cotação da peça ${codeLabel}`
-  )}&body=${encodeURIComponent(message)}`
+  const [emailHref, setEmailHref] = useState("#email")
+  const [emailLabel, setEmailLabel] = useState("Enviar cotação por e-mail →")
+
+  useEffect(() => {
+    const address = ["contato", "partsagricola.com.br"].join("@")
+    setEmailHref(
+      `mailto:${address}?subject=${encodeURIComponent(
+        `Cotação da peça ${codeLabel}`
+      )}&body=${encodeURIComponent(message)}`
+    )
+    setEmailLabel(`${address} →`)
+  }, [codeLabel, message])
 
   return (
     <div
@@ -66,9 +74,7 @@ export default function ContactCtas({
           <Support aria-hidden="true" className="h-4 w-4" />
           Cotação por e-mail
         </span>
-        <strong className="text-xl text-ui-fg-base">
-          contato@partsagricola.com.br →
-        </strong>
+        <strong className="text-xl text-ui-fg-base">{emailLabel}</strong>
       </a>
     </div>
   )

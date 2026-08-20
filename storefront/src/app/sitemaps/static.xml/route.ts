@@ -28,6 +28,12 @@ export async function GET() {
       frequency: "weekly",
       updatedAt: "",
     },
+    {
+      path: "/br/confirmacao-tecnica",
+      priority: "0.8",
+      frequency: "monthly",
+      updatedAt: "",
+    },
     ...categories.map((category) => ({
       path: `/br/categories/${category.handle}`,
       priority: "0.7",
@@ -52,20 +58,17 @@ export async function GET() {
     [
       '<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-      ...urls.map(
-        ({ path, priority, frequency, updatedAt }) =>
-          [
-            "  <url>",
-            `    <loc>${escapeXml(`${baseUrl}${path}`)}</loc>`,
-            updatedAt
-              ? `    <lastmod>${escapeXml(updatedAt)}</lastmod>`
-              : "",
-            `    <changefreq>${frequency}</changefreq>`,
-            `    <priority>${priority}</priority>`,
-            "  </url>",
-          ]
-            .filter(Boolean)
-            .join("\n")
+      ...urls.map(({ path, priority, frequency, updatedAt }) =>
+        [
+          "  <url>",
+          `    <loc>${escapeXml(`${baseUrl}${path}`)}</loc>`,
+          updatedAt ? `    <lastmod>${escapeXml(updatedAt)}</lastmod>` : "",
+          `    <changefreq>${frequency}</changefreq>`,
+          `    <priority>${priority}</priority>`,
+          "  </url>",
+        ]
+          .filter(Boolean)
+          .join("\n")
       ),
       "</urlset>",
     ].join("\n")

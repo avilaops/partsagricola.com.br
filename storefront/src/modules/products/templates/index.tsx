@@ -22,6 +22,8 @@ type ProductTemplateProps = {
   countryCode: string
   images: HttpTypes.StoreProductImage[]
   alternatives: HttpTypes.StoreProduct[]
+  baseUrl: string
+  whatsappNumber?: string
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
@@ -30,6 +32,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   countryCode,
   images,
   alternatives,
+  baseUrl,
+  whatsappNumber,
 }) => {
   if (!product || !product.id) {
     return notFound()
@@ -59,7 +63,11 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <ImageGallery images={images} productTitle={product.title} />
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <QuotePanel product={product} />
+          <QuotePanel
+            product={product}
+            baseUrl={baseUrl}
+            whatsappNumber={whatsappNumber}
+          />
         </div>
       </div>
       <ProductAlternatives

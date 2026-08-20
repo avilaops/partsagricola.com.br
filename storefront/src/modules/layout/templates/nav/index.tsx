@@ -12,6 +12,7 @@ import SideMenu from "@modules/layout/components/side-menu"
 import { listCategories } from "@lib/data/categories"
 import QuoteListButton from "@modules/quote-list/components/quote-list-button"
 import SavedProductsButton from "@modules/saved-products/components/saved-products-button"
+import { selectPrimaryDepartments } from "@lib/catalog/departments"
 
 export default async function Nav() {
   const [regions, locales, currentLocale, categories] = await Promise.all([
@@ -20,9 +21,7 @@ export default async function Nav() {
     getLocale(),
     listCategories(),
   ])
-  const departments = categories
-    .filter((category) => !category.parent_category)
-    .sort((first, second) => (first.rank || 0) - (second.rank || 0))
+  const departments = selectPrimaryDepartments(categories)
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -45,16 +44,25 @@ export default async function Nav() {
               className="flex items-center"
               data-testid="nav-store-link"
             >
+              <span className="sr-only">Parts Agrícola</span>
+              <Image
+                src="/images/marca/simbolo-partsagricola.png"
+                alt=""
+                width={256}
+                height={255}
+                priority
+                className="h-8 w-8 object-contain small:hidden"
+              />
               {/* `priority`: a logo esta no topo de toda pagina, entao e quase
                   sempre o maior elemento visivel no primeiro paint. Sem isso o
                   Next adia o carregamento e o LCP piora. */}
               <Image
                 src="/images/marca/logo-partsagricola.png"
-                alt="Parts Agricola"
+                alt=""
                 width={800}
                 height={138}
                 priority
-                className="h-7 w-auto small:h-8"
+                className="hidden h-8 w-auto small:block"
               />
             </LocalizedClientLink>
           </div>

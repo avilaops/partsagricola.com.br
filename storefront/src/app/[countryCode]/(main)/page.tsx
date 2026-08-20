@@ -10,6 +10,8 @@ import { getRegion } from "@lib/data/regions"
 import { listCategories } from "@lib/data/categories"
 import DimensionFinderCta from "@modules/home/components/dimension-finder-cta"
 import RecentlyViewedProducts from "@modules/recently-viewed/components/recently-viewed-products"
+import { selectPrimaryDepartments } from "@lib/catalog/departments"
+import LatestProducts from "@modules/home/components/latest-products"
 
 export const metadata: Metadata = {
   title: "Peças agrícolas, industriais e para máquinas pesadas",
@@ -37,9 +39,7 @@ export default async function Home(props: {
     listCategories(),
   ])
 
-  const departments = categories
-    .filter((category) => !category.parent_category)
-    .sort((first, second) => (first.rank || 0) - (second.rank || 0))
+  const departments = selectPrimaryDepartments(categories)
 
   if (!collections || !region) {
     return null
@@ -50,6 +50,7 @@ export default async function Home(props: {
       <Hero countryCode={countryCode} />
       <TrustRow />
       <ProductLines categories={departments} />
+      <LatestProducts region={region} />
       <DimensionFinderCta />
       <div className="py-4">
         <ul className="flex flex-col gap-x-6">

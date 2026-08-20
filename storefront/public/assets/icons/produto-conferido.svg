@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-produto-conferido">
+  <title id="title-produto-conferido">Produto conferido</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m4 8 8-4 8 4-8 4zM4 8v9l8 4 8-4V8M12 12v9"/>
+        <path d="m14.5 16.5 1.5 1.5 3.2-3.2"/>
+      </g>
+      <path class="pa-accent" style="stroke:#0B6B3F" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="m14.5 16.5 1.5 1.5 3.2-3.2"/>
+</svg>

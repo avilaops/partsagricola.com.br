@@ -14,6 +14,10 @@ storefront/.deploy/
 # as imagens vivem no bucket R2 `agricola-catalogo`, não no repo
 medusa/apps/backend/static/
 
+# kit de marca recebido (~85 MB entre zips e extração) — material de origem,
+# guardado no Drive; o que o site usa vive versionado em storefront/public/
+images/geral/
+
 # scraping: progresso parcial, logs e PDFs de catálogo de fornecedores.
 # Os PDFs são material de terceiros (não redistribuir) e os parciais são
 # recriáveis com os scripts em data/scrapers/.

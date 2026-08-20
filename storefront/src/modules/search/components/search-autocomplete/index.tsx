@@ -209,7 +209,8 @@ const SearchAutocomplete = ({
   }
 
   const hero = variant === "hero"
-  const showRecentSearches = query.trim().length < 2 && recentSearches.length > 0
+  const showRecentSearches =
+    query.trim().length < 2 && recentSearches.length > 0
 
   return (
     <div
@@ -242,9 +243,7 @@ const SearchAutocomplete = ({
           onFocus={() => {
             setIsFocused(true)
             setIsOpen(
-              recentSearches.length > 0 ||
-                suggestions.length > 0 ||
-                isLoading
+              recentSearches.length > 0 || suggestions.length > 0 || isLoading
             )
           }}
           onBlur={handleBlur}
@@ -299,7 +298,11 @@ const SearchAutocomplete = ({
               <span>Use ↑ ↓ para navegar</span>
             )}
           </div>
-          <ul id={listboxId} role="listbox" className="max-h-96 overflow-y-auto">
+          <ul
+            id={listboxId}
+            role="listbox"
+            className="max-h-96 overflow-y-auto"
+          >
             {showRecentSearches &&
               recentSearches.map((recentSearch, index) => (
                 <li
@@ -319,7 +322,10 @@ const SearchAutocomplete = ({
                       index === activeIndex && "bg-[#f1f8f4]"
                     )}
                   >
-                    <Recent aria-hidden="true" className="h-4 w-4 shrink-0 text-ui-fg-muted" />
+                    <Recent
+                      aria-hidden="true"
+                      className="h-4 w-4 shrink-0 text-ui-fg-muted"
+                    />
                     <span className="min-w-0 flex-1 truncate text-ui-fg-base">
                       {recentSearch}
                     </span>
@@ -353,6 +359,7 @@ const SearchAutocomplete = ({
                         src={suggestion.thumbnail}
                         alt=""
                         fill
+                        unoptimized={suggestion.thumbnail.includes(".r2.dev/")}
                         sizes="48px"
                         className="object-contain"
                       />
@@ -370,7 +377,9 @@ const SearchAutocomplete = ({
                       <span className="font-mono font-semibold text-[#0B6B3F]">
                         {suggestion.code}
                       </span>
-                      {suggestion.category && <span>{suggestion.category}</span>}
+                      {suggestion.category && (
+                        <span>{suggestion.category}</span>
+                      )}
                     </div>
                   </div>
                   <span className="text-[#0B6B3F]">→</span>

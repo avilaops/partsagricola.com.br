@@ -328,8 +328,8 @@ Ainda em aberto:
    domínio antigo responda com 301, e o `agricola.avilaops.com` já saiu do DNS
    — a reindexação vai acontecer por descoberta normal, mais devagar. O Google
    não participa do IndexNow, então esse caminho é só via Search Console.
-2. O nome de exibição da loja no Medusa e o `<title>` ainda são "Agricola".
-   O `llms.txt` já foi corrigido pra "Parts Agricola"; o resto da marca não.
+2. O nome de exibição da loja no Medusa ainda é "Agricola". O `<title>` e os
+   metadados sociais do storefront já usam "Parts Agrícola".
 
 ### Retentores: perda silenciosa na extração (corrigida em 16/08/2026)
 

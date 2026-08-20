@@ -1,5 +1,10 @@
 import { Heading, Text } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import {
+  SearchApplication,
+  SearchCode,
+  SearchName,
+} from "@modules/common/icons/parts"
 import SearchAutocomplete from "@modules/search/components/search-autocomplete"
 
 const QUICK_SEARCHES = [
@@ -29,6 +34,23 @@ const Hero = ({ countryCode }: { countryCode: string }) => {
 
         <div className="mt-2 w-full max-w-2xl">
           <SearchAutocomplete countryCode={countryCode} variant="hero" />
+          <ul
+            aria-label="Formas de pesquisar no catálogo"
+            className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/85"
+          >
+            <li className="flex items-center gap-1.5">
+              <SearchCode aria-hidden="true" className="h-4 w-4" />
+              Código
+            </li>
+            <li className="flex items-center gap-1.5">
+              <SearchName aria-hidden="true" className="h-4 w-4" />
+              Nome
+            </li>
+            <li className="flex items-center gap-1.5">
+              <SearchApplication aria-hidden="true" className="h-4 w-4" />
+              Aplicação
+            </li>
+          </ul>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs text-white/70">
             <span>Buscas rápidas:</span>
             {QUICK_SEARCHES.map((item) => (

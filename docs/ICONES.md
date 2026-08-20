@@ -2,6 +2,11 @@
 
 Conjunto vetorial personalizado para a interface do marketplace.
 
+O kit v2 também publica os 28 arquivos individuais em
+`public/assets/icons/`. Use os arquivos individuais em e-mail, PDF ou conteúdo
+estático; no React, prefira os componentes gerados em
+`src/modules/common/icons/parts/`.
+
 ## Linguagem visual
 
 - Traço técnico com cantos arredondados.

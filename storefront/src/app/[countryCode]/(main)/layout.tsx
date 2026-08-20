@@ -53,7 +53,12 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
             {props.children}
             <CompareTray />
             <SavedProductsDrawer />
-            <QuoteListDrawer />
+            <QuoteListDrawer
+              whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
+                /\D/g,
+                ""
+              )}
+            />
             <Footer />
           </QuoteListProvider>
         </SavedProductsProvider>

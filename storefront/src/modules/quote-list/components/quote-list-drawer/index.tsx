@@ -15,19 +15,9 @@ const getAbsoluteUrl = (url: string) => {
   return typeof window === "undefined" ? url : `${window.location.origin}${url}`
 }
 
-const QuoteListDrawer = () => {
-  const {
-    items,
-    isOpen,
-    closeList,
-    removeItem,
-    updateQuantity,
-    clearItems,
-  } = useQuoteList()
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
-    /\D/g,
-    ""
-  )
+const QuoteListDrawer = ({ whatsappNumber }: { whatsappNumber?: string }) => {
+  const { items, isOpen, closeList, removeItem, updateQuantity, clearItems } =
+    useQuoteList()
   const totalQuantity = items.reduce((total, item) => total + item.quantity, 0)
   // Campanha que trouxe a pessoa, quando houver. A venda fecha fora do site:
   // sem isso o pedido chega na caixa de entrada sem dizer de onde veio.
@@ -48,12 +38,17 @@ const QuoteListDrawer = () => {
     ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     : undefined
   const emailHref = `mailto:contato@partsagricola.com.br?subject=${encodeURIComponent(
-    `Cotação técnica de ${items.length} ${items.length === 1 ? "item" : "itens"}`
+    `Cotação técnica de ${items.length} ${
+      items.length === 1 ? "item" : "itens"
+    }`
   )}&body=${encodeURIComponent(message)}`
 
   return (
     <Dialog open={isOpen} onClose={closeList} className="relative z-[80]">
-      <div className="fixed inset-0 bg-black/35 backdrop-blur-[2px]" aria-hidden="true" />
+      <div
+        className="fixed inset-0 bg-black/35 backdrop-blur-[2px]"
+        aria-hidden="true"
+      />
       <div className="fixed inset-0 flex justify-end">
         <DialogPanel className="flex h-full w-full max-w-lg flex-col bg-white shadow-2xl">
           <div className="flex items-start justify-between bg-[#0B6B3F] px-6 py-6 text-white">
@@ -65,8 +60,8 @@ const QuoteListDrawer = () => {
                 Lista de cotação
               </DialogTitle>
               <p className="mt-1 text-sm text-white/75">
-                {items.length} {items.length === 1 ? "peça" : "peças"} · {totalQuantity}{" "}
-                {totalQuantity === 1 ? "unidade" : "unidades"}
+                {items.length} {items.length === 1 ? "peça" : "peças"} ·{" "}
+                {totalQuantity} {totalQuantity === 1 ? "unidade" : "unidades"}
               </p>
             </div>
             <button
@@ -117,11 +112,15 @@ const QuoteListDrawer = () => {
                         </button>
                       </div>
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="text-xs text-ui-fg-subtle">Quantidade</span>
+                        <span className="text-xs text-ui-fg-subtle">
+                          Quantidade
+                        </span>
                         <div className="flex items-center rounded-full border border-ui-border-base bg-white">
                           <button
                             type="button"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity - 1)
+                            }
                             className="h-8 w-8 text-sm hover:text-[#0B6B3F]"
                             aria-label={`Diminuir quantidade de ${item.title}`}
                           >
@@ -132,7 +131,9 @@ const QuoteListDrawer = () => {
                           </span>
                           <button
                             type="button"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
                             className="h-8 w-8 text-sm hover:text-[#0B6B3F]"
                             aria-label={`Aumentar quantidade de ${item.title}`}
                           >
@@ -147,8 +148,8 @@ const QuoteListDrawer = () => {
 
               <div className="border-t border-ui-border-base bg-[#f7faf8] p-5">
                 <p className="mb-4 text-xs leading-relaxed text-ui-fg-subtle">
-                  Nossa equipe confirma compatibilidade, disponibilidade, prazo e
-                  frete antes do fechamento.
+                  Nossa equipe confirma compatibilidade, disponibilidade, prazo
+                  e frete antes do fechamento.
                 </p>
                 {whatsappHref && (
                   <a
@@ -162,7 +163,10 @@ const QuoteListDrawer = () => {
                   </a>
                 )}
                 <div className="mt-3 flex items-center justify-between gap-4 text-sm">
-                  <a href={emailHref} className="font-medium text-[#0B6B3F] hover:underline">
+                  <a
+                    href={emailHref}
+                    className="font-medium text-[#0B6B3F] hover:underline"
+                  >
                     Enviar por e-mail
                   </a>
                   <button
@@ -180,9 +184,12 @@ const QuoteListDrawer = () => {
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e7f3eb] text-[#0B6B3F]">
                 <QuoteList aria-hidden="true" className="h-7 w-7" />
               </div>
-              <h2 className="mt-5 text-xl font-semibold">Sua lista está vazia</h2>
+              <h2 className="mt-5 text-xl font-semibold">
+                Sua lista está vazia
+              </h2>
               <p className="mt-2 max-w-xs text-sm leading-relaxed text-ui-fg-subtle">
-                Adicione as peças que precisa e envie tudo em uma única solicitação.
+                Adicione as peças que precisa e envie tudo em uma única
+                solicitação.
               </p>
               <LocalizedClientLink
                 href="/store"

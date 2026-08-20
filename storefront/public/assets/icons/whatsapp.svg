@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-whatsapp">
+  <title id="title-whatsapp">WhatsApp</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 4.5a7.5 7.5 0 0 0-6.5 11.3L4.5 19.5l3.9-1a7.5 7.5 0 1 0 3.6-14z"/>
+        <path d="M9.2 8.8c.3-.5.7-.4 1-.2l.8 1.2c.2.3.1.6-.1.8l-.5.5c.5 1 1.2 1.7 2.2 2.2l.5-.5c.2-.2.5-.3.8-.1l1.2.8c.3.2.3.7-.2 1-.5.4-1.1.5-1.7.3-2.7-.9-4.8-3-5.7-5.7-.2-.6-.1-1.2.3-1.7z"/>
+      </g>
+      <path class="pa-accent" style="stroke:#0B6B3F" fill="none" stroke-width="1.8" stroke-linecap="round" d="M4.5 19.5 7 18.8"/>
+</svg>

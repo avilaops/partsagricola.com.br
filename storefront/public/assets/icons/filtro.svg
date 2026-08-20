@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title-filtro">
+  <title id="title-filtro">Filtro</title>
+  <style>
+    :root { --pa-green: #0B6B3F; }
+    .pa-accent { stroke: #0B6B3F; stroke: var(--pa-green, #0B6B3F); }
+    .pa-fill-accent { fill: #0B6B3F; fill: var(--pa-green, #0B6B3F); }
+  </style>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 5h16l-6.2 7.2v5.1l-3.6 1.8v-6.9z"/>
+      </g>
+      <circle class="pa-fill-accent" style="fill:#0B6B3F" cx="17.5" cy="17.5" r="2.2"/>
+</svg>

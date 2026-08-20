@@ -1,6 +1,9 @@
 "use client"
 
-import { getProductCode, getTechnicalAttributes } from "@lib/util/product-technical"
+import {
+  getProductCode,
+  getTechnicalAttributes,
+} from "@lib/util/product-technical"
 import { useLeadOrigin } from "@modules/analytics/hooks/use-lead-origin"
 import {
   Delivery,
@@ -13,15 +16,23 @@ import { useQuoteList } from "@modules/quote-list/context/quote-list-context"
 import { useParams } from "next/navigation"
 import CompareButton from "@modules/compare/components/compare-button"
 import SaveProductButton from "@modules/saved-products/components/save-product-button"
+import { useEffect, useState } from "react"
 
-const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
+const QuotePanel = ({
+  product,
+  baseUrl,
+  whatsappNumber,
+}: {
+  product: HttpTypes.StoreProduct
+  baseUrl: string
+  whatsappNumber?: string
+}) => {
   const code = getProductCode(product)
   const countryCode = useParams().countryCode as string
   const { addItem, hasItem, openList } = useQuoteList()
   const isAdded = hasItem(product.id)
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") || ""
   const productPath = `/${countryCode}/products/${product.handle}`
-  const productUrl = `${baseUrl}${productPath}`
+  const productUrl = `${baseUrl.replace(/\/$/, "")}${productPath}`
   // Campanha que trouxe a pessoa, quando houver. A venda fecha fora do site:
   // sem isso o pedido chega na caixa de entrada sem dizer de onde veio.
   const leadOrigin = useLeadOrigin()
@@ -35,16 +46,22 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
     ]
       .filter(Boolean)
       .join("\n") + leadOrigin
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
-    /\D/g,
-    ""
-  )
   const whatsappHref = whatsappNumber
     ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     : undefined
-  const emailHref = `mailto:contato@partsagricola.com.br?subject=${encodeURIComponent(
-    `Cotação da peça ${code}`
-  )}&body=${encodeURIComponent(message)}`
+  const contactHref = `/contato?codigo=${encodeURIComponent(
+    code
+  )}&produto=${encodeURIComponent(product.title)}`
+  const [emailHref, setEmailHref] = useState(contactHref)
+
+  useEffect(() => {
+    const address = ["contato", "partsagricola.com.br"].join("@")
+    setEmailHref(
+      `mailto:${address}?subject=${encodeURIComponent(
+        `Cotação da peça ${code}`
+      )}&body=${encodeURIComponent(message)}`
+    )
+  }, [code, contactHref, message])
 
   return (
     <aside className="rounded-2xl border border-[#0B6B3F]/20 bg-[#f1f8f4] p-6 shadow-sm">
@@ -60,7 +77,9 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
       </p>
 
       <div className="mt-5 rounded-xl border border-[#0B6B3F]/15 bg-white p-4">
-        <span className="text-xs text-ui-fg-muted">Código para atendimento</span>
+        <span className="text-xs text-ui-fg-muted">
+          Código para atendimento
+        </span>
         <p className="mt-1 font-mono text-lg font-semibold text-ui-fg-base">
           {code}
         </p>
@@ -128,9 +147,7 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
           Solicitar por e-mail
         </a>
         <LocalizedClientLink
-          href={`/contato?codigo=${encodeURIComponent(code)}&produto=${encodeURIComponent(
-            product.title
-          )}`}
+          href={contactHref}
           className="text-center text-sm font-medium text-[#0B6B3F] hover:underline"
         >
           Ver outros canais de atendimento
@@ -143,7 +160,10 @@ const QuotePanel = ({ product }: { product: HttpTypes.StoreProduct }) => {
           Atendimento com o código já identificado
         </li>
         <li className="flex items-center gap-2">
-          <TechnicalConfirmation aria-hidden="true" className="h-4 w-4 shrink-0" />
+          <TechnicalConfirmation
+            aria-hidden="true"
+            className="h-4 w-4 shrink-0"
+          />
           Confirmação técnica antes do pedido
         </li>
         <li className="flex items-center gap-2">
