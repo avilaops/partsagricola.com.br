@@ -1,52 +1,62 @@
 # Roadmap — Marketplace Agricola
 
-> Última atualização: 19/08/2026. Este documento acompanha o progresso do
+> Última atualização: 20/08/2026. Este documento acompanha o progresso do
 > projeto de ponta a ponta: da extração do catálogo até a loja em produção.
 > Mantenha atualizado conforme cada fase avança.
 
 ## Visão geral
 
 Marketplace de peças agrícolas, construção e vedação. Nasceu da extração
-estruturada de catálogos e evoluiu para uma loja Medusa v2 + Next.js com
-**25.520 produtos publicados** em
-**https://partsagricola.com.br**.
+estruturada de catálogos, virou loja Medusa v2 + Next.js e, em 20/08/2026,
+trocou o Medusa pelo **Odoo como fonte da verdade**: hoje são
+**28.564 produtos publicados** em <https://partsagricola.com.br>, servidos
+pelo Next.js a partir de uma camada de leitura no Postgres que o Odoo
+alimenta. A conversão é a **cotação** (lista no site → orçamento
+`sale.order` no Odoo), não carrinho.
 
-A empresa se chama **Parts Agricola** e o domínio oficial é
-`partsagricola.com.br`. Migração concluída em 15/08/2026 — DNS, Caddy,
-build e CORS já estão no domínio novo, e o `agricola.avilaops.com` saiu do
-DNS. Detalhes e pendências em `README.md` → "Troca de domínio".
-O nome de exibição da loja no Medusa ainda é "Agricola".
+A empresa se chama **Parts Agrícola** e o domínio oficial é
+`partsagricola.com.br` (troca concluída em 15/08/2026; `agricola.avilaops.com`
+saiu do DNS).
 
 ## Arquitetura (produção)
 
 ```
                          ┌─────────────────────────┐
-                         │   Cloudflare DNS (A)     │
-                         │   partsagricola.com.br   │
-                         │ api.partsagricola.com.br │
+                         │   Cloudflare DNS          │
+                         │   partsagricola.com.br    │ (proxy laranja)
                          └───────────┬─────────────┘
-                                     │ DNS-only (sem proxy laranja)
                                      ▼
                     VPS Hetzner (178.105.82.48, Ubuntu 26.04)
                     ─────────────────────────────────────────
                     Caddy (reverse proxy + TLS automático)
                     ├─ partsagricola.com.br      → 127.0.0.1:3006
                     ├─ www.partsagricola.com.br  → 301 pro apex
-                    └─ api.partsagricola.com.br  → 127.0.0.1:9002
+                    └─ api.partsagricola.com.br  → 502 (bloco inerte; Medusa desligado)
 
-                    systemd services:
-                    ├─ agricola-storefront.service (Next.js standalone, :3006)
-                    └─ agricola-medusa.service     (Medusa v2, :9002)
+                    systemd:
+                    ├─ agricola-storefront.service  (Next.js standalone, :3006)
+                    ├─ partsagricola-db-snapshot.timer (backup diário 00:30)
+                    └─ [agricola-medusa.service — parado e desabilitado em 20/08/2026]
 
-                    Postgres 18 nativo (multi-tenant, 1 database por app)
-                    ├─ agricola          → schema catalogo (dado bruto extraído)
-                    └─ agricola_medusa   → schema do Medusa (produtos, pedidos...)
+                    Docker (stack odoo-avilaops, multi-tenant):
+                    ├─ odoo-avilaops-partsagricola-1  (Odoo 19, :8071, workers=0, 1 GB)
+                    └─ odoo-avilaops-recorte-1        (removedor de fundo, u2netp)
 
-                    Redis nativo (compartilhado entre projetos,
-                    namespaced por TENANT_SLUG=agricola)
+                    Postgres 18 nativo
+                    ├─ partsagricola     → Odoo: FONTE DA VERDADE (catálogo, fotos,
+                    │                      preços, orçamentos do site)
+                    ├─ agricola_medusa   → camada de leitura do site: catalogo_odoo +
+                    │                      categorias_catalogo (+ tabelas herdadas do
+                    │                      Medusa, congeladas, de onde o sync ainda
+                    │                      copia metadata/handle/categoria — não dropar)
+                    └─ agricola          → catálogo bruto extraído dos PDFs
+
+                    Odoo ──sincronizar.py (cron horário)──► catalogo_odoo ──► Next.js
+                                                    └─► POST /api/revalidar (cache)
+                    Site ──/api/cotacao──► Odoo (res.partner + sale.order draft)
 
                     Cloudflare R2 (bucket agricola-catalogo)
-                    → imagens de produto, servidas via pub-*.r2.dev
+                    → fotos de produto; recortadas/{sku}.png = versão sem fundo
 ```
 
 O mesmo VPS hospeda outros projetos da Avila Ops (pkvedacoes, saudepet,
@@ -63,11 +73,12 @@ agricola/
 ├── images/              ← recortes de imagem por peça (usados só na importação)
 ├── sql/                 ← schema.sql + seed.sql do banco "agricola" (catálogo bruto)
 ├── scripts/              ← pipeline de extração/revisão do catálogo (Fase 1)
-├── medusa/              ← backend Medusa v2 (Turborepo)
-│   └── apps/backend/src/migration-scripts/
-│       ├── agricola-store-seed.ts   ← loja/região/canal de venda
-│       └── import-catalogos.ts       ← importa a base tratada e auditada
-├── storefront/           ← Next.js (fork do nextjs-starter-medusa oficial)
+├── medusa/              ← backend Medusa v2 (DESLIGADO em 20/08/2026; código
+│                            mantido como histórico — o importador canônico
+│                            agora é integracao-partsagricola/ no repo do Odoo)
+├── storefront/           ← Next.js (fork do starter Medusa, hoje 100% sobre a
+│                            camada catalogo_odoo; sem carrinho/checkout/conta)
+├── scripts/deploy-storefront.sh ← deploy de um comando
 ├── .env.production        ← credenciais gerais (gitignored)
 ├── README.md              ← detalhes técnicos de cada fase
 └── ROADMAP.md             ← este arquivo
