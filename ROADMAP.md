@@ -205,11 +205,15 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
 ## Pendências / próximas fases
 
 ### Bloqueia vender de verdade
-1. **Gateway de pagamento (Efí Pay — PIX/Boleto)** — ainda não
-   implementado. Precisa de um *provider* custom do Medusa (Medusa não tem
-   integração oficial com Efí). Credenciais em
-   `D:/administrativo/financeiro/.env.production.efi` +
-   certificados `.p12` (homologação e produção).
+1. **Pagamento** — o checkout do Medusa morreu junto com ele; o caminho
+   agora é cotação no site → orçamento `sale.order` no Odoo → pagamento
+   pelo Odoo (providers nativos do Odoo 19: Mercado Pago e PayPal; Éfi
+   PIX/Boleto exigiria módulo custom). **Depende de decisão do Nicolas**:
+   quais providers ativar, sandbox ou produção, e com quais credenciais
+   (Mercado Pago/PayPal no `.env.production` da raiz; Éfi em
+   `D:/administrativo/financeiro/.env.production.efi` + `.p12`). Nada
+   ativado até lá — provider de pagamento com credencial real é ação
+   externa, não se liga sem combinar.
 2. **Preços reais** — os produtos estão a R$ 0,00 (catálogo para consulta
    pra fase atual). Alguém precisa definir preço de verdade pelo admin
    antes de vender de fato.
@@ -224,11 +228,14 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
    únicos criados no Odoo e no ar. As 139 restantes têm `revisar=sim`
    da revisão humana da extração e ficam de fora por decisão, não por
    bug.
-5. **Rebuild não é automático** — páginas de produto/categoria são
-   estáticas (SSG). Mudanças grandes no catálogo pelo admin merecem um
-   rebuild+redeploy do storefront pra manter a geração estática correta
-   (o site funciona sem isso via renderização sob demanda, mas não é o
-   ideal de performance).
+5. ~~Rebuild não é automático~~ — **resolvido pela arquitetura da camada
+   Odoo (verificado em 20/08/2026)**: toda leitura do catálogo é
+   `unstable_cache` sob a tag `catalogo`; o `POST /api/revalidar` (chamado
+   pelo orquestrador a cada sync) invalida dados e rotas de uma vez, e a
+   próxima visita re-renderiza — inclusive páginas pré-geradas no build
+   (testado com produto do top-100 cuja foto mudou depois do deploy).
+   Rebuild só é preciso quando muda código, e aí é o
+   `deploy-storefront.sh`.
 
 ### Operacional
 6. ~~Sem backup configurado~~ — **resolvido em 20/08/2026**:
@@ -244,9 +251,9 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
    croppar ou substituir as imagens que mostram o logo Geomaq®.
 
 ### Fases futuras (fora do escopo atual)
-9. **Rebrand pra Parts Agricola** — trocar nome de exibição, domínio
-   (`partsagricola.com.br`) e DNS/Caddy quando o Nicolas decidir seguir
-   com isso.
+9. ~~Rebrand pra Parts Agricola~~ — **concluído**: domínio, DNS/Caddy,
+   identidade visual v2 e metadados já são Parts Agrícola; o "nome de
+   exibição no Medusa" deixou de existir com o Medusa.
 10. **Ampliação do catálogo** — novas fontes devem passar pelo mesmo snapshot,
     auditoria, quarentena e validação antes/depois da importação.
 
