@@ -185,8 +185,14 @@ o Postgres ficam. Estado em 19/08/2026:
   `ANTHROPIC_API_KEY`/`BRAVE_API_KEY` foi removido em 19/08/2026); o
   resultado revisado é gravado no Odoo pelo `aplicar_precos.py` (CSV
   com fonte obrigatória, procedência no chatter interno).
-- **Próximo:** trocar as páginas de vitrine/produto/busca para
-  `catalogo_odoo` e, por fim, desligar o Medusa.
+- **Medusa removido (20/08/2026):** todas as páginas (vitrine, produto,
+  categoria, busca, medidas, sitemaps) leem `catalogo_odoo` e
+  `categorias_catalogo`; carrinho/checkout/conta/pedidos saíram do site
+  (a conversão é a cotação → Odoo). O serviço `agricola-medusa` está
+  parado e desabilitado; o banco `agricola_medusa` fica, porque a
+  camada de leitura vive nele e o sync copia dele metadata/handle/
+  categoria. O admin agora é o Odoo; `api.partsagricola.com.br`
+  responde 502 (bloco do Caddy ficou inerte).
 
 ### Identidade visual v2 — aplicada e no ar (19/08/2026)
 
