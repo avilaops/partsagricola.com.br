@@ -169,17 +169,22 @@ Decidido em 16/08/2026; detalhes operacionais em
 o Postgres ficam. Estado em 19/08/2026:
 
 - **Feito:** 28.424 produtos importados no Odoo (idempotente por SKU);
-  camada de leitura `catalogo_odoo` populada e sincronizada; rota
+  camada de leitura `catalogo_odoo` populada e sincronizada — com
+  metadata técnica e handle da URL carregados (28.424/28.424); rota
   `POST /api/revalidar` no ar (token, falha fechado); orquestrador
   `vitrine/atualizar.py` instalado no VPS com cron horário; fotos
   importadas para o Odoo **com recorte de fundo** (serviço `recorte`
-  no ar, modelo u2netp).
+  no ar, modelo u2netp); **pedido do site → Odoo**: a lista de cotação
+  tem formulário que cria `sale.order` em rascunho no ERP via
+  `POST /api/cotacao` (testado em produção, orçamento S00001).
+- **Conferência do catálogo (19/08/2026):** paridade total entre
+  `catalogo_odoo` e o Medusa — mesmos 28.424 SKUs dos dois lados, zero
+  divergências de nome, 3.806 imagens, metadata 100%.
 - **Bloqueado:** precificação (`precificar.py`) espera as chaves
   `ANTHROPIC_API_KEY` e `BRAVE_API_KEY` no `.env` do script no VPS —
   não estão lá, e o script recusa rodar sem elas.
-- **Próximo:** conferir o catálogo no Odoo, trocar as páginas de
-  vitrine/produto/busca para `catalogo_odoo`, pedido do site → Odoo e,
-  por fim, desligar o Medusa.
+- **Próximo:** trocar as páginas de vitrine/produto/busca para
+  `catalogo_odoo` e, por fim, desligar o Medusa.
 
 ### Identidade visual v2 — aplicada e no ar (19/08/2026)
 
