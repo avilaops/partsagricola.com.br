@@ -21,6 +21,20 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        // Paleta da marca — docs/IDENTIDADE-VISUAL.md, seção 2.
+        //
+        // Existia só como `#0B6B3F` repetido em 111 lugares, e as outras cinco
+        // cores do manual não existiam no código. Cor de marca escrita à mão em
+        // cada classe não é paleta, é constante duplicada: ninguém acha todas
+        // para trocar, e o desvio de um dígito passa despercebido (foi o que
+        // aconteceu com o `#0b6b3a`).
+        pa: {
+          verde: "#0B6B3F",
+          "verde-apoio": "#2FBF71",
+          grafite: "#1F2933",
+          cinza: "#64748B",
+          superficie: "#F5F7F6",
+        },
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",
@@ -59,14 +73,25 @@ module.exports = {
         "3xl": "2rem",
       },
       fontFamily: {
+        // As duas famílias são carregadas por next/font em src/app/layout.tsx e
+        // chegam aqui como variável CSS. A pilha de fallback continua porque a
+        // variável não existe antes da hidratação do <html> — sem ela o
+        // primeiro paint sairia em serifada.
         sans: [
-          "Inter",
+          "var(--font-inter)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
           "Roboto",
           "Helvetica Neue",
           "Ubuntu",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-manrope)",
+          "var(--font-inter)",
+          "-apple-system",
+          "Segoe UI",
           "sans-serif",
         ],
       },

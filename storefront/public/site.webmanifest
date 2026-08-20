@@ -1,6 +1,7 @@
 {
-  "name": "Parts Agricola",
-  "short_name": "Parts Agricola",
+  "id": "/br",
+  "name": "Parts Agrícola",
+  "short_name": "Parts",
   "description": "Catálogo de peças para máquinas agrícolas, máquinas pesadas e sistemas de vedação.",
   "lang": "pt-BR",
   "icons": [
@@ -8,17 +9,18 @@
       "src": "/web-app-manifest-192x192.png?v=2",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
       "src": "/web-app-manifest-512x512.png?v=2",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ],
-  "theme_color": "#1e2730",
+  "theme_color": "#1F2933",
   "background_color": "#ffffff",
   "display": "standalone",
-  "start_url": "/br"
+  "start_url": "/br",
+  "scope": "/"
 }
