@@ -3,8 +3,8 @@
 ## Resultado
 
 - Linhas de origem: **28423**
-- Aprovadas para importação: **28143**
-- Enviadas para quarentena: **280**
+- Aprovadas para importação: **28284**
+- Enviadas para quarentena: **139**
 - Linhas sem classificação: **0**
 - Validação automática: **APROVADA**
 - Pronto para deploy: **SIM**
@@ -14,18 +14,15 @@
 | Fonte | Origem | Importar | Quarentena |
 |---|---:|---:|---:|
 | gaxetas_raspadores | 126 | 126 | 0 |
-| geomaq_online | 19089 | 19079 | 10 |
-| kits_catalogo | 372 | 371 | 1 |
+| geomaq_online | 19089 | 19089 | 0 |
+| kits_catalogo | 372 | 372 | 0 |
 | orings | 1130 | 1130 | 0 |
-| retentores | 3218 | 2949 | 269 |
+| retentores | 3218 | 3079 | 139 |
 | rpv_industrial | 4488 | 4488 | 0 |
 
 ## Motivos de quarentena
 
-- `altura_nao_confirmada`: 265
-- `codigo_ausente`: 10
-- `dimensoes_principais_ausentes`: 4
-- `referencia_mercado_contaminada`: 1
+- `altura_nao_confirmada`: 139
 
 ## Alertas de origem
 

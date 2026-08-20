@@ -95,6 +95,19 @@ def decimal_string(value: str | None) -> str:
     return format(parsed.normalize(), "f")
 
 
+def dimension_string(value: str | None) -> str:
+    """
+    Medida de retentor, que pode ser dupla: "5,7/8,40" é notação de catálogo
+    para dois valores da mesma cota (ex.: altura do lábio/altura total) — não
+    é erro de extração. Cada parte é validada como decimal; qualquer parte
+    inválida invalida a medida inteira, porque "5.7/lixo" não é uma cota.
+    """
+    parts = [decimal_string(part) for part in clean_text(value).split("/")]
+    if not parts or any(not part for part in parts):
+        return ""
+    return "/".join(parts)
+
+
 def sanitize_description(value: str | None, title: str) -> str:
     description = clean_text(value)
     description = clean_text(SUPPLIER_SENTENCE_RE.sub(" ", description))
@@ -199,7 +212,18 @@ def quarantine_row(
 
 
 def from_geomaq(row: dict[str, str], source_row: int) -> tuple[dict[str, str] | None, str]:
+    # O campo `codigo` da loja online vem vazio em ~10 itens cujo código real
+    # abre o próprio nome ("0303301196 - Mancal..."). O prefixo do nome vem
+    # antes do `sku_interno` como fallback porque em dois registros o
+    # sku_interno é um slug de loja, não código de peça.
     code = clean_code(row.get("codigo"))
+    if not code:
+        prefixo = re.match(
+            r"^\s*([A-Za-z0-9][A-Za-z0-9.\-/]{3,})\s*[-–]\s", clean_text(row.get("nome"))
+        )
+        code = (
+            clean_code(prefixo.group(1)) if prefixo else clean_code(row.get("sku_interno"))
+        )
     external_id = clean_text(row.get("geomaq_id"))
     source_sku = clean_text(row.get("sku_interno"))
     title = clean_online_title(row)
@@ -286,7 +310,9 @@ def from_kits(row: dict[str, str], source_row: int) -> tuple[dict[str, str] | No
     if not description:
         return None, "descricao_ausente"
     if len(market_reference) > 1000 or "Cód. AGEL" in market_reference:
-        return None, "referencia_mercado_contaminada"
+        # A referência engoliu texto de célula vizinha do PDF. O produto em si
+        # (código + descrição) está íntegro — descartar só a referência.
+        market_reference = ""
 
     application = re.sub(
         r"^(?:Aplicação\s+)?(?:Rep\.\s*(?:BBA\.|CX\.)\s*)?",
@@ -323,9 +349,9 @@ def from_kits(row: dict[str, str], source_row: int) -> tuple[dict[str, str] | No
 def from_retentores(row: dict[str, str], source_row: int) -> tuple[dict[str, str] | None, str]:
     code = clean_code(row.get("codigo"))
     brand = clean_text(row.get("marca"))
-    shaft = decimal_string(row.get("eixo_mm"))
-    external = decimal_string(row.get("externo_mm"))
-    height = decimal_string(row.get("altura_mm"))
+    shaft = dimension_string(row.get("eixo_mm"))
+    external = dimension_string(row.get("externo_mm"))
+    height = dimension_string(row.get("altura_mm"))
     model = clean_text(row.get("modelo"))
     material = clean_text(row.get("material"))
     if not code:
