@@ -215,6 +215,13 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Filtro por máquina compatível (21/08/2026)
+
+A camada ganhou `aplicacoes[]` derivada do nome pelo sync ("Comp. John
+Deere" → {John Deere}; 17.157 produtos). O catálogo filtra por
+`?aplicacao=`, o painel lista as 24 máquinas mais frequentes com contagem,
+as páginas `/aplicacoes/<marca>` usam o dado exato (antes: busca textual).
+
 ### Monitoramento (21/08/2026)
 
 `vigia.sh` (repo do Odoo, cron 15 min no VPS) → n8n → e-mail: disco ≥ 90%,
