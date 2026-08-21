@@ -60,6 +60,22 @@ function textoCurto(valor: unknown, max: number): string | null {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
+// Webhook do n8n que avisa a equipe (fluxo "PartsAgrícola — aviso de nova
+// cotação"). Sem URL/token configurados, simplesmente não avisa — falha muda.
+function avisarEquipe(carga: Record<string, unknown>): void {
+  const url = process.env.COTACAO_WEBHOOK_URL
+  const token = process.env.COTACAO_WEBHOOK_TOKEN
+  if (!url || !token) return
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Cotacao-Token": token },
+    body: JSON.stringify(carga),
+    signal: AbortSignal.timeout(8000),
+  }).catch((erro) => {
+    console.error("[cotacao] aviso à equipe falhou:", erro?.message ?? erro)
+  })
+}
+
 export async function POST(requisicao: Request) {
   if (!cotacaoOdooDisponivel()) {
     // Ambiente sem as credenciais (dev local, deploy incompleto): o cliente
@@ -144,6 +160,21 @@ export async function POST(requisicao: Request) {
         sku: (i.handle && skus.get(i.handle)) || null,
         titulo: i.titulo,
         codigo: i.codigo,
+        quantidade: i.quantidade,
+      })),
+    })
+    // Aviso à equipe via n8n (e-mail), sem bloquear a resposta: o orçamento
+    // já está no Odoo; se o aviso falhar, o que se perde é a urgência, não o
+    // pedido — e o cliente não espera o SMTP de ninguém.
+    avisarEquipe({
+      pedido,
+      nome,
+      email,
+      whatsapp,
+      mensagem,
+      itens: itens.map((i) => ({
+        sku: (i.handle && skus.get(i.handle)) || i.codigo,
+        titulo: i.titulo,
         quantidade: i.quantidade,
       })),
     })
