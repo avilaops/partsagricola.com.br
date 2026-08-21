@@ -14,6 +14,37 @@ import { cotacaoOdooDisponivel, criarCotacaoOdoo } from "@lib/data/odoo"
 
 const MAX_ITENS = 15
 
+// Limite de taxa por IP, em memória: 5 cotações a cada 10 minutos. Uma
+// cotação vira registro no ERP, então um script enchendo o formulário
+// enche o Odoo. Em memória basta: o storefront é um processo só, e quem
+// estourar recebe 429 com retry — humano nenhum manda 6 cotações em 10 min.
+const JANELA_MS = 10 * 60 * 1000
+const MAX_POR_JANELA = 5
+const tentativas = new Map<string, number[]>()
+
+function estourouLimite(ip: string): boolean {
+  const agora = Date.now()
+  const recentes = (tentativas.get(ip) ?? []).filter((t) => agora - t < JANELA_MS)
+  recentes.push(agora)
+  tentativas.set(ip, recentes)
+  // limpeza preguiçosa para o mapa não crescer para sempre
+  if (tentativas.size > 5000) {
+    Array.from(tentativas.entries()).forEach(([chave, lista]) => {
+      if (!lista.some((t: number) => agora - t < JANELA_MS)) tentativas.delete(chave)
+    })
+  }
+  return recentes.length > MAX_POR_JANELA
+}
+
+function ipDe(requisicao: Request): string {
+  // Atrás da Cloudflare e do Caddy o IP real vem nestes cabeçalhos.
+  return (
+    requisicao.headers.get("cf-connecting-ip") ||
+    requisicao.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    "desconhecido"
+  )
+}
+
 type ItemBruto = {
   handle?: unknown
   code?: unknown
@@ -36,6 +67,13 @@ export async function POST(requisicao: Request) {
     return NextResponse.json(
       { ok: false, erro: "indisponivel" },
       { status: 503 }
+    )
+  }
+
+  if (estourouLimite(ipDe(requisicao))) {
+    return NextResponse.json(
+      { ok: false, erro: "limite" },
+      { status: 429, headers: { "Retry-After": "600" } }
     )
   }
 

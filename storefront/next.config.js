@@ -14,6 +14,23 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  // Cabeçalhos de segurança básicos. Sem CSP por ora: o GTM/GA4 injeta
+  // scripts de terceiros e uma CSP mal calibrada derruba a analítica em
+  // silêncio — fica para uma passada própria, com relatório antes de bloquear.
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ]
+  },
   logging: {
     fetches: {
       fullUrl: true,
