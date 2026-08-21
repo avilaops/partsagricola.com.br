@@ -215,6 +215,12 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Monitoramento (21/08/2026)
+
+`vigia.sh` (repo do Odoo, cron 15 min no VPS) → n8n → e-mail: disco ≥ 90%,
+site fora do ar, storefront/Postgres/Odoo parados. Um alerta por condição a
+cada 6 h. Primeiro alerta real disparado no teste: disco Docker a 96%.
+
 ### Fechamento de 21/08/2026
 
 Fotos: 3.515 sem a marca d'água da Geomaq (v2) + 247 recortadas da célula
