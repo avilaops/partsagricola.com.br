@@ -17,7 +17,13 @@ export default async function Nav() {
         <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex h-16 items-center justify-between w-full text-small-regular">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
-              <SideMenu categories={departments} />
+              <SideMenu
+                categories={departments}
+                whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
+                  /\D/g,
+                  ""
+                )}
+              />
             </div>
           </div>
 

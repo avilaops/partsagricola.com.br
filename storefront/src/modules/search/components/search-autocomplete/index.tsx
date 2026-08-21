@@ -225,10 +225,12 @@ const SearchAutocomplete = ({
           runCatalogSearch(query)
         }}
         className={clx(
-          "flex w-full overflow-hidden rounded-xl border shadow-sm",
+          "flex w-full overflow-hidden rounded-xl border bg-white",
+          // O hero agora é claro: a busca ganha corpo (borda mais firme,
+          // sombra) em vez de virar vidro sobre verde.
           hero
-            ? "border-white/25 bg-white/10 backdrop-blur"
-            : "border-ui-border-base bg-white"
+            ? "border-ui-border-strong shadow-md focus-within:border-pa-verde"
+            : "border-ui-border-base shadow-sm"
         )}
       >
         <label htmlFor={`${listboxId}-input`} className="sr-only">
@@ -257,19 +259,17 @@ const SearchAutocomplete = ({
             activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined
           }
           className={clx(
-            "min-w-0 flex-1 bg-transparent px-4 py-3.5 outline-none small:px-5",
-            hero
-              ? "text-white placeholder:text-white/60"
-              : "text-ui-fg-base placeholder:text-ui-fg-muted"
+            "min-w-0 flex-1 bg-transparent px-4 outline-none small:px-5",
+            "text-ui-fg-base placeholder:text-ui-fg-muted",
+            hero ? "py-4 text-base" : "py-3.5"
           )}
         />
         <button
           type="submit"
           className={clx(
-            "min-w-24 px-5 py-3 text-sm font-semibold transition-colors",
-            hero
-              ? "bg-white text-[#0B6B3F] hover:bg-white/90"
-              : "bg-[#0B6B3F] text-white hover:bg-[#08552e]"
+            "min-w-24 px-5 text-sm font-semibold transition-colors",
+            "bg-[#0B6B3F] text-white hover:bg-[#08552e]",
+            hero ? "py-4" : "py-3"
           )}
         >
           Buscar

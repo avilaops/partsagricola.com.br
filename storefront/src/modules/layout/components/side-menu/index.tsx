@@ -2,42 +2,47 @@
 
 import { Popover, PopoverPanel, Transition } from "@headlessui/react"
 import { XMark } from "@medusajs/icons"
-import { Text } from "@medusajs/ui"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 
-const SideMenuItems: Record<string, { href: string; label: string }> = {
-  Home: { href: "/", label: "Inicio" },
-  Store: { href: "/store", label: "Catálogo" },
-  Medidas: { href: "/medidas", label: "Busca por medidas" },
-  Contato: { href: "/contato", label: "Contato" },
-}
+const NAVEGACAO = [
+  { href: "/", label: "Início" },
+  { href: "/store", label: "Catálogo completo" },
+  { href: "/medidas", label: "Busca por medidas" },
+  { href: "/confirmacao-tecnica", label: "Confirmação técnica" },
+  { href: "/contato", label: "Contato" },
+]
 
 type SideMenuProps = {
   categories: HttpTypes.StoreProductCategory[]
+  whatsappNumber?: string
 }
 
-const SideMenu = ({ categories }: SideMenuProps) => {
+/**
+ * Menu lateral limpo: painel branco que entra pela esquerda, listas com
+ * divisórias finas e um só CTA no rodapé (WhatsApp). A versão herdada do
+ * starter era um vidro escuro sobre a página, com links gigantes e seletor de
+ * país/idioma que esta loja nunca teve.
+ */
+const SideMenu = ({ categories, whatsappNumber }: SideMenuProps) => {
   return (
     <div className="h-full">
-      <div className="flex items-center h-full">
-        <Popover className="h-full flex">
+      <div className="flex h-full items-center">
+        <Popover className="flex h-full">
           {({ open, close }) => (
             <>
-              <div className="relative flex h-full">
-                <Popover.Button
-                  data-testid="nav-menu-button"
-                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base"
-                >
-                  Menu
-                </Popover.Button>
-              </div>
+              <Popover.Button
+                data-testid="nav-menu-button"
+                className="relative flex h-full items-center transition-colors hover:text-ui-fg-base focus:outline-none"
+              >
+                Menu
+              </Popover.Button>
 
               {open && (
                 <div
-                  className="fixed inset-0 z-[50] bg-black/0 pointer-events-auto"
+                  className="fixed inset-0 z-[50] bg-black/30"
                   onClick={close}
                   data-testid="side-menu-backdrop"
                 />
@@ -46,62 +51,93 @@ const SideMenu = ({ categories }: SideMenuProps) => {
               <Transition
                 show={open}
                 as={Fragment}
-                enter="transition ease-out duration-150"
-                enterFrom="opacity-0"
-                enterTo="opacity-100 backdrop-blur-2xl"
+                enter="transition ease-out duration-200"
+                enterFrom="-translate-x-full opacity-0"
+                enterTo="translate-x-0 opacity-100"
                 leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 backdrop-blur-2xl"
-                leaveTo="opacity-0"
+                leaveFrom="translate-x-0 opacity-100"
+                leaveTo="-translate-x-full opacity-0"
               >
-                <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-2xl">
+                <PopoverPanel className="fixed inset-y-0 left-0 z-[51] flex w-[86vw] max-w-sm flex-col bg-white text-ui-fg-base shadow-2xl">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-[rgba(3,7,18,0.5)] rounded-rounded justify-between p-6"
+                    className="flex h-full flex-col"
                   >
-                    <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
+                    <div className="flex items-center justify-between border-b border-ui-border-base px-5 py-4">
+                      <span className="text-sm font-semibold uppercase tracking-[0.16em] text-pa-verde">
+                        Parts Agrícola
+                      </span>
+                      <button
+                        data-testid="close-menu-button"
+                        onClick={close}
+                        aria-label="Fechar menu"
+                        className="rounded-full p-1.5 text-ui-fg-subtle hover:bg-pa-superficie hover:text-ui-fg-base"
+                      >
                         <XMark />
                       </button>
                     </div>
-                    <ul className="flex flex-col gap-5 items-start justify-start">
-                      {Object.entries(SideMenuItems).map(([name, item]) => {
-                        return (
-                          <li key={name}>
+
+                    <nav className="flex-1 overflow-y-auto px-5 py-4">
+                      <ul className="divide-y divide-ui-border-base">
+                        {NAVEGACAO.map((item) => (
+                          <li key={item.href}>
                             <LocalizedClientLink
                               href={item.href}
-                              className="text-2xl leading-9 hover:text-ui-fg-disabled"
                               onClick={close}
-                              data-testid={`${name.toLowerCase()}-link`}
+                              className="flex items-center justify-between py-3.5 text-base font-medium hover:text-pa-verde"
                             >
                               {item.label}
+                              <span aria-hidden="true" className="text-ui-fg-muted">
+                                →
+                              </span>
                             </LocalizedClientLink>
                           </li>
-                        )
-                      })}
-                      <li className="mt-2 w-full border-t border-white/20 pt-5">
-                        <p className="mb-3 text-xs uppercase tracking-[0.16em] text-white/60">
-                          Departamentos
-                        </p>
-                        <ul className="flex flex-col gap-3">
-                          {categories.map((category) => (
-                            <li key={category.id}>
-                              <LocalizedClientLink
-                                href={`/categories/${category.handle}`}
-                                className="text-lg text-white/90 hover:text-white"
-                                onClick={close}
-                              >
-                                {category.name}
-                              </LocalizedClientLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                    </ul>
-                    <div className="flex flex-col gap-y-6">
-                      <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Parts Agrícola. Todos os
-                        direitos reservados.
-                      </Text>
+                        ))}
+                      </ul>
+
+                      <p className="mb-2 mt-7 text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
+                        Departamentos
+                      </p>
+                      <ul className="divide-y divide-ui-border-base">
+                        {categories.map((category) => (
+                          <li key={category.id}>
+                            <LocalizedClientLink
+                              href={`/categories/${category.handle}`}
+                              onClick={close}
+                              className="flex items-center justify-between py-3 text-sm hover:text-pa-verde"
+                            >
+                              {category.name}
+                              <span aria-hidden="true" className="text-ui-fg-muted">
+                                →
+                              </span>
+                            </LocalizedClientLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </nav>
+
+                    <div className="border-t border-ui-border-base px-5 py-4">
+                      {whatsappNumber ? (
+                        <a
+                          href={`https://wa.me/${whatsappNumber}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex min-h-11 items-center justify-center rounded-base bg-pa-verde px-4 text-sm font-semibold text-white hover:bg-[#08552e]"
+                        >
+                          Falar no WhatsApp
+                        </a>
+                      ) : (
+                        <LocalizedClientLink
+                          href="/contato"
+                          onClick={close}
+                          className="flex min-h-11 items-center justify-center rounded-base bg-pa-verde px-4 text-sm font-semibold text-white hover:bg-[#08552e]"
+                        >
+                          Falar com a equipe
+                        </LocalizedClientLink>
+                      )}
+                      <p className="mt-3 text-center text-xs text-ui-fg-muted">
+                        © {new Date().getFullYear()} Parts Agrícola
+                      </p>
                     </div>
                   </div>
                 </PopoverPanel>
