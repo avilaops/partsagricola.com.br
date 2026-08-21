@@ -215,6 +215,17 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Cache de HTML no edge da Cloudflare (21/08/2026)
+
+Regra de cache na zona (criada pela API): produto, categoria, aplicação, home
+e confirmação técnica ficam 1 dia na borda (browser 5 min); busca e APIs
+seguem dinâmicas. Páginas de produto passaram a responder `HIT` da borda em
+vez de ~1 s do servidor. A coerência é garantida pela purga: o `/api/revalidar`
+purga a zona (token escopado só a Cache Purge, em `tokens.env` e no `.env`
+do storefront) a menos que o orquestrador diga que o sync não mudou nada
+(`ultimo_sync.json` → `{"purgar": false}`). Scripts manuais que chamam o
+revalidar purgam sempre.
+
 ### Filtro por máquina compatível (21/08/2026)
 
 A camada ganhou `aplicacoes[]` derivada do nome pelo sync ("Comp. John
