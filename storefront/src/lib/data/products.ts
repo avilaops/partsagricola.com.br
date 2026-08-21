@@ -66,6 +66,7 @@ export const listProducts = async ({
     busca: (queryParams as any)?.q || undefined,
     categorias: (queryParams as any)?.category_id || undefined,
     skus: (queryParams as any)?.id || undefined,
+    aplicacao: (queryParams as any)?.aplicacao || undefined,
     ordem,
     pagina,
     porPagina: limit,

@@ -7,6 +7,7 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import PaginatedProducts from "./paginated-products"
 import SearchAutocomplete from "@modules/search/components/search-autocomplete"
 import { listCategories } from "@lib/data/categories"
+import { listarAplicacoes } from "@lib/data/catalogo"
 import { CatalogApplication } from "@lib/data/catalog-applications"
 
 const StoreTemplate = async ({
@@ -15,16 +16,24 @@ const StoreTemplate = async ({
   query,
   countryCode,
   application,
+  aplicacaoFiltro,
 }: {
   sortBy?: SortOptions
   page?: string
   query?: string
   countryCode: string
   application?: CatalogApplication
+  /** filtro exato por máquina (?aplicacao=John%20Deere ou página /aplicacoes) */
+  aplicacaoFiltro?: string
 }) => {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
-  const categories = await listCategories({ limit: 100 })
+  const [categories, aplicacoes] = await Promise.all([
+    listCategories({ limit: 100 }),
+    listarAplicacoes(),
+  ])
+  // Página /aplicacoes/<marca> filtra pelo dado exato; ?aplicacao= idem.
+  const aplicacaoAtiva = application?.name ?? aplicacaoFiltro
   const rootCategories = categories.filter(
     (category) => !category.parent_category && !category.parent_category_id
   )
@@ -46,6 +55,8 @@ const StoreTemplate = async ({
             >
               {application
                 ? `Peças para ${application.name}`
+                : aplicacaoFiltro
+                ? `Peças para ${aplicacaoFiltro}`
                 : query
                 ? `Resultados para “${query}”`
                 : "Todos os produtos"}
@@ -76,6 +87,8 @@ const StoreTemplate = async ({
           categories={rootCategories}
           query={query}
           application={application}
+          aplicacoes={aplicacoes}
+          aplicacaoAtiva={aplicacaoAtiva}
         />
         <div className="min-w-0 w-full">
         <Suspense fallback={<SkeletonProductGrid />}>
@@ -83,6 +96,7 @@ const StoreTemplate = async ({
             sortBy={sort}
             page={pageNumber}
             query={query}
+            aplicacao={aplicacaoAtiva}
             countryCode={countryCode}
           />
         </Suspense>

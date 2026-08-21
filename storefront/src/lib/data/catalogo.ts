@@ -100,6 +100,7 @@ export const listarCatalogo = unstable_cache(
     busca,
     categorias,
     skus,
+    aplicacao,
     ordem = "nome",
     pagina = 1,
     porPagina = 24,
@@ -108,6 +109,8 @@ export const listarCatalogo = unstable_cache(
     /** handles de categoria (folha + descendentes, resolvidos por quem chama) */
     categorias?: string[]
     skus?: string[]
+    /** máquina compatível ("John Deere"), como derivada do nome pelo sync */
+    aplicacao?: string
     ordem?: OrdemCatalogo
     pagina?: number
     porPagina?: number
@@ -136,6 +139,10 @@ export const listarCatalogo = unstable_cache(
     if (skus?.length) {
       parametros.push(skus)
       condicoes.push(`sku = any($${parametros.length})`)
+    }
+    if (aplicacao?.trim()) {
+      parametros.push([aplicacao.trim()])
+      condicoes.push(`aplicacoes @> $${parametros.length}::text[]`)
     }
     const onde = condicoes.join(" and ")
 
@@ -181,6 +188,20 @@ export const obterProdutoPorHandle = unstable_cache(
     return resultado.rows[0] ? paraProduto(resultado.rows[0]) : null
   },
   ["catalogo-produto-handle"],
+  { tags: ["catalogo"] }
+)
+
+/** Máquinas compatíveis com contagem, da mais frequente: alimenta o filtro. */
+export const listarAplicacoes = unstable_cache(
+  async (): Promise<Array<{ nome: string; total: number }>> => {
+    const resultado = await pool().query<{ nome: string; total: string }>(
+      `select a as nome, count(*) as total
+       from catalogo_odoo, unnest(aplicacoes) a
+       where publicado group by a order by count(*) desc, a limit 24`
+    )
+    return resultado.rows.map((r) => ({ nome: r.nome, total: Number(r.total) }))
+  },
+  ["catalogo-aplicacoes"],
   { tags: ["catalogo"] }
 )
 

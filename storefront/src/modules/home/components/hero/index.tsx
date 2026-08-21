@@ -7,7 +7,7 @@ const QUICK_SEARCHES = [
   { label: "N273658", query: "N273658" },
   { label: "O-Rings", query: "O-Ring" },
   { label: "Retentores", query: "Retentor" },
-  { label: "John Deere", query: "John Deere" },
+  { label: "John Deere", query: "John Deere", aplicacao: true },
 ]
 
 /**
@@ -40,7 +40,11 @@ const Hero = ({ countryCode }: { countryCode: string }) => {
             {QUICK_SEARCHES.map((item) => (
               <LocalizedClientLink
                 key={item.label}
-                href={`/store?q=${encodeURIComponent(item.query)}`}
+                href={
+                  item.aplicacao
+                    ? `/store?aplicacao=${encodeURIComponent(item.query)}`
+                    : `/store?q=${encodeURIComponent(item.query)}`
+                }
                 className="rounded-full border border-ui-border-base bg-pa-superficie px-3 py-1.5 text-ui-fg-base transition-colors hover:border-pa-verde hover:text-pa-verde"
               >
                 {item.label}

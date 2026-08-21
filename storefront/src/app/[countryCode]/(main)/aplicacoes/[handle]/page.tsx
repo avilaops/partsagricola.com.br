@@ -73,7 +73,6 @@ export default async function ApplicationPage({ params, searchParams }: Props) {
       <StoreTemplate
         sortBy={sortBy}
         page={page}
-        query={application.name}
         countryCode={countryCode}
         application={application}
       />

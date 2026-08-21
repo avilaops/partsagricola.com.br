@@ -17,6 +17,9 @@ type RefinementListProps = {
   categories?: HttpTypes.StoreProductCategory[]
   query?: string
   application?: CatalogApplication
+  /** máquinas compatíveis com contagem, da camada de leitura */
+  aplicacoes?: Array<{ nome: string; total: number }>
+  aplicacaoAtiva?: string
   search?: boolean
   "data-testid"?: string
 }
@@ -26,6 +29,8 @@ const RefinementList = ({
   categories = [],
   query,
   application,
+  aplicacoes = [],
+  aplicacaoAtiva,
   "data-testid": dataTestId,
 }: RefinementListProps) => {
   const router = useRouter()
@@ -150,21 +155,36 @@ const RefinementList = ({
             Encontre peças pela marca da máquina.
           </p>
           <div className="flex flex-wrap gap-2">
-            {CATALOG_APPLICATIONS.map((option) => {
-              const active = application?.handle === option.handle
+            {(aplicacoes.length
+              ? aplicacoes
+              : CATALOG_APPLICATIONS.map((o) => ({ nome: o.name, total: 0 }))
+            ).map((option) => {
+              const active = aplicacaoAtiva === option.nome
+              // As 8 marcas com página própria (/aplicacoes/<marca>) linkam
+              // pra ela — é a URL indexada; as demais filtram o catálogo.
+              const pagina = CATALOG_APPLICATIONS.find((o) => o.name === option.nome)
+              const href = pagina
+                ? `/aplicacoes/${pagina.handle}`
+                : `/store?aplicacao=${encodeURIComponent(option.nome)}`
 
               return (
                 <LocalizedClientLink
-                  key={option.handle}
-                  href={`/aplicacoes/${option.handle}`}
+                  key={option.nome}
+                  href={active ? "/store" : href}
                   aria-current={active ? "page" : undefined}
+                  title={option.total ? `${option.total.toLocaleString("pt-BR")} peças` : undefined}
                   className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                     active
                       ? "border-[#0B6B3F] bg-[#0B6B3F] text-white"
                       : "border-ui-border-base bg-white text-ui-fg-subtle hover:border-[#0B6B3F] hover:text-[#0B6B3F]"
                   }`}
                 >
-                  {option.name}
+                  {option.nome}
+                  {option.total ? (
+                    <span className="ml-1 text-[10px] opacity-70">
+                      {option.total.toLocaleString("pt-BR")}
+                    </span>
+                  ) : null}
                 </LocalizedClientLink>
               )
             })}
