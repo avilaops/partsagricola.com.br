@@ -85,7 +85,15 @@ export default async function ProductPreview({
             </p>
           </div>
           <div className="flex items-center gap-x-2">
-            {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
+            {cheapestPrice ? (
+              <PreviewPrice price={cheapestPrice} />
+            ) : (
+              // Preço nasce no Odoo; enquanto não existe, dizer "sob consulta"
+              // é mais honesto que um card mudo — e coincide com o llms.txt.
+              <span className="text-xs font-medium text-ui-fg-muted">
+                Sob consulta
+              </span>
+            )}
           </div>
         </div>
       </LocalizedClientLink>
