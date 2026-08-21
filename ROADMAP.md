@@ -205,6 +205,16 @@ o Postgres ficam. Estado em 19/08/2026:
   categoria. O admin agora é o Odoo; `api.partsagricola.com.br`
   responde 502 (bloco do Caddy ficou inerte).
 
+### Vistoria e plano de melhoria (21/08/2026)
+
+Vistoria completa (site, catálogo, Odoo, infra, SEO) e plano P0–P3 em
+artefato: <https://claude.ai/code/artifact/164f2fe2-dd78-4a9f-aeb9-7987181bac03>.
+Entregues no mesmo dia: hero claro + menu lateral limpo, "Sob consulta" nos
+cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
+`/api/cotacao`, cotação testada de ponta a ponta e **aviso de nova cotação
+por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
+token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
+
 ### Disco do VPS — incidente de 21/08/2026
 
 O filestore do Odoo (fotos, 4,8 GB) fez o job noturno server-wide
