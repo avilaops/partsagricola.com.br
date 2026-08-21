@@ -215,6 +215,14 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Fechamento de 21/08/2026
+
+Fotos: 3.515 sem a marca d'água da Geomaq (v2) + 247 recortadas da célula
+(v3) no ar; 28 viraram "sem foto". Títulos: 1.930 repetidos receberam sufixo
+(modelo/material ou SKU). Odoo: 42 categorias do site criadas e 28.564
+produtos classificados. Scripts e resultados em
+`odoo.avilaops.com/integracao-partsagricola/`.
+
 ### Disco do VPS — incidente de 21/08/2026
 
 O filestore do Odoo (fotos, 4,8 GB) fez o job noturno server-wide
