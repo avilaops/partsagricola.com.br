@@ -205,6 +205,17 @@ o Postgres ficam. Estado em 19/08/2026:
   categoria. O admin agora é o Odoo; `api.partsagricola.com.br`
   responde 502 (bloco do Caddy ficou inerte).
 
+### Disco do VPS — incidente de 21/08/2026
+
+O filestore do Odoo (fotos, 4,8 GB) fez o job noturno server-wide
+`backup-todos-bancos.sh` encher o disco raiz; o Postgres entrou em
+recuperação. Saída: tars do nosso filestore removidos (redundantes com R2 +
+snapshot diário), GC do Odoo nos anexos órfãos, e o volume
+`odoo-avilaops_partsagricola-data` retirado da lista desse job (backup do
+script em `/opt/backups/backup-todos-bancos.sh.bak-20260821`). O volume
+Docker de 40 GB segue a ~96%: ~20 GB são imagens de outros projetos sem
+container — `docker image prune -a` é decisão do Nicolas.
+
 ### Identidade visual v2 — aplicada e no ar (19/08/2026)
 
 Tipografia oficial (Manrope/Inter via `next/font`), banners editoriais
@@ -258,8 +269,16 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
    `./scripts/deploy-storefront.sh` (túnel, build, verificação
    anti-localhost, empacote, backup, troca, smoke test). CI/CD de
    verdade continua fora do escopo por ora.
-8. **Fotos com marca Geomaq visível** — decisão pendente sobre re-fotografar,
-   croppar ou substituir as imagens que mostram o logo Geomaq®.
+8. ~~Fotos com marca Geomaq visível~~ — **tratado em 20–21/08/2026**, a pedido
+   do Nicolas: as 3.525 fotos da loja online tinham o losango
+   semitransparente da Geomaq (sempre igual, sempre no mesmo lugar) —
+   removido por estatística de coleção (`limpar_marca_dagua.py`, sem IA
+   generativa); as 281 dos PDFs eram a célula inteira do catálogo —
+   recortada a foto e descartadas 28 que eram só etiqueta
+   (`recortar_celula.py`); tudo refeito no Odoo e publicado com chave
+   versionada (`refazer_fotos.py`). Resíduo honesto: um fantasma muito
+   leve da marca sobre a superfície de algumas peças, e células cuja
+   extração já trazia pedaço do produto vizinho.
 
 ### Fases futuras (fora do escopo atual)
 9. ~~Rebrand pra Parts Agricola~~ — **concluído**: domínio, DNS/Caddy,
