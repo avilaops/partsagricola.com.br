@@ -247,6 +247,18 @@ Fotos: 3.515 sem a marca d'água da Geomaq (v2) + 247 recortadas da célula
 produtos classificados. Scripts e resultados em
 `odoo.avilaops.com/integracao-partsagricola/`.
 
+### Disco do VPS — segundo incidente, 23/08/2026
+
+Raiz a 100% de novo e Postgres em recuperação: desta vez o job noturno
+`backup-todos-bancos.sh` tinha 19 GB de tars do filestore do tenant
+**avilaops** (3,2 GB/noite × 7 dias). O vigia alertou por e-mail às 03:45.
+Com autorização do Nicolas: apagado o tar mais antigo (Postgres voltou), e a
+retenção dos tars de filestore nesse job caiu para 2 dias (dumps `.sql.gz`
+seguem em 7) — backup do script em `/opt/backups/backup-todos-bancos.sh.bak-20260823`.
+Raiz foi de 100% para 67%. O volume Docker (40 GB) segue a 93% com **tudo em
+uso** (24,7 GB de imagens ativas + 9 GB de volumes): `image prune -a` não
+libera nada — a saída é aumentar o volume na Hetzner.
+
 ### Disco do VPS — incidente de 21/08/2026
 
 O filestore do Odoo (fotos, 4,8 GB) fez o job noturno server-wide
