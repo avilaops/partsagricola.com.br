@@ -2,6 +2,7 @@ import "server-only"
 
 import { HttpTypes } from "@medusajs/types"
 
+import { slugAplicacao } from "./catalog-applications"
 import type { CategoriaCatalogo, ProdutoCatalogo } from "./catalogo"
 
 /**
@@ -63,7 +64,13 @@ export function paraStoreProduct(
         ]
       : [],
     collection_id: null,
-    tags: [],
+    // As máquinas compatíveis viajam como tags: id = slug da página
+    // /aplicacoes/<slug>, value = nome exibido. É o que a ficha do produto
+    // usa para linkar "Compatível com John Deere".
+    tags: produto.aplicacoes.map((nome) => ({
+      id: slugAplicacao(nome),
+      value: nome,
+    })),
     created_at: produto.atualizadoEm,
     updated_at: produto.atualizadoEm,
   } as unknown as HttpTypes.StoreProduct

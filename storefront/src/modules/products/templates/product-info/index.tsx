@@ -39,6 +39,24 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           {product.description ||
             "Item do catálogo técnico. Confirme a aplicação e a compatibilidade antes de solicitar o pedido."}
         </Text>
+
+        {product.tags?.length ? (
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-ui-fg-muted">Compatível com</span>
+            {product.tags.map((tag) => (
+              <LocalizedClientLink
+                key={tag.id}
+                href={`/aplicacoes/${tag.id}`}
+                className="rounded-full border border-ui-border-base bg-pa-superficie px-3 py-1 text-xs font-medium text-ui-fg-base transition-colors hover:border-pa-verde hover:text-pa-verde"
+              >
+                {tag.value}
+              </LocalizedClientLink>
+            ))}
+            <span className="text-xs text-ui-fg-muted">
+              (compatibilidade informada no catálogo, não afiliação)
+            </span>
+          </div>
+        ) : null}
       </div>
     </div>
   )

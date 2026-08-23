@@ -29,6 +29,8 @@ export type ProdutoCatalogo = {
   handle: string | null
   /** Handle da categoria-folha; a árvore vem de `listarCategorias()`. */
   categoria: string | null
+  /** Máquinas compatíveis ("John Deere"), derivadas do nome pelo sync. */
+  aplicacoes: string[]
 }
 
 // Uma pool por processo. Em dev o HMR recarrega o módulo a cada edição; sem o
@@ -58,6 +60,7 @@ type Linha = {
   atualizado_em: string
   handle: string | null
   categoria: string | null
+  aplicacoes: string[] | null
 }
 
 function paraProduto(linha: Linha): ProdutoCatalogo {
@@ -76,11 +79,12 @@ function paraProduto(linha: Linha): ProdutoCatalogo {
     atualizadoEm: new Date(linha.atualizado_em).toISOString(),
     handle: linha.handle,
     categoria: linha.categoria,
+    aplicacoes: linha.aplicacoes ?? [],
   }
 }
 
 const COLUNAS =
-  "sku, nome, descricao, preco, moeda, imagem_url, metadata, odoo_id, atualizado_em, handle, categoria"
+  "sku, nome, descricao, preco, moeda, imagem_url, metadata, odoo_id, atualizado_em, handle, categoria, aplicacoes"
 
 export type CategoriaCatalogo = {
   handle: string
