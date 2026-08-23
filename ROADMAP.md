@@ -215,6 +215,13 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Páginas por máquina e "Compatível com" (23/08/2026)
+
+`/aplicacoes/<máquina>` para as 24 máquinas da camada (não só as 8
+curadas): as curadas mantêm descrição própria, as demais ganham uma
+genérica com a contagem real; todas no sitemap e no llms.txt. A ficha do
+produto linka as máquinas compatíveis ("Compatível com John Deere →").
+
 ### Cache de HTML no edge da Cloudflare (21/08/2026)
 
 Regra de cache na zona (criada pela API): produto, categoria, aplicação, home
