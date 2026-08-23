@@ -10,6 +10,8 @@ type ThumbnailProps = {
   isFeatured?: boolean
   className?: string
   alt?: string
+  /** código da peça: sem foto, o card vira placa técnica com o código */
+  code?: string | null
   "data-testid"?: string
 }
 
@@ -19,7 +21,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   size = "small",
   isFeatured,
   className,
-  alt = "Peça do catálogo Agricola",
+  alt = "Peça do catálogo Parts Agrícola",
+  code,
   "data-testid": dataTestid,
 }) => {
   const initialImage = thumbnail || images?.[0]?.url
@@ -41,7 +44,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      <ImageOrPlaceholder image={initialImage} size={size} alt={alt} />
+      <ImageOrPlaceholder image={initialImage} size={size} alt={alt} code={code} />
     </Container>
   )
 }
@@ -50,19 +53,46 @@ const ImageOrPlaceholder = ({
   image,
   size,
   alt,
-}: Pick<ThumbnailProps, "size" | "alt"> & { image?: string }) => {
-  return image ? (
-    <Image
-      src={image}
-      alt={alt || "Peça do catálogo Agricola"}
-      className="absolute inset-0 object-cover object-center"
-      draggable={false}
-      quality={50}
-      unoptimized={image.includes(".r2.dev/")}
-      sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
-      fill
-    />
-  ) : (
+  code,
+}: Pick<ThumbnailProps, "size" | "alt" | "code"> & { image?: string }) => {
+  if (image) {
+    return (
+      <Image
+        src={image}
+        alt={alt || "Peça do catálogo Parts Agrícola"}
+        // contain, não cover: as fotos recortadas são quadradas com respiro —
+        // cortar borda de peça técnica esconde exatamente o que identifica.
+        className="absolute inset-0 object-contain object-center"
+        draggable={false}
+        quality={60}
+        // Sem `unoptimized`: com ele, cada card da grade baixava o PNG cheio
+        // do R2 (300–900 KB); o otimizador do Next serve WebP no tamanho certo.
+        sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
+        fill
+      />
+    )
+  }
+  if (code) {
+    // Placa técnica: sem foto, o código é a identidade da peça — único por
+    // produto, em vez do mesmo SVG genérico repetido pela grade inteira.
+    return (
+      <div
+        aria-label={`Sem foto — código ${code}`}
+        className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[linear-gradient(160deg,#f5f8f6,#eaf2ec)] px-3 text-center"
+      >
+        <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]/60">
+          Código
+        </span>
+        <span className="w-full break-all font-mono text-lg font-bold leading-tight text-[#1F2933] small:text-xl">
+          {code}
+        </span>
+        <span className="text-[10px] leading-4 text-ui-fg-muted">
+          foto em catalogação · ficha técnica disponível
+        </span>
+      </div>
+    )
+  }
+  return (
     <Image
       src="/images/catalog/produto-sem-imagem.svg"
       alt={`Imagem ainda não disponível para ${alt || "esta peça"}`}

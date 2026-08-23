@@ -51,6 +51,7 @@ export default async function ProductPreview({
             thumbnail={product.thumbnail}
             images={product.images}
             alt={product.title}
+            code={code}
             size="full"
             isFeatured={isFeatured}
           />
