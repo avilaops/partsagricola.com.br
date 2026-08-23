@@ -42,7 +42,7 @@ const Hero = ({ countryCode }: { countryCode: string }) => {
                 key={item.label}
                 href={
                   item.aplicacao
-                    ? `/store?aplicacao=${encodeURIComponent(item.query)}`
+                    ? `/aplicacoes/${item.query.toLowerCase().replace(/\s+/g, "-")}`
                     : `/store?q=${encodeURIComponent(item.query)}`
                 }
                 className="rounded-full border border-ui-border-base bg-pa-superficie px-3 py-1.5 text-ui-fg-base transition-colors hover:border-pa-verde hover:text-pa-verde"

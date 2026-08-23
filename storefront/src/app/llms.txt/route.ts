@@ -1,9 +1,9 @@
 import { getBaseURL } from "@lib/util/env"
-import { CATALOG_APPLICATIONS } from "@lib/data/catalog-applications"
+import { listarTodasAplicacoes } from "@lib/data/aplicacoes"
 
 export async function GET() {
   const baseUrl = getBaseURL()
-  const applicationLinks = CATALOG_APPLICATIONS.map(
+  const applicationLinks = (await listarTodasAplicacoes()).map(
     (application) =>
       `- [Peças para ${application.name}](${baseUrl}/br/aplicacoes/${application.handle})`
   ).join("\n")

@@ -7,6 +7,7 @@ import { useCallback } from "react"
 import {
   CATALOG_APPLICATIONS,
   CatalogApplication,
+  slugAplicacao,
 } from "@lib/data/catalog-applications"
 
 import SortProducts, { SortOptions } from "./sort-products"
@@ -160,12 +161,9 @@ const RefinementList = ({
               : CATALOG_APPLICATIONS.map((o) => ({ nome: o.name, total: 0 }))
             ).map((option) => {
               const active = aplicacaoAtiva === option.nome
-              // As 8 marcas com página própria (/aplicacoes/<marca>) linkam
-              // pra ela — é a URL indexada; as demais filtram o catálogo.
-              const pagina = CATALOG_APPLICATIONS.find((o) => o.name === option.nome)
-              const href = pagina
-                ? `/aplicacoes/${pagina.handle}`
-                : `/store?aplicacao=${encodeURIComponent(option.nome)}`
+              // Toda máquina tem página própria (/aplicacoes/<slug>) — é a
+              // URL indexável; ?aplicacao= continua valendo como filtro.
+              const href = `/aplicacoes/${slugAplicacao(option.nome)}`
 
               return (
                 <LocalizedClientLink

@@ -57,3 +57,12 @@ export const CATALOG_APPLICATIONS: CatalogApplication[] = [
 
 export const getCatalogApplication = (handle: string) =>
   CATALOG_APPLICATIONS.find((application) => application.handle === handle)
+
+/** "Massey Ferguson" → "massey-ferguson"; a mesma regra das oito curadas. */
+export const slugAplicacao = (nome: string) =>
+  nome
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")

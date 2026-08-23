@@ -1,7 +1,7 @@
 import { escapeXml, xmlResponse } from "@lib/seo/xml"
 import { getBaseURL } from "@lib/util/env"
 import { getSitemapTaxonomies } from "@lib/seo/catalog"
-import { CATALOG_APPLICATIONS } from "@lib/data/catalog-applications"
+import { listarTodasAplicacoes } from "@lib/data/aplicacoes"
 
 export const dynamic = "force-dynamic"
 
@@ -40,7 +40,7 @@ export async function GET() {
       frequency: "weekly",
       updatedAt: category.updated_at || "",
     })),
-    ...CATALOG_APPLICATIONS.map((application) => ({
+    ...(await listarTodasAplicacoes()).map((application) => ({
       path: `/br/aplicacoes/${application.handle}`,
       priority: "0.8",
       frequency: "weekly",
