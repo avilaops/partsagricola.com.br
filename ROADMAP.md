@@ -215,6 +215,29 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Categorias com texto próprio, breadcrumbs e CSP (23/08/2026)
+
+As 42 páginas de categoria ganharam descrição editorial única
+(`storefront/src/lib/catalog/category-descriptions.ts` — versionada no
+código, já que a taxonomia nasceu dos nomes e a camada não guarda
+descrição): aparece no hero, nos cards "Escolha uma linha" e na meta
+description. As 21 marcas de vedação geram texto por nome, sem parágrafo
+repetido. Breadcrumbs completos: trilha visual e JSON-LD `BreadcrumbList`
+com a cadeia inteira (Início → Catálogo → departamento → categoria →
+produto) em categorias e produtos — `listCategoryParents` anda a cadeia
+pela camada, porque as cópias rasas só sobem um nível. E a
+Content-Security-Policy entrou calibrada para a stack real (Next inline,
+GTM/GA4, Meta Pixel, fotos do R2); vendor novo no GTM precisa entrar na
+lista do `next.config.js`.
+
+### Cards: placa técnica e fotos otimizadas (23/08/2026)
+
+Card sem foto virou "placa técnica" — código da peça em destaque com
+"foto em catalogação · ficha técnica disponível" — em vez do mesmo SVG
+genérico repetido em 87% da grade. Fotos passaram pelo otimizador do
+Next (fim do `unoptimized` para o R2: 869 KB → 224 KB em 384 px, WebP
+nos browsers) e `object-contain` acabou com o corte das peças.
+
 ### Páginas por máquina e "Compatível com" (23/08/2026)
 
 `/aplicacoes/<máquina>` para as 24 máquinas da camada (não só as 8
