@@ -215,6 +215,20 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Fotos: marca d'água, segunda geração (24/08/2026, em publicação)
+
+Ao investigar o resíduo nas superfícies claras, a marca da Geomaq se
+revelou blend **darken** (I = min(P, M) por canal; pico do histograma em
+224 e nada acima), não mistura alpha — a inversão alpha da v2 clareava a
+peça inteira dentro do losango e esse era o "fantasma". O
+`limpar_marca_dagua_v2.py` (repo do Odoo) mantém intacto o que está abaixo
+de M e preenche só o grampeado por inpaint clássico a partir da borda do
+losango; nos filtros Donaldson de teste o resíduo sumiu. As 3.515 fotos
+mudam de verdade (diferença média 11,7/255 na peça) e estão sendo
+republicadas como `-v4` pelo `refazer_fotos.py` no VPS (~23 s por foto:
+recorte 3 s + gravação no Odoo com as 5 variantes; ~22 h no total, retomável).
+A home também passou a mostrar a contagem real por departamento.
+
 ### Contagem real por categoria e relacionados por máquina (23/08/2026)
 
 Cada página de categoria diz quantas peças publicadas tem (soma da
