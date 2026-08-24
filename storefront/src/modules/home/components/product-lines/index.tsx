@@ -46,8 +46,11 @@ const DEPARTMENT_DETAILS: Record<
 
 const ProductLines = ({
   categories,
+  totais = {},
 }: {
   categories: HttpTypes.StoreProductCategory[]
+  /** handle → peças publicadas (subárvore inteira) */
+  totais?: Record<string, number>
 }) => {
   return (
     <section className="border-b border-ui-border-base bg-white py-12 small:py-16">
@@ -82,6 +85,7 @@ const ProductLines = ({
               imageAlt: "Máquinas e componentes técnicos",
             }
             const children = category.category_children || []
+            const total = totais[category.handle] ?? 0
 
             return (
               <article
@@ -105,6 +109,9 @@ const ProductLines = ({
                       {details.eyebrow}
                     </span>
                     <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-medium text-ui-fg-base shadow-sm backdrop-blur-sm">
+                      {total > 0
+                        ? `${total.toLocaleString("pt-BR")} peças · `
+                        : ""}
                       {children.length}{" "}
                       {children.length === 1 ? "linha" : "linhas"}
                     </span>
