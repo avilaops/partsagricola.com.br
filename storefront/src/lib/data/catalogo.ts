@@ -221,6 +221,21 @@ export const listarCategorias = unstable_cache(
   { tags: ["catalogo"] }
 )
 
+/** Publicados por categoria-folha (handle → total); a árvore soma em memória. */
+export const contarPorCategoria = unstable_cache(
+  async (): Promise<Array<{ categoria: string; total: number }>> => {
+    const resultado = await pool().query<{ categoria: string; total: string }>(
+      "select categoria, count(*) as total from catalogo_odoo where publicado and categoria is not null group by categoria"
+    )
+    return resultado.rows.map((r) => ({
+      categoria: r.categoria,
+      total: Number(r.total),
+    }))
+  },
+  ["catalogo-contagem-categorias"],
+  { tags: ["catalogo"] }
+)
+
 export const contarPublicados = unstable_cache(
   async (): Promise<number> => {
     const resultado = await pool().query<{ total: string }>(

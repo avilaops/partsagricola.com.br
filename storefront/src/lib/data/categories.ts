@@ -1,7 +1,11 @@
 import { HttpTypes } from "@medusajs/types"
 
 import { descricaoCategoria } from "../catalog/category-descriptions"
-import { listarCategorias, type CategoriaCatalogo } from "./catalogo"
+import {
+  contarPorCategoria,
+  listarCategorias,
+  type CategoriaCatalogo,
+} from "./catalogo"
 
 /**
  * Taxonomia servida pela tabela `categorias_catalogo` (74 nós), no formato
@@ -92,6 +96,27 @@ export const listCategoryTree = async (
     fila.push(...(filhosPorPai.get(atual) ?? []))
   }
   return resultado
+}
+
+/**
+ * Total de peças publicadas por categoria, já somando os descendentes
+ * (handle → total). O produto só conhece a folha; o departamento é a soma.
+ */
+export const listCategoryCounts = async (): Promise<Map<string, number>> => {
+  const [linhas, contagens] = await Promise.all([
+    listarCategorias(),
+    contarPorCategoria(),
+  ])
+  const pai = new Map(linhas.map((linha) => [linha.handle, linha.pai]))
+  const totais = new Map<string, number>()
+  for (const { categoria, total } of contagens) {
+    let atual: string | null | undefined = categoria
+    while (atual) {
+      totais.set(atual, (totais.get(atual) ?? 0) + total)
+      atual = pai.get(atual)
+    }
+  }
+  return totais
 }
 
 /**

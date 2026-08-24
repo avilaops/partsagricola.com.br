@@ -18,30 +18,35 @@ export default async function RelatedProducts({
     return null
   }
 
-  // edit this function to define your related products logic
-  const queryParams: HttpTypes.StoreProductListParams = { limit: 5 }
-  if (region?.id) {
-    queryParams.region_id = region.id
-  }
-  if (product.categories?.length) {
-    queryParams.category_id = product.categories.map((category) => category.id)
-  } else if (product.collection_id) {
-    queryParams.collection_id = [product.collection_id]
-  } else if (product.tags) {
-    queryParams.tag_id = product.tags
-      .map((t) => t.id)
-      .filter(Boolean) as string[]
-  }
-  queryParams.is_giftcard = false
+  // Mesma categoria E mesma máquina primeiro (uma peça Case de construção
+  // puxa outras peças Case de construção); só depois completa com a
+  // categoria. Sem isso, toda ficha da categoria mostrava os mesmos 4 itens.
+  const categorias = product.categories?.map((category) => category.id)
+  const maquina = product.tags?.[0]?.value
+  const buscar = (extra: Record<string, unknown>, limit: number) =>
+    listProducts({
+      queryParams: {
+        limit,
+        ...(categorias?.length ? { category_id: categorias } : {}),
+        ...extra,
+      } as HttpTypes.StoreProductListParams,
+      countryCode,
+    }).then(({ response }) =>
+      response.products.filter((item) => item.id !== product.id)
+    )
 
-  const products = await listProducts({
-    queryParams,
-    countryCode,
-  }).then(({ response }) => {
-    return response.products
-      .filter((responseProduct) => responseProduct.id !== product.id)
-      .slice(0, 4)
-  })
+  const products: HttpTypes.StoreProduct[] = []
+  if (categorias?.length || maquina) {
+    if (maquina) {
+      products.push(...(await buscar({ aplicacao: maquina }, 5)))
+    }
+    if (products.length < 4 && categorias?.length) {
+      const vistos = new Set(products.map((item) => item.id))
+      const complemento = await buscar({}, 8)
+      products.push(...complemento.filter((item) => !vistos.has(item.id)))
+    }
+  }
+  products.splice(4)
 
   if (!products.length) {
     return null

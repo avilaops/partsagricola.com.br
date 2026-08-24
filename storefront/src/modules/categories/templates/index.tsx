@@ -10,7 +10,11 @@ import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { TechnicalConfirmation } from "@modules/common/icons/parts"
 import { HttpTypes } from "@medusajs/types"
-import { listCategoryParents, listCategoryTree } from "@lib/data/categories"
+import {
+  listCategoryCounts,
+  listCategoryParents,
+  listCategoryTree,
+} from "@lib/data/categories"
 import { getBaseURL } from "@lib/util/env"
 
 export default async function CategoryTemplate({
@@ -35,7 +39,16 @@ export default async function CategoryTemplate({
 
   // Cadeia completa de ancestrais (raiz → pai): as cópias rasas de
   // parent_category só sobem um nível e deixariam o avô de fora.
-  const parents = await listCategoryParents(category.handle)
+  const [parents, totais] = await Promise.all([
+    listCategoryParents(category.handle),
+    listCategoryCounts(),
+  ])
+  const total = totais.get(category.handle) ?? 0
+  const formatar = (n: number) => n.toLocaleString("pt-BR")
+  // Subcategorias com peça na frente; as vazias ficam no fim, sem sumir.
+  const filhos = (category.category_children ?? [])
+    .map((c) => ({ ...c, total: totais.get(c.handle) ?? 0 }))
+    .sort((a, b) => b.total - a.total)
 
   const base = getBaseURL()
   const breadcrumbJsonLd = {
@@ -118,6 +131,11 @@ export default async function CategoryTemplate({
                   {category.description}
                 </p>
               )}
+              {total > 0 && (
+                <p className="mt-4 text-sm font-medium text-ui-fg-base">
+                  {formatar(total)} peças publicadas nesta linha
+                </p>
+              )}
               <LocalizedClientLink
                 href="/confirmacao-tecnica"
                 className="mt-7 inline-flex w-fit items-center gap-2 text-sm font-semibold text-[#0B6B3F] hover:underline"
@@ -155,19 +173,24 @@ export default async function CategoryTemplate({
                 {category.description}
               </p>
             )}
+            {total > 0 && (
+              <p className="mt-4 text-sm font-medium text-ui-fg-base">
+                {formatar(total)} peças publicadas nesta linha
+              </p>
+            )}
           </div>
         )}
       </div>
-      {category.category_children?.length ? (
+      {filhos.length ? (
         <div className="mb-10">
           <div className="mb-4 flex items-end justify-between gap-4">
             <h2 className="text-xl font-semibold">Escolha uma linha</h2>
             <span className="text-sm text-ui-fg-subtle">
-              {category.category_children.length} opções
+              {filhos.length} opções
             </span>
           </div>
           <ul className="grid grid-cols-2 gap-3 medium:grid-cols-4">
-            {category.category_children?.map((c) => (
+            {filhos.map((c) => (
               <li key={c.id}>
                 <LocalizedClientLink
                   href={`/categories/${c.handle}`}
@@ -176,6 +199,11 @@ export default async function CategoryTemplate({
                   <div className="min-w-0">
                     <p className="text-sm font-semibold leading-snug text-ui-fg-base small:text-base">
                       {c.name}
+                    </p>
+                    <p className="mt-0.5 text-xs text-[#0B6B3F]">
+                      {c.total > 0
+                        ? `${formatar(c.total)} peças`
+                        : "em catalogação"}
                     </p>
                     {c.description && (
                       <p className="mt-1 hidden line-clamp-2 text-xs text-ui-fg-subtle medium:block">
@@ -200,6 +228,11 @@ export default async function CategoryTemplate({
         <div className="w-full">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Peças disponíveis</h2>
+            {total > 0 && (
+              <span className="text-sm text-ui-fg-subtle">
+                {formatar(total)} referências
+              </span>
+            )}
           </div>
           <Suspense
             fallback={
