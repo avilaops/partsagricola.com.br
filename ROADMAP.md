@@ -215,6 +215,15 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Contagem real por categoria e relacionados por máquina (23/08/2026)
+
+Cada página de categoria diz quantas peças publicadas tem (soma da
+subárvore: Vedações e Selagem = 8.823), os cards "Escolha uma linha" vêm
+ordenados por volume com o número em cada um (vazios aparecem como "em
+catalogação", não somem), e a listagem mostra o total de referências.
+Produtos relacionados passaram a priorizar a mesma máquina compatível
+dentro da categoria — antes toda ficha da categoria repetia os mesmos 4.
+
 ### Categorias com texto próprio, breadcrumbs e CSP (23/08/2026)
 
 As 42 páginas de categoria ganharam descrição editorial única
