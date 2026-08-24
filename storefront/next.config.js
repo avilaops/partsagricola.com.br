@@ -14,14 +14,31 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
-  // Cabeçalhos de segurança básicos. Sem CSP por ora: o GTM/GA4 injeta
-  // scripts de terceiros e uma CSP mal calibrada derruba a analítica em
-  // silêncio — fica para uma passada própria, com relatório antes de bloquear.
+  // CSP calibrada para a stack real: Next (inline scripts/styles do App
+  // Router exigem 'unsafe-inline'), GTM/GA4 e Meta Pixel (tags que o GTM
+  // injeta), fotos do R2. Qualquer vendor novo no GTM precisa entrar aqui —
+  // sintoma de bloqueio: tag some em silêncio, erro só no console do browser.
   async headers() {
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://pub-4ce81d6832604a8e92f03b025bd36a28.r2.dev https://*.google-analytics.com https://www.googletagmanager.com https://www.facebook.com",
+      "font-src 'self' data:",
+      "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://connect.facebook.net",
+      "frame-src 'self' https://www.googletagmanager.com",
+      "worker-src 'self' blob:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'self'",
+      "upgrade-insecure-requests",
+    ].join("; ")
     return [
       {
         source: "/:path*",
         headers: [
+          { key: "Content-Security-Policy", value: csp },
           { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "SAMEORIGIN" },

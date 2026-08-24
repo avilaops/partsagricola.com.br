@@ -1,7 +1,9 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { listCategoryParents } from "@lib/data/categories"
 import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
 import { getBaseURL } from "@lib/util/env"
@@ -139,6 +141,15 @@ export default async function ProductPage(props: Props) {
       : {}),
     url: productUrl,
   }
+  // Trilha completa: Início → Catálogo → departamento(s) → categoria →
+  // produto. A cadeia de ancestrais vem da camada; a leaf viaja no produto.
+  const categoriaFolha = pricedProduct.categories?.[0]
+  const trilhaCategorias = categoriaFolha
+    ? [
+        ...(await listCategoryParents(categoriaFolha.handle)),
+        { handle: categoriaFolha.handle, name: categoriaFolha.name },
+      ]
+    : []
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -155,9 +166,15 @@ export default async function ProductPage(props: Props) {
         name: "Catálogo",
         item: `${getBaseURL()}/${params.countryCode}/store`,
       },
+      ...trilhaCategorias.map((categoria, index) => ({
+        "@type": "ListItem",
+        position: 3 + index,
+        name: categoria.name,
+        item: `${getBaseURL()}/${params.countryCode}/categories/${categoria.handle}`,
+      })),
       {
         "@type": "ListItem",
-        position: 3,
+        position: 3 + trilhaCategorias.length,
         name: pricedProduct.title,
         item: productUrl,
       },
@@ -178,6 +195,35 @@ export default async function ProductPage(props: Props) {
           __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      <nav
+        aria-label="Trilha de navegação"
+        className="content-container flex flex-wrap items-center gap-2 pt-6 text-sm text-ui-fg-subtle"
+      >
+        <LocalizedClientLink className="hover:text-[#0B6B3F]" href="/">
+          Início
+        </LocalizedClientLink>
+        <span aria-hidden="true">/</span>
+        <LocalizedClientLink className="hover:text-[#0B6B3F]" href="/store">
+          Catálogo
+        </LocalizedClientLink>
+        {trilhaCategorias.map((categoria) => (
+          <span key={categoria.handle}>
+            <span className="mr-2" aria-hidden="true">
+              /
+            </span>
+            <LocalizedClientLink
+              className="hover:text-[#0B6B3F]"
+              href={`/categories/${categoria.handle}`}
+            >
+              {categoria.name}
+            </LocalizedClientLink>
+          </span>
+        ))}
+        <span aria-hidden="true">/</span>
+        <span aria-current="page" className="font-mono text-ui-fg-base">
+          {productCode || pricedProduct.title}
+        </span>
+      </nav>
       <ProductTemplate
         product={pricedProduct}
         region={region}

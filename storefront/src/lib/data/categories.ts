@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 
+import { descricaoCategoria } from "../catalog/category-descriptions"
 import { listarCategorias, type CategoriaCatalogo } from "./catalogo"
 
 /**
@@ -30,7 +31,7 @@ function montarArvore(linhas: CategoriaCatalogo[]): Map<string, No> {
       id: linha.handle,
       name: linha.nome,
       handle: linha.handle,
-      description: null,
+      description: descricaoCategoria(linha.handle, linha.nome),
       parent_category_id: linha.pai,
       parent_category: null,
       category_children: [],
@@ -91,4 +92,24 @@ export const listCategoryTree = async (
     fila.push(...(filhosPorPai.get(atual) ?? []))
   }
   return resultado
+}
+
+/**
+ * Trilha de ancestrais (raiz → pai direto) de um handle. O breadcrumb precisa
+ * da cadeia inteira; as cópias rasas de `parent_category` só sobem um nível.
+ */
+export const listCategoryParents = async (
+  handle: string
+): Promise<Array<{ handle: string; name: string }>> => {
+  const linhas = await listarCategorias()
+  const porHandle = new Map(linhas.map((linha) => [linha.handle, linha]))
+  const trilha: Array<{ handle: string; name: string }> = []
+  let atual = porHandle.get(handle)?.pai ?? null
+  while (atual) {
+    const no = porHandle.get(atual)
+    if (!no) break
+    trilha.unshift({ handle: no.handle, name: no.nome })
+    atual = no.pai
+  }
+  return trilha
 }

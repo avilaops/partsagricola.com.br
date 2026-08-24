@@ -10,7 +10,8 @@ import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { TechnicalConfirmation } from "@modules/common/icons/parts"
 import { HttpTypes } from "@medusajs/types"
-import { listCategoryTree } from "@lib/data/categories"
+import { listCategoryParents, listCategoryTree } from "@lib/data/categories"
+import { getBaseURL } from "@lib/util/env"
 
 export default async function CategoryTemplate({
   category,
@@ -32,44 +33,71 @@ export default async function CategoryTemplate({
 
   if (!category || !countryCode) notFound()
 
-  const parents = [] as HttpTypes.StoreProductCategory[]
+  // Cadeia completa de ancestrais (raiz → pai): as cópias rasas de
+  // parent_category só sobem um nível e deixariam o avô de fora.
+  const parents = await listCategoryParents(category.handle)
 
-  const getParents = (category: HttpTypes.StoreProductCategory) => {
-    if (category.parent_category) {
-      parents.push(category.parent_category)
-      getParents(category.parent_category)
-    }
+  const base = getBaseURL()
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: `${base}/${countryCode}` },
+      { "@type": "ListItem", position: 2, name: "Catálogo", item: `${base}/${countryCode}/store` },
+      ...parents.map((parent, index) => ({
+        "@type": "ListItem",
+        position: 3 + index,
+        name: parent.name,
+        item: `${base}/${countryCode}/categories/${parent.handle}`,
+      })),
+      {
+        "@type": "ListItem",
+        position: 3 + parents.length,
+        name: category.name,
+        item: `${base}/${countryCode}/categories/${category.handle}`,
+      },
+    ],
   }
-
-  getParents(category)
 
   return (
     <div
       className="flex flex-col py-8 small:py-12 content-container"
       data-testid="category-container"
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <div className="mb-8">
-        <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-ui-fg-subtle">
+        <nav
+          aria-label="Trilha de navegação"
+          className="mb-5 flex flex-wrap items-center gap-2 text-sm text-ui-fg-subtle"
+        >
+          <LocalizedClientLink className="hover:text-[#0B6B3F]" href="/">
+            Início
+          </LocalizedClientLink>
+          <span aria-hidden="true">/</span>
           <LocalizedClientLink className="hover:text-[#0B6B3F]" href="/store">
             Catálogo
           </LocalizedClientLink>
-          <span>/</span>
-          {parents
-            .slice()
-            .reverse()
-            .map((parent) => (
-              <span key={parent.id} className="text-ui-fg-subtle">
-                <LocalizedClientLink
-                  className="hover:text-[#0B6B3F]"
-                  href={`/categories/${parent.handle}`}
-                >
-                  {parent.name}
-                </LocalizedClientLink>
-                <span className="mx-2">/</span>
+          <span aria-hidden="true">/</span>
+          {parents.map((parent) => (
+            <span key={parent.handle} className="text-ui-fg-subtle">
+              <LocalizedClientLink
+                className="hover:text-[#0B6B3F]"
+                href={`/categories/${parent.handle}`}
+              >
+                {parent.name}
+              </LocalizedClientLink>
+              <span className="mx-2" aria-hidden="true">
+                /
               </span>
-            ))}
-          <span>{category.name}</span>
-        </div>
+            </span>
+          ))}
+          <span aria-current="page">{category.name}</span>
+        </nav>
 
         {visual ? (
           <section
