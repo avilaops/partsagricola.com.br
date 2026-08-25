@@ -215,6 +215,23 @@ cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
+### Nomes de mercado e descrições comerciais (25/08/2026)
+
+A pedido do Nicolas ("igual toda empresa normal"): os 28.564 produtos
+ganharam nome de mercado e descrição comercial, gravados no Odoo e na
+camada (0 falhas, ~85 min). Nome = tipo da peça em caixa de mercado, com
+abreviações expandidas ("REPARO CIL. DIR." → "Reparo do Cilindro de
+Direção"), acentos, siglas e nome canônico do glossário; retentores,
+O-Rings e gaxetas passaram a se chamar pelas medidas. A estrutura "Comp.
+<máquinas> — código" foi preservada (o sync deriva as máquinas dela) e os
+4.500 itens da Rio Preto ganharam "Comp. <marca>" — produtos com máquina
+compatível: 17.157 → 21.638. Descrição em 5 blocos: o que é e para quem /
+função (glossário de ~250 tipos, escrito à mão — 92% cobertos; as 2.594 que
+já tinham texto específico o mantiveram) / medidas e material / linha /
+compatibilidade e o que conferir. Rollback: CSV com antigo e novo em
+`/opt/backups/partsagricola-nomes-descricoes-antes-*.csv`. Scripts:
+`glossario_pecas.py` + `nomes_e_descricoes.py` (repo do Odoo).
+
 ### Fotos: marca d'água, segunda geração (24/08/2026)
 
 Ao investigar o resíduo nas superfícies claras, a marca da Geomaq se
