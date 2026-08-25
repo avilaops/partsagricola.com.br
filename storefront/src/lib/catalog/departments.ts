@@ -3,6 +3,7 @@ export const PRIMARY_DEPARTMENT_HANDLES = [
   "maquinas-pesadas",
   "vedacoes-e-selagem",
   "kits-e-reparos",
+  "rolamentos-e-transmissao",
 ] as const
 
 export function selectPrimaryDepartments<T extends { handle: string }>(

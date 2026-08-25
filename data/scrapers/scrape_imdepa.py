@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
-"""Scraper do catalogo da Imdepa (loja.imdepa.com.br).
-
-Fonte da lista de produtos: sitemap.xml por categoria (ja baixados em
-imdepa_sitemaps/). Para cada URL de produto, busca a pagina e extrai
-og:title / og:image (server-side rendered, mesmo a pagina sendo SPA).
-A descricao completa (com dimensoes) vem do proprio slug da URL.
-
-Concorrente (ThreadPoolExecutor) pois sao ~12.500 paginas -- sequencial
-seria inviavel. Salva incrementalmente por categoria (resume automatico).
 """
-import csv
+Raspagem do catálogo da Imdepa (loja.imdepa.com.br) — versão 2, completa.
+
+A versão 1 (jul/2026) tirava só og:title e og:image e nunca chegou a rodar
+até o fim (data/imdepa_partial ficou vazio) — o catálogo seguiu sem a Imdepa.
+Esta versão pega TUDO que a página entrega renderizada no servidor (a loja é
+CWS/Jet, SSR): nome, marca, código do fabricante, id, categorias (3 níveis),
+descrição, tabela de informações técnicas (marca, NCM, peso, código Imdepa,
+aplicação, medidas quando há), todas as fotos em tamanho grande e GTIN. Preço
+não vem (a loja só mostra a quem está logado) — no site fica "sob consulta".
+
+Lista de produtos: os 18 sitemaps por categoria já baixados em
+data/scrapers/imdepa_sitemaps/ (12.502 URLs). Salva por categoria em
+data/imdepa/<categoria>.json (retomável) e junta tudo em data/imdepa.json.
+
+    python data/scrapers/scrape_imdepa.py            # tudo
+    python data/scrapers/scrape_imdepa.py aneis      # só uma categoria
+"""
 import gzip
+import html
 import json
 import os
 import re
+import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse
@@ -21,144 +30,145 @@ from urllib.parse import urlparse
 import requests
 
 SITEMAP_DIR = "data/scrapers/imdepa_sitemaps"
-PROGRESS_DIR = "data/imdepa_partial"
+OUT_DIR = "data/imdepa"
 CATEGORIES = [
-    "rolamentos",
-    "retentores",
-    "vedacoes",
-    "mancais",
-    "correias",
-    "aneis",
-    "arruelas",
-    "buchas",
-    "correntes",
-    "embreagens",
-    "engrenagem",
-    "esteiras",
-    "ferramentas",
-    "lubrificante",
-    "mangueiras-e-terminais",
-    "pecas-automotivas",
-    "porcas",
-    "rotulas",
+    "rolamentos", "retentores", "vedacoes", "mancais", "correias", "aneis",
+    "arruelas", "buchas", "correntes", "embreagens", "engrenagem", "esteiras",
+    "ferramentas", "lubrificante", "mangueiras-e-terminais",
+    "pecas-automotivas", "porcas", "rotulas",
 ]
-
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+    "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+    "Accept-Language": "pt-BR,pt;q=0.9",
 }
-WORKERS = 12
+WORKERS = 6
 MAX_RETRIES = 3
 
-OG_TITLE_RE = re.compile(r'<meta property="og:title" content="([^"]*)"')
-OG_IMAGE_RE = re.compile(r'<meta property="og:image" content="([^"]*)"')
+RE = {
+    "h1": re.compile(r'<h1[^>]*class="product__name"[^>]*>(.*?)</h1>', re.S),
+    "partcode": re.compile(r'class="product__partcode">\s*(?:C[óo]d\.\s*)?([^<]+?)\s*<'),
+    "brand": re.compile(r'itemprop="brand"[^>]*>\s*<meta itemprop="name" content="([^"]*)"'),
+    "gtin": re.compile(r'itemprop="gtin13" content="([^"]*)"'),
+    "descricao": re.compile(r'class="panel-body panel-description">(.*?)</div>', re.S),
+    "info": re.compile(r'id="collapseInfo".*?<table class="table-specifications">(.*?)</table>', re.S),
+    "linha_info": re.compile(r"<th[^>]*>(.*?)</th>\s*<td[^>]*>(.*?)</td>", re.S),
+    "img_gg": re.compile(r'https://images\.cws\.digital/produtos/gg/[^"\'\s]+'),
+    "og_image": re.compile(r'property="og:image" content="([^"]*)"'),
+    "cat1": re.compile(r'data-sku-category="([^"]*)"'),
+    "cat2": re.compile(r'data-sku-category2="([^"]*)"'),
+    "cat3": re.compile(r'data-sku-category3="([^"]*)"'),
+    "meta_desc": re.compile(r'itemprop="description" content="([^"]*)"'),
+}
+
+
+def limpar(texto: str) -> str:
+    texto = re.sub(r"<[^>]+>", " ", texto or "")
+    return re.sub(r"\s+", " ", html.unescape(texto)).strip()
 
 
 def urls_from_sitemap(category: str):
     path = os.path.join(SITEMAP_DIR, f"imdepa_{category}.xml.gz")
     with gzip.open(path, "rt", encoding="utf-8") as f:
         content = f.read()
-    urls = re.findall(r"<loc>([^<]+)</loc>", content)
     items = []
-    for url in urls:
-        parsed = urlparse(url)
-        parts = parsed.path.strip("/").split("/")
-        if len(parts) < 3 or parts[0] != "p":
-            continue
-        product_id, slug = parts[1], parts[2]
-        items.append({"url": url, "product_id": product_id, "slug": slug})
+    for url in re.findall(r"<loc>([^<]+)</loc>", content):
+        parts = urlparse(url).path.strip("/").split("/")
+        if len(parts) >= 3 and parts[0] == "p":
+            items.append({"url": url, "product_id": parts[1], "slug": parts[2]})
     return items
 
 
-def fetch_one(session: requests.Session, item: dict):
+def extrair(html_pagina: str, item: dict) -> dict:
+    def um(chave):
+        m = RE[chave].search(html_pagina)
+        return limpar(m.group(1)) if m else ""
+
+    info = {}
+    m = RE["info"].search(html_pagina)
+    if m:
+        for th, td in RE["linha_info"].findall(m.group(1)):
+            k, v = limpar(th), limpar(td)
+            if k and v:
+                info[k] = v
+    imagens = list(dict.fromkeys(RE["img_gg"].findall(html_pagina)))
+    if not imagens:
+        og = RE["og_image"].search(html_pagina)
+        if og:
+            imagens = [og.group(1)]
+    return {
+        **item,
+        "nome": um("h1"),
+        "marca": um("brand"),
+        "codigo": um("partcode"),
+        "gtin": um("gtin"),
+        "categoria1": um("cat1"),
+        "categoria2": um("cat2"),
+        "categoria3": um("cat3"),
+        "descricao": um("descricao") or um("meta_desc"),
+        "info_tecnica": info,
+        "imagens": imagens,
+        "erro": "",
+    }
+
+
+def fetch_one(session: requests.Session, item: dict) -> dict:
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            resp = session.get(item["url"], headers=HEADERS, timeout=15)
+            resp = session.get(item["url"], headers=HEADERS, timeout=25)
             if resp.status_code != 200:
-                return {**item, "og_title": "", "og_image": "", "erro": f"HTTP {resp.status_code}"}
-            html = resp.text
-            m_title = OG_TITLE_RE.search(html)
-            m_image = OG_IMAGE_RE.search(html)
-            return {
-                **item,
-                "og_title": m_title.group(1) if m_title else "",
-                "og_image": m_image.group(1) if m_image else "",
-                "erro": "",
-            }
+                return {**item, "erro": f"HTTP {resp.status_code}"}
+            dados = extrair(resp.text, item)
+            if not dados["nome"]:
+                dados["erro"] = "sem nome (página mudou?)"
+            return dados
         except requests.RequestException as e:
             if attempt == MAX_RETRIES:
-                return {**item, "og_title": "", "og_image": "", "erro": str(e)}
+                return {**item, "erro": str(e)[:160]}
             time.sleep(min(2 ** attempt, 10))
+    return {**item, "erro": "esgotou tentativas"}
 
 
 def scrape_category(category: str):
-    out_path = os.path.join(PROGRESS_DIR, f"{category}.json")
+    out_path = os.path.join(OUT_DIR, f"{category}.json")
     if os.path.exists(out_path):
         with open(out_path, encoding="utf-8") as f:
             data = json.load(f)
-        print(f"[{category}] ja coletado (cache): {len(data)} produtos")
+        print(f"[{category}] já coletado: {len(data)} produtos", flush=True)
         return data
 
     items = urls_from_sitemap(category)
-    print(f"[{category}] {len(items)} URLs no sitemap, buscando paginas...")
-
-    results = []
-    done = 0
+    print(f"[{category}] {len(items)} URLs, buscando…", flush=True)
+    results, done, inicio = [], 0, time.time()
     with requests.Session() as session, ThreadPoolExecutor(max_workers=WORKERS) as pool:
-        futures = {pool.submit(fetch_one, session, item): item for item in items}
+        futures = [pool.submit(fetch_one, session, it) for it in items]
         for future in as_completed(futures):
             results.append(future.result())
             done += 1
             if done % 500 == 0:
-                print(f"[{category}] {done}/{len(items)}")
-
+                print(f"[{category}] {done}/{len(items)} ({time.time() - inicio:.0f}s)", flush=True)
+    results.sort(key=lambda r: r["product_id"])
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False)
-
-    erros = sum(1 for r in results if r["erro"])
-    print(f"[{category}] concluido: {len(results)} produtos ({erros} com erro)\n")
+    erros = sum(1 for r in results if r.get("erro"))
+    com_foto = sum(1 for r in results if r.get("imagens"))
+    print(f"[{category}] concluído: {len(results)} produtos, {com_foto} com foto, {erros} com erro\n", flush=True)
     return results
 
 
 def main():
-    os.makedirs(PROGRESS_DIR, exist_ok=True)
-    all_rows = []
-    for category in CATEGORIES:
-        items = scrape_category(category)
-        for it in items:
-            og_title = it.get("og_title", "")
-            marca, _, codigo = og_title.partition(" - ")
-            all_rows.append(
-                {
-                    "marca": marca.strip() or "Imdepa",
-                    "linha": category,
-                    "codigo": codigo.strip() or it["slug"],
-                    "titulo": og_title or it["slug"].replace("-", " "),
-                    "slug": it["slug"],
-                    "imagem_url": it.get("og_image", ""),
-                    "product_id": it["product_id"],
-                    "url": it["url"],
-                    "erro": it.get("erro", ""),
-                }
-            )
-
-    fieldnames = [
-        "marca",
-        "linha",
-        "codigo",
-        "titulo",
-        "slug",
-        "imagem_url",
-        "product_id",
-        "url",
-        "erro",
-    ]
-    with open("data/imdepa.csv", "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(all_rows)
-
-    print(f"TOTAL: {len(all_rows)} produtos -> data/imdepa.csv")
+    os.makedirs(OUT_DIR, exist_ok=True)
+    categorias = sys.argv[1:] or CATEGORIES
+    todos = []
+    for category in categorias:
+        for r in scrape_category(category):
+            todos.append({**r, "linha": category})
+    if not sys.argv[1:]:
+        with open("data/imdepa.json", "w", encoding="utf-8") as f:
+            json.dump(todos, f, ensure_ascii=False)
+        erros = sum(1 for r in todos if r.get("erro"))
+        com_foto = sum(1 for r in todos if r.get("imagens"))
+        print(f"TOTAL: {len(todos)} produtos ({com_foto} com foto, {erros} com erro) -> data/imdepa.json")
 
 
 if __name__ == "__main__":

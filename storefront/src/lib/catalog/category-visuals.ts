@@ -34,6 +34,12 @@ const CATEGORY_VISUALS: Record<string, CategoryVisual> = {
     eyebrow: "Manutenção e recuperação de conjuntos",
     surfaceClass: "bg-[#f1eef9]",
   },
+  "rolamentos-e-transmissao": {
+    image: "/images/departments/rolamentos-e-transmissao.webp",
+    imageAlt: "Rolamento de esferas, mancal flangeado, correia e corrente de rolos",
+    eyebrow: "Rolamentos, correias, correntes e transmissão",
+    surfaceClass: "bg-[#fbeeee]",
+  },
 }
 
 /**

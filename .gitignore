@@ -33,3 +33,6 @@ data/*.stderr.log
 .env
 .env.*
 !.env.example
+
+# por categoria: junta-se em data/imdepa.json (recriável com data/scrapers/scrape_imdepa.py)
+data/imdepa/

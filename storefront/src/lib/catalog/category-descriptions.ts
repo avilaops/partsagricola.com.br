@@ -60,6 +60,43 @@ const DESCRICOES: Record<string, string> = {
     "Kits e componentes para sistemas pneumáticos: reparos de válvulas, cilindros de freio, secadores e engates rápidos para caminhões, carretas e implementos.",
   retentores:
     "Retentores de óleo e graxa para eixos, cubos, bombas e transmissões: medidas por diâmetro interno × externo × altura, com referência cruzada aos códigos das montadoras.",
+  "vedacoes-diversas":
+    "Vedações industriais avulsas: anéis de vedação, juntas e elementos de selagem para equipamentos e instalações, identificados por código do fabricante.",
+
+  // ── Rolamentos e transmissão (catálogo Imdepa) ───────────────────────────
+  "rolamentos-e-transmissao":
+    "Rolamentos, mancais, correias, correntes, engrenagens, rótulas e componentes de transmissão de potência das principais marcas — SKF, FAG, NSK, NTN, Timken, Gates e outras. Busque pelo código gravado na peça ou pelas medidas.",
+  rolamentos:
+    "Rolamentos de esferas, rolos cônicos, cilíndricos, autocompensadores e agulhas, em todas as séries industriais e automotivas. Confira o código completo (com sufixos de vedação e folga) antes de solicitar.",
+  mancais:
+    "Mancais de pedestal, flange e tensores, com rolamento montado, para eixos de máquinas agrícolas, transportadores e equipamentos industriais.",
+  buchas:
+    "Buchas de fixação, de redução e adaptadoras para rolamentos e mancais: buchas cônicas, de desmontagem e com rosca.",
+  "aneis-de-fixacao":
+    "Anéis de bloqueio, anéis elásticos e anéis de fixação para rolamentos e eixos — travamento axial por código e medida.",
+  correias:
+    "Correias em V, dentadas, sincronizadoras e agrícolas para motores, colheitadeiras e implementos. Busque pelo perfil e pelo comprimento gravados na correia usada.",
+  correntes:
+    "Correntes de rolos, transportadoras e agrícolas, com elos de emenda e engates, por passo e norma (ANSI, ISO).",
+  engrenagens:
+    "Engrenagens e rodas dentadas para correntes e transmissões, por número de dentes, passo e furo.",
+  embreagens:
+    "Embreagens e componentes de acoplamento para máquinas e veículos, por código do fabricante.",
+  rotulas:
+    "Rótulas, terminais rotulares e articulações esféricas para hastes, cilindros e sistemas de direção.",
+  "mangueiras-e-terminais":
+    "Mangueiras hidráulicas, terminais, conexões e adaptadores para montagem de linhas de pressão.",
+  "esteiras-transportadoras":
+    "Esteiras e correias transportadoras para movimentação de grãos e materiais.",
+  fixacao:
+    "Arruelas, porcas e elementos de fixação para montagem de rolamentos, mancais e eixos.",
+  ferramentas:
+    "Ferramentas para montagem e desmontagem de rolamentos: extratores, aquecedores indutivos e kits de instalação.",
+  lubrificantes:
+    "Graxas e lubrificantes para rolamentos, mancais e correntes, por aplicação e faixa de temperatura.",
+  "pecas-automotivas":
+    "Peças automotivas selecionadas: cubos, rolamentos de roda e componentes de transmissão para veículos e utilitários.",
+
   "vedacoes-industriais":
     "Jogos e kits de vedação organizados por fabricante do equipamento: Caterpillar, Komatsu, Volvo, JCB, Case e outras linhas. Escolha a marca da máquina e localize o kit pelo código do cilindro ou do comando.",
 }
