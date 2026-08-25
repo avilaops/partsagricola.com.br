@@ -271,6 +271,29 @@ Content-Security-Policy entrou calibrada para a stack real (Next inline,
 GTM/GA4, Meta Pixel, fotos do R2); vendor novo no GTM precisa entrar na
 lista do `next.config.js`.
 
+### Catálogo Imdepa no ar (25/08/2026)
+
+- A raspagem da loja.imdepa.com.br pedida no início do projeto nunca tinha
+  rodado até o fim (a v1 só pegava título e foto). A v2
+  (`data/scrapers/scrape_imdepa.py`) leu os 12.502 itens dos 18 sitemaps com
+  nome, marca, código do fabricante, categorias, descrição, tabela técnica
+  (NCM, peso, aplicação, medidas), GTIN e todas as fotos — 12.499 com foto,
+  3 páginas fora do ar. Resultado versionado em `data/imdepa.json`.
+- **12.499 produtos cadastrados** no Odoo e publicados
+  (`importar_imdepa.py`, 0 falhas), no departamento novo **Rolamentos e
+  Transmissão** com 16 linhas (rolamentos 7.038, correias 2.082, mancais 424,
+  correntes 245, buchas 201, embreagens 175…) e retentores/vedações
+  encaixados nas linhas que já existiam. Nome no padrão do catálogo
+  ("Tipo medidas Marca — código"); ficha com marca, código Imdepa, NCM,
+  peso, aplicação e embalagem. Preço fica "sob consulta" (a Imdepa só mostra
+  a quem está logado).
+- Fotos: baixadas as 12.498 originais (593 MB) e passadas pela mesma esteira
+  das outras (recorte → Odoo → R2, `refazer_fotos.py --versao v1`), em 3
+  workers paralelos — rodada de horas, acompanhada por monitor.
+- Site: departamento no menu, na home e na página de categoria com imagem
+  própria e descrições comerciais das 17 linhas novas — pronto, aguardando
+  autorização de deploy.
+
 ### Cards: placa técnica e fotos otimizadas (23/08/2026)
 
 Card sem foto virou "placa técnica" — código da peça em destaque com
