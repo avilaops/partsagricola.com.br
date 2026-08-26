@@ -11,7 +11,7 @@ import Script from "next/script"
  * qualquer jeito — e quando o valor mora so num `.env` fora do versionamento
  * ele se perde em migracao de pasta ou build feito em outra maquina, e o site
  * fica sem medicao sem ninguem notar (foi o que aconteceu com o avilaops.com,
- * ver docs/ANALYTICS-AUDITORIA.md no workspace). `NEXT_PUBLIC_GTM_ID` continua
+ * ver docs/analytics/ANALYTICS-AUDITORIA.md no workspace). `NEXT_PUBLIC_GTM_ID` continua
  * sobrepondo, pra builds de staging.
  */
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-PXF6MB94"
