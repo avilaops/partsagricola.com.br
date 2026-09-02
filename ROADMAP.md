@@ -1,4 +1,4 @@
-# Roadmap — Marketplace Agricola
+# Roadmap: Marketplace Agricola
 
 > Última atualização: 20/08/2026. Este documento acompanha o progresso do
 > projeto de ponta a ponta: da extração do catálogo até a loja em produção.
@@ -60,7 +60,7 @@ saiu do DNS).
 ```
 
 O mesmo VPS hospeda outros projetos da Avila Ops (pkvedacoes, saudepet,
-cliente-avila, brilhax, wabusiness) — o padrão de deploy (systemd nativo,
+cliente-avila, brilhax, wabusiness), o padrão de deploy (systemd nativo,
 Postgres/Redis compartilhados) espelha o que já existia para `pkvedacoes`.
 
 ## Repositório
@@ -86,26 +86,26 @@ agricola/
 
 ## Fases concluídas
 
-### Fase 1 — Extração do catálogo (peças)
+### Fase 1: Extração do catálogo (peças)
 - 4 catálogos PDF da linha Algodão/Amendoim/Construção/Verde → OCR/parsing →
   294 peças brutas (`scripts/extract_all.py`, `combine.py`).
 - Revisão manual completa: 294 → **281 peças** (12 falsos-positivos removidos
-  — números de telefone da contracapa capturados por engano — e 1 duplicata).
+  - números de telefone da contracapa capturados por engano, e 1 duplicata).
   83 nomes corrigidos, ~10 códigos com erro de OCR corrigidos.
   12 registros continuam marcados `revisar: sim` (dado insuficiente na imagem
-  pra confirmar com segurança — não foi inventado).
+  pra confirmar com segurança, não foi inventado).
 - Schema Postgres modelado (`brand`/`product_line`/`product_family`/
   `product`/`product_variant`/`product_attribute`/`product_image`) pensado
   pra já comportar uma fase futura de "vedação" sem remodelar.
 
-### Fase 2 — Infraestrutura base
+### Fase 2: Infraestrutura base
 - Banco `agricola` criado no Postgres do VPS, schema+seed aplicados.
 - DNS `agricola.avilaops.com` → VPS, Caddy com TLS automático (domínio
   provisório; substituído por `partsagricola.com.br`).
 - `.env`/`.env.production` protegidos no `.gitignore`.
 - Repositório sincronizado com GitHub.
 
-### Fase 3 — Marketplace (Medusa + storefront)
+### Fase 3: Marketplace (Medusa + storefront)
 - Backend Medusa v2.18 (Turborepo) com:
   - Redis multi-tenant (`TENANT_SLUG=agricola`, mesmo padrão do pkvedacoes,
     não colide com outros projetos no mesmo Redis compartilhado).
@@ -119,10 +119,10 @@ agricola/
   - Deploy em modo `standalone` (build enxuto, sem precisar do
     `node_modules` completo no servidor).
 - Deploy: build de produção feito **local** e só os artefatos prontos vão
-  pro VPS via `scp` — evita rodar `npm install` pesado no servidor
+  pro VPS via `scp` - evita rodar `npm install` pesado no servidor
   compartilhado (já causou um susto de memória numa tentativa anterior).
 
-### Fase 4 — Importação dos dados reais
+### Fase 4: Importação dos dados reais
 - `scripts/process_catalogs.py` consolida as fontes em uma base canônica,
   preserva proveniência, valida contagens e separa registros inseguros.
 - Auditoria aprovada: **25.239 itens importáveis**, **196 em quarentena** e
@@ -132,26 +132,26 @@ agricola/
 - Produção validada com **25.520 produtos**: 25.239 do lote tratado mais 281
   produtos anteriores, sem `import_key` duplicada.
 
-### Fase 5 — Correções críticas pós-deploy
+### Fase 5: Correções críticas pós-deploy
 - **Bug de redirecionamento**: o `server.js` standalone do Next, atrás do
   Caddy, montava `request.nextUrl.origin` usando o hostname interno
-  (`localhost:3006`) em vez do domínio real — qualquer visitante novo era
+  (`localhost:3006`) em vez do domínio real, qualquer visitante novo era
   redirecionado pra fora do site. Corrigido lendo
   `X-Forwarded-Host`/`Host` no `middleware.ts`.
 - **Canal de venda errado**: um resíduo de seed anterior fez os primeiros
   produtos de teste ficarem ligados ao canal errado (loja aparecia vazia
   na Store API). Corrigido e limpo.
 - **Handle inválido**: 1 peça com código terminando em ponto
-  (`47864190.`) gerava um handle inválido — corrigido o sanitizador.
+  (`47864190.`) gerava um handle inválido, corrigido o sanitizador.
 
-### Fase 6 — Marca, idioma e descoberta
-- Confirmado com o Nicolas: **Geomaq não tem relação com a empresa** —
+### Fase 6: Marca, idioma e descoberta
+- Confirmado com o Nicolas: **Geomaq não tem relação com a empresa**
   removidas todas as menções a "Geomaq" do site e do banco (texto/metadata;
   as fotos das peças, recortadas do catálogo impresso, continuam como
-  estão por ora — algumas mostram o logo Geomaq® na própria imagem).
+  estão por ora, algumas mostram o logo Geomaq® na própria imagem).
 - Rodapé trocou "Powered by Medusa & Next.js" por "by Avila Ops"
   (link `avila.inc`).
-- Tradução pt-BR: **concluído** — nav, rodapé, home, conta (login,
+- Tradução pt-BR: **concluído**, nav, rodapé, home, conta (login,
   cadastro, endereços, perfil, senha, pedidos), carrinho, checkout
   (endereços, entrega, pagamento, revisão, cupom). Falta uma
   passada final de conferência visual.
@@ -173,14 +173,14 @@ agricola/
 - Barra de conversão mobile fixa nas páginas de produto, integrada à cotação e
   ao comparador, com transição automática para evitar sobreposição de ações.
 
-### Fase 7 — Odoo como fonte da verdade (em andamento)
+### Fase 7: Odoo como fonte da verdade (em andamento)
 
 Decidido em 16/08/2026; detalhes operacionais em
 `odoo.avilaops.com/integracao-partsagricola/README.md`. O Medusa sai; o site e
 o Postgres ficam. Estado em 19/08/2026:
 
 - **Feito:** 28.424 produtos importados no Odoo (idempotente por SKU);
-  camada de leitura `catalogo_odoo` populada e sincronizada — com
+  camada de leitura `catalogo_odoo` populada e sincronizada, com
   metadata técnica e handle da URL carregados (28.424/28.424); rota
   `POST /api/revalidar` no ar (token, falha fechado); orquestrador
   `vitrine/atualizar.py` instalado no VPS com cron horário; fotos
@@ -189,10 +189,10 @@ o Postgres ficam. Estado em 19/08/2026:
   tem formulário que cria `sale.order` em rascunho no ERP via
   `POST /api/cotacao` (testado em produção, orçamento S00001).
 - **Conferência do catálogo (19/08/2026):** paridade total entre
-  `catalogo_odoo` e o Medusa — mesmos 28.424 SKUs dos dois lados, zero
+  `catalogo_odoo` e o Medusa, mesmos 28.424 SKUs dos dois lados, zero
   divergências de nome, 3.806 imagens, metadata 100%.
 - **Precificação:** a pesquisa de mercado acontece em sessão do Claude
-  Code (sem chave de IA no servidor — o `precificar.py` que exigia
+  Code (sem chave de IA no servidor, o `precificar.py` que exigia
   `ANTHROPIC_API_KEY`/`BRAVE_API_KEY` foi removido em 19/08/2026); o
   resultado revisado é gravado no Odoo pelo `aplicar_precos.py` (CSV
   com fonte obrigatória, procedência no chatter interno).
@@ -212,7 +212,7 @@ artefato: <https://claude.ai/code/artifact/164f2fe2-dd78-4a9f-aeb9-7987181bac03>
 Entregues no mesmo dia: hero claro + menu lateral limpo, "Sob consulta" nos
 cards, trigramas na busca, cabeçalhos de segurança, rate-limit no
 `/api/cotacao`, cotação testada de ponta a ponta e **aviso de nova cotação
-por e-mail** (fluxo n8n "PartsAgrícola — aviso de nova cotação", webhook com
+por e-mail** (fluxo n8n "PartsAgrícola, aviso de nova cotação", webhook com
 token; env `COTACAO_WEBHOOK_URL`/`COTACAO_WEBHOOK_TOKEN` no storefront).
 
 ### Nomes de mercado e descrições comerciais (25/08/2026)
@@ -223,10 +223,10 @@ camada (0 falhas, ~85 min). Nome = tipo da peça em caixa de mercado, com
 abreviações expandidas ("REPARO CIL. DIR." → "Reparo do Cilindro de
 Direção"), acentos, siglas e nome canônico do glossário; retentores,
 O-Rings e gaxetas passaram a se chamar pelas medidas. A estrutura "Comp.
-<máquinas> — código" foi preservada (o sync deriva as máquinas dela) e os
-4.500 itens da Rio Preto ganharam "Comp. <marca>" — produtos com máquina
+<máquinas> - código" foi preservada (o sync deriva as máquinas dela) e os
+4.500 itens da Rio Preto ganharam "Comp. <marca>", produtos com máquina
 compatível: 17.157 → 21.638. Descrição em 5 blocos: o que é e para quem /
-função (glossário de ~250 tipos, escrito à mão — 92% cobertos; as 2.594 que
+função (glossário de ~250 tipos, escrito à mão, 92% cobertos; as 2.594 que
 já tinham texto específico o mantiveram) / medidas e material / linha /
 compatibilidade e o que conferir. Rollback: CSV com antigo e novo em
 `/opt/backups/partsagricola-nomes-descricoes-antes-*.csv`. Scripts:
@@ -236,7 +236,7 @@ compatibilidade e o que conferir. Rollback: CSV com antigo e novo em
 
 Ao investigar o resíduo nas superfícies claras, a marca da Geomaq se
 revelou blend **darken** (I = min(P, M) por canal; pico do histograma em
-224 e nada acima), não mistura alpha — a inversão alpha da v2 clareava a
+224 e nada acima), não mistura alpha, a inversão alpha da v2 clareava a
 peça inteira dentro do losango e esse era o "fantasma". O
 `limpar_marca_dagua_v2.py` (repo do Odoo) mantém intacto o que está abaixo
 de M e preenche só o grampeado por inpaint clássico a partir da borda do
@@ -254,18 +254,18 @@ subárvore: Vedações e Selagem = 8.823), os cards "Escolha uma linha" vêm
 ordenados por volume com o número em cada um (vazios aparecem como "em
 catalogação", não somem), e a listagem mostra o total de referências.
 Produtos relacionados passaram a priorizar a mesma máquina compatível
-dentro da categoria — antes toda ficha da categoria repetia os mesmos 4.
+dentro da categoria, antes toda ficha da categoria repetia os mesmos 4.
 
 ### Categorias com texto próprio, breadcrumbs e CSP (23/08/2026)
 
 As 42 páginas de categoria ganharam descrição editorial única
-(`storefront/src/lib/catalog/category-descriptions.ts` — versionada no
+(`storefront/src/lib/catalog/category-descriptions.ts` - versionada no
 código, já que a taxonomia nasceu dos nomes e a camada não guarda
 descrição): aparece no hero, nos cards "Escolha uma linha" e na meta
 description. As 21 marcas de vedação geram texto por nome, sem parágrafo
 repetido. Breadcrumbs completos: trilha visual e JSON-LD `BreadcrumbList`
 com a cadeia inteira (Início → Catálogo → departamento → categoria →
-produto) em categorias e produtos — `listCategoryParents` anda a cadeia
+produto) em categorias e produtos, `listCategoryParents` anda a cadeia
 pela camada, porque as cópias rasas só sobem um nível. E a
 Content-Security-Policy entrou calibrada para a stack real (Next inline,
 GTM/GA4, Meta Pixel, fotos do R2); vendor novo no GTM precisa entrar na
@@ -277,27 +277,27 @@ lista do `next.config.js`.
   rodado até o fim (a v1 só pegava título e foto). A v2
   (`data/scrapers/scrape_imdepa.py`) leu os 12.502 itens dos 18 sitemaps com
   nome, marca, código do fabricante, categorias, descrição, tabela técnica
-  (NCM, peso, aplicação, medidas), GTIN e todas as fotos — 12.499 com foto,
+  (NCM, peso, aplicação, medidas), GTIN e todas as fotos, 12.499 com foto,
   3 páginas fora do ar. Resultado versionado em `data/imdepa.json`.
 - **12.499 produtos cadastrados** no Odoo e publicados
   (`importar_imdepa.py`, 0 falhas), no departamento novo **Rolamentos e
   Transmissão** com 16 linhas (rolamentos 7.038, correias 2.082, mancais 424,
   correntes 245, buchas 201, embreagens 175…) e retentores/vedações
   encaixados nas linhas que já existiam. Nome no padrão do catálogo
-  ("Tipo medidas Marca — código"); ficha com marca, código Imdepa, NCM,
+  ("Tipo medidas Marca, código"); ficha com marca, código Imdepa, NCM,
   peso, aplicação e embalagem. Preço fica "sob consulta" (a Imdepa só mostra
   a quem está logado).
 - Fotos: baixadas as 12.498 originais (593 MB) e passadas pela mesma esteira
   das outras (recorte → Odoo → R2, `refazer_fotos.py --versao v1`), em 3
-  workers paralelos — rodada de horas, acompanhada por monitor.
+  workers paralelos, rodada de horas, acompanhada por monitor.
 - Site: departamento no menu, na home e na página de categoria com imagem
-  própria e descrições comerciais das 17 linhas novas — pronto, aguardando
+  própria e descrições comerciais das 17 linhas novas, pronto, aguardando
   autorização de deploy.
 
 ### Cards: placa técnica e fotos otimizadas (23/08/2026)
 
-Card sem foto virou "placa técnica" — código da peça em destaque com
-"foto em catalogação · ficha técnica disponível" — em vez do mesmo SVG
+Card sem foto virou "placa técnica", código da peça em destaque com
+"foto em catalogação · ficha técnica disponível", em vez do mesmo SVG
 genérico repetido em 87% da grade. Fotos passaram pelo otimizador do
 Next (fim do `unoptimized` para o R2: 869 KB → 224 KB em 384 px, WebP
 nos browsers) e `object-contain` acabou com o corte das peças.
@@ -341,19 +341,19 @@ Fotos: 3.515 sem a marca d'água da Geomaq (v2) + 247 recortadas da célula
 produtos classificados. Scripts e resultados em
 `odoo.avilaops.com/integracao-partsagricola/`.
 
-### Disco do VPS — segundo incidente, 23/08/2026
+### Disco do VPS: segundo incidente, 23/08/2026
 
 Raiz a 100% de novo e Postgres em recuperação: desta vez o job noturno
 `backup-todos-bancos.sh` tinha 19 GB de tars do filestore do tenant
 **avilaops** (3,2 GB/noite × 7 dias). O vigia alertou por e-mail às 03:45.
 Com autorização do Nicolas: apagado o tar mais antigo (Postgres voltou), e a
 retenção dos tars de filestore nesse job caiu para 2 dias (dumps `.sql.gz`
-seguem em 7) — backup do script em `/opt/backups/backup-todos-bancos.sh.bak-20260823`.
+seguem em 7), backup do script em `/opt/backups/backup-todos-bancos.sh.bak-20260823`.
 Raiz foi de 100% para 67%. O volume Docker (40 GB) segue a 93% com **tudo em
 uso** (24,7 GB de imagens ativas + 9 GB de volumes): `image prune -a` não
-libera nada — a saída é aumentar o volume na Hetzner.
+libera nada, a saída é aumentar o volume na Hetzner.
 
-### Disco do VPS — incidente de 21/08/2026
+### Disco do VPS: incidente de 21/08/2026
 
 O filestore do Odoo (fotos, 4,8 GB) fez o job noturno server-wide
 `backup-todos-bancos.sh` encher o disco raiz; o Postgres entrou em
@@ -362,9 +362,9 @@ snapshot diário), GC do Odoo nos anexos órfãos, e o volume
 `odoo-avilaops_partsagricola-data` retirado da lista desse job (backup do
 script em `/opt/backups/backup-todos-bancos.sh.bak-20260821`). O volume
 Docker de 40 GB segue a ~96%: ~20 GB são imagens de outros projetos sem
-container — `docker image prune -a` é decisão do Nicolas.
+container, `docker image prune -a` é decisão do Nicolas.
 
-### Identidade visual v2 — aplicada e no ar (19/08/2026)
+### Identidade visual v2: aplicada e no ar (19/08/2026)
 
 Tipografia oficial (Manrope/Inter via `next/font`), banners editoriais
 `*-v2.webp` sem texto embutido, seção Novidades na home, página
@@ -375,53 +375,53 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
 ## Pendências / próximas fases
 
 ### Bloqueia vender de verdade
-1. **Pagamento** — o checkout do Medusa morreu junto com ele; o caminho
+1. **Pagamento**, o checkout do Medusa morreu junto com ele; o caminho
    agora é cotação no site → orçamento `sale.order` no Odoo → pagamento
    pelo Odoo (providers nativos do Odoo 19: Mercado Pago e PayPal; Éfi
    PIX/Boleto exigiria módulo custom). **Depende de decisão do Nicolas**:
    quais providers ativar, sandbox ou produção, e com quais credenciais
    (Mercado Pago/PayPal no `.env.production` da raiz; Éfi em
    `D:/administrativo/financeiro/.env.production.efi` + `.p12`). Nada
-   ativado até lá — provider de pagamento com credencial real é ação
+   ativado até lá, provider de pagamento com credencial real é ação
    externa, não se liga sem combinar.
-2. **Preços reais** — os produtos estão a R$ 0,00 (catálogo para consulta
+2. **Preços reais**, os produtos estão a R$ 0,00 (catálogo para consulta
    pra fase atual). Alguém precisa definir preço de verdade pelo admin
    antes de vender de fato.
 
 ### Qualidade / acabamento
-3. **Indexação externa** — enviar o sitemap no Google Search Console e
+3. **Indexação externa**, enviar o sitemap no Google Search Console e
    acompanhar cobertura; a preparação técnica não garante rastreamento
    imediato pelo Google.
-4. ~~Registros em quarentena~~ — **revisados em 20/08/2026**: dos 280,
+4. ~~Registros em quarentena~~ - **revisados em 20/08/2026**: dos 280,
    141 eram dado bom rejeitado por rigidez do pipeline (medida dupla de
-   retentor, código no prefixo do nome, referência contaminada) — 140
+   retentor, código no prefixo do nome, referência contaminada), 140
    únicos criados no Odoo e no ar. As 139 restantes têm `revisar=sim`
    da revisão humana da extração e ficam de fora por decisão, não por
    bug.
-5. ~~Rebuild não é automático~~ — **resolvido pela arquitetura da camada
+5. ~~Rebuild não é automático~~ - **resolvido pela arquitetura da camada
    Odoo (verificado em 20/08/2026)**: toda leitura do catálogo é
    `unstable_cache` sob a tag `catalogo`; o `POST /api/revalidar` (chamado
    pelo orquestrador a cada sync) invalida dados e rotas de uma vez, e a
-   próxima visita re-renderiza — inclusive páginas pré-geradas no build
+   próxima visita re-renderiza, inclusive páginas pré-geradas no build
    (testado com produto do top-100 cuja foto mudou depois do deploy).
    Rebuild só é preciso quando muda código, e aí é o
    `deploy-storefront.sh`.
 
 ### Operacional
-6. ~~Sem backup configurado~~ — **resolvido em 20/08/2026**:
+6. ~~Sem backup configurado~~ - **resolvido em 20/08/2026**:
    `partsagricola-db-snapshot.timer` (00:30) despeja os três bancos
    (`partsagricola`, `agricola_medusa`, `agricola`) em
    `/opt/backups/partsagricola`, retenção de 5 dias
    (`integracao-partsagricola/backup_bancos.sh` no repo do Odoo).
-7. ~~Deploy é manual~~ — **um comando desde 20/08/2026**:
+7. ~~Deploy é manual~~ - **um comando desde 20/08/2026**:
    `./scripts/deploy-storefront.sh` (túnel, build, verificação
    anti-localhost, empacote, backup, troca, smoke test). CI/CD de
    verdade continua fora do escopo por ora.
-8. ~~Fotos com marca Geomaq visível~~ — **tratado em 20–21/08/2026**, a pedido
+8. ~~Fotos com marca Geomaq visível~~ - **tratado em 20–21/08/2026**, a pedido
    do Nicolas: as 3.525 fotos da loja online tinham o losango
-   semitransparente da Geomaq (sempre igual, sempre no mesmo lugar) —
+   semitransparente da Geomaq (sempre igual, sempre no mesmo lugar)
    removido por estatística de coleção (`limpar_marca_dagua.py`, sem IA
-   generativa); as 281 dos PDFs eram a célula inteira do catálogo —
+   generativa); as 281 dos PDFs eram a célula inteira do catálogo
    recortada a foto e descartadas 28 que eram só etiqueta
    (`recortar_celula.py`); tudo refeito no Odoo e publicado com chave
    versionada (`refazer_fotos.py`). Resíduo honesto: um fantasma muito
@@ -429,10 +429,10 @@ no mesmo dia (backup em `/opt/backups/agricola-storefront-pre-*`).
    extração já trazia pedaço do produto vizinho.
 
 ### Fases futuras (fora do escopo atual)
-9. ~~Rebrand pra Parts Agricola~~ — **concluído**: domínio, DNS/Caddy,
+9. ~~Rebrand pra Parts Agricola~~ - **concluído**: domínio, DNS/Caddy,
    identidade visual v2 e metadados já são Parts Agrícola; o "nome de
    exibição no Medusa" deixou de existir com o Medusa.
-10. **Ampliação do catálogo** — novas fontes devem passar pelo mesmo snapshot,
+10. **Ampliação do catálogo**, novas fontes devem passar pelo mesmo snapshot,
     auditoria, quarentena e validação antes/depois da importação.
 
 ## Acessos

@@ -1,4 +1,4 @@
-# Parts Agrícola — ícones de interface
+# Parts Agrícola: ícones de interface
 
 Conjunto vetorial personalizado para a interface do marketplace.
 
@@ -33,7 +33,7 @@ estático; no React, prefira os componentes gerados em
 > Por isso a geometria é inlinada em componentes React
 > (`src/modules/common/icons/parts/`), gerados do sprite por
 > `npm run icones`. O sprite continua publicado em `/assets/` para e-mail, PDF
-> e qualquer consumidor que não seja este React — o trecho acima vale para eles.
+> e qualquer consumidor que não seja este React, o trecho acima vale para eles.
 >
 > As classes `.pa-accent` e `.pa-fill-accent` foram movidas para
 > `styles/globals.css`, então `--pa-green` continua sobreponível.

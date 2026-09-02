@@ -254,7 +254,7 @@ Referência:
 
 ## Nova arquitetura recomendada
 
-### Nível 1 — Departamentos
+### Nível 1: Departamentos
 
 | Departamento proposto | Produtos atuais |
 |---|---:|
@@ -263,7 +263,7 @@ Referência:
 | Vedações e Selagem | 5.789 |
 | Kits e Reparos | 371 |
 
-### Nível 2 — Forma principal de navegação
+### Nível 2: Forma principal de navegação
 
 #### Peças Agrícolas
 
@@ -308,7 +308,7 @@ As marcas atuais passam a ser filtros de compatibilidade.
 - Caixa de direção
 - Sistemas pneumáticos
 
-### Nível 3 — Família técnica
+### Nível 3: Família técnica
 
 Famílias como filtros e páginas de destino:
 
@@ -541,7 +541,7 @@ volume de tráfego, necessidade de personalização ou infraestrutura dedicada.
 
 ## Plano de implementação
 
-### Fase 1 — Fundação do catálogo
+### Fase 1: Fundação do catálogo
 
 1. Criar snapshot antes da migração.
 2. Criar a árvore com quatro departamentos.
@@ -550,7 +550,7 @@ volume de tráfego, necessidade de personalização ou infraestrutura dedicada.
 5. Normalizar handles e criar redirecionamentos.
 6. Validar 25.520 produtos antes e depois.
 
-### Fase 2 — Enriquecimento automático
+### Fase 2: Enriquecimento automático
 
 1. Extrair marca e modelo dos 17.152 títulos com `Comp.`.
 2. Classificar famílias técnicas com regras versionadas.
@@ -558,7 +558,7 @@ volume de tráfego, necessidade de personalização ou infraestrutura dedicada.
 4. Criar códigos normalizados e aliases.
 5. Colocar casos ambíguos em quarentena.
 
-### Fase 3 — Nova experiência
+### Fase 3: Nova experiência
 
 1. Mega menu de departamentos.
 2. Home com categorias, marcas e famílias.
@@ -568,7 +568,7 @@ volume de tráfego, necessidade de personalização ou infraestrutura dedicada.
 6. Cards técnicos e lista de cotação.
 7. Compatibilidade na página do produto.
 
-### Fase 4 — Conteúdo comercial
+### Fase 4: Conteúdo comercial
 
 1. Imagens para os 21.714 produtos sem foto.
 2. Descrições para os 16.389 produtos sem texto.
