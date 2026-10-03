@@ -3,10 +3,10 @@
 Pipeline de extração, tratamento e publicação de catálogos agrícolas e de
 vedação, com storefront Next.js em <https://partsagricola.com.br>. Desde
 20/08/2026 a fonte da verdade do catálogo é o **Odoo** (o Medusa foi
-desligado) — o site lê a camada `catalogo_odoo` no Postgres; ver
+desligado), o site lê a camada `catalogo_odoo` no Postgres; ver
 `ROADMAP.md` → Fase 7 e `odoo.avilaops.com/integracao-partsagricola/`.
 
-## Estado atual — 20/08/2026
+## Estado atual: 20/08/2026
 
 - **28.564 produtos publicados**, lidos da camada Odoo; 5 com preço, o resto
   "sob consulta" (preço nasce no Odoo, gravado por `aplicar_precos.py`).
@@ -75,28 +75,28 @@ agricola/
   “fonte da verdade” para conferência manual.
 
 Campos capturados: `marca, linha, familia, codigo(SKU), nome, aplicacao, specs,
-preco(vazio — catálogos não têm preço), pagina, arquivo, fonte(text|ocr),
+preco(vazio, catálogos não têm preço), pagina, arquivo, fonte(text|ocr),
 ocr_conf, imagem, revisar, revisar_motivo`.
 
 ## Modelo de dados (Postgres)
 
 `schema catalogo`:
 
-- **brand** (marca) — Geomaq (segment=`agricola`). *first-class*
-- **product_line** (linha) — Algodão/Amendoim/Construção/Verde
-- **product_family** (família) — ROLAMENTO, ENGRENAGEM, POLIA… *first-class, transversal*
-- **product** — item base (SKU/código) + proveniência e flags de revisão
-- **product_variant** — variações por dimensão/material (**usado nos o-rings** da
+- **brand** (marca), Geomaq (segment=`agricola`). *first-class*
+- **product_line** (linha), Algodão/Amendoim/Construção/Verde
+- **product_family** (família), ROLAMENTO, ENGRENAGEM, POLIA… *first-class, transversal*
+- **product**, item base (SKU/código) + proveniência e flags de revisão
+- **product_variant**, variações por dimensão/material (**usado nos o-rings** da
   fase de vedação; peças agrícolas ficam sem variante)
-- **product_attribute** — specs flexíveis chave/valor (liga a product **ou** variante)
-- **product_image** — 1..N imagens por produto
+- **product_attribute**, specs flexíveis chave/valor (liga a product **ou** variante)
+- **product_image**, 1..N imagens por produto
 
 View `v_product_full` devolve o produto “achatado” com marca/linha/família/imagem.
-Marca e família separam agrícola de vedação — nada se mistura.
+Marca e família separam agrícola de vedação, nada se mistura.
 
 ## Como subir e carregar
 
-### Opção A — Docker (recomendado)
+### Opção A: Docker (recomendado)
 
 ```bash
 cd agricola
@@ -109,7 +109,7 @@ psql postgresql://catalogo:catalogo@localhost:5432/catalogo_db
 > automaticamente na 1ª inicialização. O `seed.sql` já contém os 281 registros
 > (pós-revisão; ver seção "Revisão" abaixo).
 
-### Opção B — carregar via Python (idempotente, recria atributos/imagens)
+### Opção B: carregar via Python (idempotente, recria atributos/imagens)
 
 ```bash
 pip install psycopg2-binary
@@ -135,7 +135,7 @@ peças) e **83 nomes** foram corrigidos/completados a partir da imagem. Vários
 **códigos** também tinham erro de OCR (ex.: `NN18289`→`N118289`,
 `ID8804`→`JD8804`, `BE1368`→`8E1368`) e foram corrigidos.
 
-Restam **12 registros** (de 281) ainda marcados `revisar: sim` — casos em que
+Restam **12 registros** (de 281) ainda marcados `revisar: sim` - casos em que
 o recorte da imagem cortou o rótulo ou o código antes do texto completo, sem
 dado suficiente para confirmar com segurança. Abra **`review.html`** no
 navegador (a partir desta pasta, para as imagens carregarem) e use o botão
@@ -149,37 +149,37 @@ Schema + seed já aplicados no Postgres nativo do VPS Hetzner (mesmo servidor
 que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 
 - Database: `agricola` · role: `agricola` (senha gerada, guardada só com o
-  Nicolas — não está neste repo). Schema `catalogo` dentro do database.
+  Nicolas, não está neste repo). Schema `catalogo` dentro do database.
 - DNS: `partsagricola.com.br` (+ `www`) e `api.partsagricola.com.br` no
   Cloudflare (nameservers `dora`/`donald.ns.cloudflare.com`), **com proxy
   ligado** (nuvem laranja) apontando pro `178.105.82.48`. O Caddy mantém
-  certificado Let's Encrypt próprio na origem — os dois convivem, o visitante
+  certificado Let's Encrypt próprio na origem, os dois convivem, o visitante
   vê o certificado da Cloudflare e a conexão Cloudflare→VPS usa o do Caddy.
   Difere do `pkvedacoes.avilaops.com`, que é DNS-only.
 - Os antigos `agricola.avilaops.com` e `api-agricola.avilaops.com` **foram
-  removidos do DNS** — não resolvem mais e não redirecionam. Os blocos deles
+  removidos do DNS**, não resolvem mais e não redirecionam. Os blocos deles
   ainda existem no Caddyfile do VPS, inertes (ver "Troca de domínio" abaixo).
-- **Marca no banco continua `Geomaq`** (é o fabricante real das peças —
+- **Marca no banco continua `Geomaq`** (é o fabricante real das peças
   trocar isso corromperia o dado). "Agricola" é o nome de exibição da loja.
 
-### Marketplace (Medusa + storefront) — no ar
+### Marketplace (Medusa + storefront): no ar
 
 - **Loja**: <https://partsagricola.com.br> (storefront Next.js, `storefront/`
-  neste repo — fork do `nextjs-starter-medusa` oficial, rebrandeado, com
+  neste repo, fork do `nextjs-starter-medusa` oficial, rebrandeado, com
   landing page própria).
 - **Admin**: o Odoo do tenant `partsagricola` (container
-  `odoo-avilaops-partsagricola-1`, porta 8071 no VPS — ver
+  `odoo-avilaops-partsagricola-1`, porta 8071 no VPS, ver
   `odoo.avilaops.com/integracao-partsagricola/README.md`). O antigo
   <https://api.partsagricola.com.br> (Medusa) está desligado desde
   20/08/2026 e responde 502.
-- Deploy: **um comando** — `./scripts/deploy-storefront.sh` (build local com
+- Deploy: **um comando**, `./scripts/deploy-storefront.sh` (build local com
   túnel SSH até o Postgres do VPS, verificação anti-localhost no bundle,
   empacote, backup, troca e smoke test; `--so-build` para no build). O build
   é local porque rodar `npm install` no servidor compartilhado já causou
   susto de memória. Em produção roda como serviço systemd
   (`agricola-storefront.service` na porta 3006), mesmo padrão do
   `pkvedacoes-site`. O `agricola-medusa.service` foi **desligado e
-  desabilitado em 20/08/2026** — o catálogo vem da camada `catalogo_odoo`.
+  desabilitado em 20/08/2026**, o catálogo vem da camada `catalogo_odoo`.
 - Redis: reaproveita o `redis-server` nativo do VPS, namespaced por
   `TENANT_SLUG=agricola` (mesmo padrão do pkvedacoes, não colide entre
   projetos no mesmo Redis).
@@ -199,13 +199,13 @@ que hospeda pkvedacoes, saudepet, cliente-avila etc., um database por app):
 - **Cotação multi-item**: produtos podem ser reunidos em uma lista persistente,
   ajustados por quantidade e enviados juntos para confirmação técnica.
 
-### Troca de domínio (`avilaops.com` → `partsagricola.com.br`) — concluída
+### Troca de domínio (`avilaops.com` → `partsagricola.com.br`): concluída
 
 DNS e Caddy já tinham sido migrados antes; o que faltava era a aplicação, feita
 em **15/08/2026**:
 
 - `NEXT_PUBLIC_BASE_URL` no `/opt/agricola-storefront/.env` do VPS ainda era
-  `https://agricola.avilaops.com` — um domínio que já **não resolvia mais**.
+  `https://agricola.avilaops.com` - um domínio que já **não resolvia mais**.
   Como essa variável é `NEXT_PUBLIC_*`, ela é **compilada no bundle**: trocar
   o `.env` sem rebuildar não resolve nada. Efeito enquanto durou: `robots.txt`,
   os 26 sitemaps e todos os `canonical` apontavam pra um domínio inexistente.
@@ -219,7 +219,7 @@ Backup de tudo que foi tocado (build anterior, os dois `.env` e o Caddyfile):
 
 **Ponto de atenção pra qualquer rebuild futuro:** o `.env.local` do repo tem
 `NEXT_PUBLIC_BASE_URL=http://localhost:8000`. Buildar sem sobrescrever isso
-compila `localhost` no bundle de produção — foi o bug do commit `80496b8`.
+compila `localhost` no bundle de produção, foi o bug do commit `80496b8`.
 Use um `.env.production.local` temporário (tem precedência sobre o `.env.local`)
 ou exporte a variável no shell antes do `next build`, e confirme depois com
 `grep -rl "localhost:8000" .next`.
@@ -228,17 +228,17 @@ ou exporte a variável no shell antes do `next build`, e confirme depois com
 
 Cloudflare Email Routing, configurado em 15/08/2026: tudo que chega em
 `contato@partsagricola.com.br` é encaminhado pra `nicolasrosaab@gmail.com`
-(destino já verificado na conta Avila Ops). O catch-all continua desligado —
+(destino já verificado na conta Avila Ops). O catch-all continua desligado
 e-mail pra qualquer outro endereço do domínio é recusado, não some em silêncio.
 
 A zona tinha **MX nulo** (`.`, RFC 7505 = "este domínio não recebe e-mail") e
-**SPF `v=spf1 -all`** — a configuração correta pra um domínio que não usa
+**SPF `v=spf1 -all`**, a configuração correta pra um domínio que não usa
 e-mail, e que agora precisava sair do caminho. A Cloudflare substituiu por MX
 `route{1,2,3}.mx.cloudflare.net`, SPF `include:_spf.mx.cloudflare.net ~all` e
 DKIM em `cf2024-1._domainkey`. O DMARC `p=reject` foi mantido.
 
 **Limitação:** Email Routing só **recebe**. Não dá pra *enviar* como
-`contato@partsagricola.com.br` — a resposta ao cliente sai do Gmail pessoal.
+`contato@partsagricola.com.br` - a resposta ao cliente sai do Gmail pessoal.
 Pra enviar com o endereço da empresa seria preciso um relay SMTP (Google
 Workspace, Zoho, Resend), que é outra decisão.
 
@@ -259,7 +259,7 @@ index, confere que a chave responde 200 antes de enviar e quebra em lotes de
 10.000 (limite do protocolo). Catálogo completo anunciado em 15/08/2026.
 
 Reenviar as 25 mil URLs a cada ajuste faz o site parecer que muda inteiro o
-tempo todo e o sinal vira ruído — lote completo é pra mudança estrutural,
+tempo todo e o sinal vira ruído, lote completo é pra mudança estrutural,
 página nova quer notificação específica.
 
 Chave recém-publicada responde `403 SiteVerificationNotCompleted` até o Bing
@@ -267,7 +267,7 @@ buscar o arquivo. Não é erro de configuração; é só esperar e rodar de novo
 
 ### Medição: GA4 + GTM + UTM
 
-Criados pelo **TagFlow** (`D:/Administrativo/tagflow`) — não crie propriedade
+Criados pelo **TagFlow** (`D:/Administrativo/tagflow`), não crie propriedade
 ou container na mão:
 
 | | |
@@ -282,13 +282,13 @@ node index.js status --id partsagricola   # GA4, GTM, eventos, métricas 30d
 node index.js audit                       # confere o local contra o Google
 ```
 
-O container é quem traduz evento em GA4, Pixel ou conversão de Ads — o site
+O container é quem traduz evento em GA4, Pixel ou conversão de Ads, o site
 não escreve tag nenhuma, só empurra pro `dataLayer` (`src/lib/util/analytics.ts`).
 É isso que permite ligar um Pixel depois sem novo deploy.
 
 **Conversão.** Preço zero aqui é "sob consulta": a venda fecha no WhatsApp ou
 por e-mail, fora de qualquer medição. O clique de saída é o último sinal
-observável, então é ele que faz o papel de conversão — `generate_lead` está
+observável, então é ele que faz o papel de conversão, `generate_lead` está
 marcado como evento-chave no GA4 (`ONCE_PER_SESSION`). O listener é delegado no
 `document` (`src/modules/analytics/components/lead-tracker`), então CTA novo
 pro WhatsApp já nasce medido.
@@ -298,19 +298,19 @@ pro WhatsApp já nasce medido.
 | Evento | Onde | Observação |
 |---|---|---|
 | `generate_lead` | clique em WhatsApp / mailto / tel | evento-chave; carrega `lead_source` e `lead_subject` |
-| `view_item` | página de peça | sem `value` — preço 0 é ausência de preço |
+| `view_item` | página de peça | sem `value` - preço 0 é ausência de preço |
 | `view_item_list` | listagem, categoria e busca | `item_list_name` diz se veio de busca ou categoria |
 | `select_item` | clique num card da listagem | mostra qual posição da grade converte |
 | `search` | página de resultados | com `search_results` real |
 
 O `search` sai da página de resultados e não do autocomplete de propósito: é lá
 que a contagem existe de verdade. No autocomplete só há o número de sugestões,
-que não é o total da busca — e número errado no relatório é pior que campo
+que não é o total da busca, e número errado no relatório é pior que campo
 vazio. Só dispara na primeira página, senão paginar inflaria a contagem de
 buscas.
 
 `select_item` funciona por `data-analytics-*` no card e delegação de clique,
-em vez de tornar o `product-preview` um Client Component — ele é renderizado
+em vez de tornar o `product-preview` um Client Component, ele é renderizado
 uma vez por peça, numa listagem que chega a 25 mil.
 
 `add_to_cart`, `begin_checkout` e `purchase` têm tag no container mas o site
@@ -320,7 +320,7 @@ ainda não os empurra: dependem do carrinho com preço real, que é a fase de
 **UTM.** O GA4 atribui a sessão sozinho pela URL de entrada; o que ele não
 resolve é que a conversão acontece na caixa de entrada, onde nenhuma tag
 alcança. Por isso a origem é guardada no `sessionStorage` na primeira página
-(só grava se ainda não houver nada — a segunda página não tem UTM na URL e
+(só grava se ainda não houver nada, a segunda página não tem UTM na URL e
 sobrescrever apagaria a campanha) e colada no fim da mensagem de cotação:
 
 ```
@@ -337,9 +337,9 @@ Ainda em aberto:
 1. Google Search Console: adicionar a propriedade nova e reenviar o sitemap.
    A ferramenta de **Mudança de endereço** não se aplica: ela exige que o
    domínio antigo responda com 301, e o `agricola.avilaops.com` já saiu do DNS
-   — a reindexação vai acontecer por descoberta normal, mais devagar. O Google
+   - a reindexação vai acontecer por descoberta normal, mais devagar. O Google
    não participa do IndexNow, então esse caminho é só via Search Console.
-2. ~~O nome de exibição da loja no Medusa~~ — sem objeto: o Medusa saiu em
+2. ~~O nome de exibição da loja no Medusa~~ - sem objeto: o Medusa saiu em
    20/08/2026; `<title>`, metadados sociais e identidade já são "Parts
    Agrícola".
 
@@ -347,7 +347,7 @@ Ainda em aberto:
 
 O catálogo tinha **45 retentores publicados**. Os PDFs de origem têm ~3.200.
 A auditoria dizia `APROVADA / Pronto para deploy: SIM` o tempo todo, porque ela
-conta linhas do CSV — e a perda acontecia **antes** do CSV existir, no parser.
+conta linhas do CSV, e a perda acontecia **antes** do CSV existir, no parser.
 
 Duas causas, ambas no `data/scrapers/parse_retentores.py`:
 
@@ -356,12 +356,12 @@ Duas causas, ambas no `data/scrapers/parse_retentores.py`:
    A palavra `material` no meio da prosa era lida como cabeçalho de coluna e o
    parágrafo inteiro entrava como valor de Material, inflando o bloco em até 16
    tokens. Como `build_rows` exigia Material do mesmo tamanho que Código, a
-   página inteira era descartada — **37 das 42 páginas, 1.668 peças**.
+   página inteira era descartada, **37 das 42 páginas, 1.668 peças**.
 2. **O número da página** impresso no rodapé entrava como valor de Altura,
    deixando o bloco com um item a mais que o de Código. Resultado: altura vazia
    e `revisar: sim` em página que estava perfeita.
 
-E o catálogo da **Agel não tem layout transposto** — é uma peça por linha
+E o catálogo da **Agel não tem layout transposto**, é uma peça por linha
 (`AG7581 20,00 47,10 10,00`). O parser procurava blocos `Eixo`/`Externo` que
 esse PDF não tem, então rendia **zero linhas**. Ganhou uma função própria.
 
@@ -373,7 +373,7 @@ esse PDF não tem, então rendia **zero linhas**. Ganhou uma função própria.
 | Catálogo total | 25.520 | 28.424 |
 
 **Como foi validado.** As 46 linhas que o parser antigo dava como confiáveis
-saem idênticas do novo, e `eixo`/`externo` das 230 antigas não mudaram — o
+saem idênticas do novo, e `eixo`/`externo` das 230 antigas não mudaram, o
 conserto é aditivo, não reinterpreta o que já estava certo. Coluna desalinhada
 continua virando campo vazio em vez de ser aproveitada por posição: retentor com
 a altura do vizinho é peça errada vendida com aparência de dado conferido.
@@ -383,7 +383,7 @@ jeito de uma medida trocada passar despercebida.
 ## Próximas fases (fora deste escopo)
 
 1. Revisar os 196 registros em `data/processed/catalog_quarantine.csv`.
-2. Gateway de pagamento Efí Pay (PIX/Boleto) — provider custom do Medusa,
+2. Gateway de pagamento Efí Pay (PIX/Boleto), provider custom do Medusa,
    ainda não implementado.
 3. Cadastrar preços comerciais, estoque e regras de frete.
 4. Enviar o sitemap no Google Search Console e acompanhar cobertura/indexação.

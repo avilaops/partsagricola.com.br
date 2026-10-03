@@ -1,4 +1,4 @@
-# Parts Agrícola — Manual rápido de identidade
+# Parts Agrícola: Manual rápido de identidade
 
 Recebido em 16/08/2026 junto com o kit de artes
 (`partsagricola-brand-assets-v2.zip`). Este arquivo é a cópia canônica no
@@ -71,7 +71,7 @@ site.
 
 ### Verde alinhado ao token
 
-O site nasceu com `#0b6b3a` em 111 lugares — um dígito de diferença do
+O site nasceu com `#0b6b3a` em 111 lugares, um dígito de diferença do
 `#0B6B3F` oficial. Trocado para o token, que agora é o único verde de marca no
 código.
 
@@ -86,8 +86,8 @@ Isso choca com a seção 6 deste manual: “fundo verde ou grafite → logo
 branca/reversa” não é aplicável com um arquivo que já traz um retângulo verde
 dentro. Por isso as versões usadas no site são recortadas para alfa:
 
-- `logo-partsagricola.png` — colorida, fundo transparente (cabeçalho e rodapé).
-- `logo-partsagricola-branca.png` — reversa, fundo transparente, para superfície
+- `logo-partsagricola.png` - colorida, fundo transparente (cabeçalho e rodapé).
+- `logo-partsagricola-branca.png` - reversa, fundo transparente, para superfície
   verde ou grafite.
 
 Se o kit for regerado, pedir os lockups **em PNG com transparência** resolve
@@ -110,20 +110,20 @@ uma arte correspondente.
 
 Sem destino hoje:
 
-- `home-desktop` e `home-mobile` — a home hoje tem hero em CSS, sem imagem.
+- `home-desktop` e `home-mobile` - a home hoje tem hero em CSS, sem imagem.
   Usá-los é mudança de design, não troca de arte.
 - `hidraulica`, `eletrica`, `filtros-manutencao`, `motores-transmissao`,
-  `implementos-agricolas`, `pecas-construcao` — departamentos que não existem
+  `implementos-agricolas`, `pecas-construcao` - departamentos que não existem
   na taxonomia atual.
-- `confirmacao-tecnica` — ganhou derivado editorial sem texto em
+- `confirmacao-tecnica` - ganhou derivado editorial sem texto em
   `public/images/campaigns/confirmacao-tecnica-v2.webp`, usado na home e na
   página `/br/confirmacao-tecnica`.
-- `novidades` — virou uma seção alimentada pelos produtos realmente adicionados
+- `novidades` - virou uma seção alimentada pelos produtos realmente adicionados
   por último; o banner raster não é usado porque cita vendedores sem comprovar
   esse dado no catálogo.
-- `ofertas` — permanece reservado até existirem preços promocionais ou uma
+- `ofertas` - permanece reservado até existirem preços promocionais ou uma
   coleção de ofertas real no Medusa.
-- `vendedores` — permanece reservado até o cadastro ter backend, operação e
+- `vendedores` - permanece reservado até o cadastro ter backend, operação e
   automação n8n; não se publica um CTA de onboarding que termina sem fluxo.
 
 ### Tipografia aplicada
