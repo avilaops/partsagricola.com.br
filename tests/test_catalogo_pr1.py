@@ -38,6 +38,14 @@ unifier = module("unificar_catalogo")
 
 
 class Numbers(unittest.TestCase):
+    def test_inverted_source_dimensions_are_retained_for_review(self):
+        r = unifier.validar_dimensoes({"interno_mm": 50, "externo_mm": .7,
+                                      "spec": {"codigo_fonte": "TCS0070"}})
+        self.assertIsNone(r["interno_mm"])
+        self.assertIsNone(r["externo_mm"])
+        self.assertEqual(r["spec"]["_revisao_dimensoes"]["externo_mm"], .7)
+        self.assertEqual(r["spec"]["codigo_fonte"], "TCS0070")
+
     def test_supported_units(self):
         cases = [(loader.to_mm, '1.1/4"', 31.75),
                  (loader.to_mm, '5/8"', 15.875),

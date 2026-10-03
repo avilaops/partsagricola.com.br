@@ -78,6 +78,18 @@ def cod_norm(codigo):
     return re.sub(r"[^A-Z0-9]", "", (codigo or "").upper())
 
 
+def validar_dimensoes(registro):
+    """Preserva a peça e a fonte, mas não indexa medidas contraditórias."""
+    di, de = registro.get("interno_mm"), registro.get("externo_mm")
+    if di is not None and de is not None and di > de:
+        registro["spec"] = dict(registro.get("spec") or {})
+        registro["spec"]["_revisao_dimensoes"] = {
+            "motivo": "di_maior_que_de", "interno_mm": di, "externo_mm": de,
+        }
+        registro["interno_mm"] = registro["externo_mm"] = None
+    return registro
+
+
 # Palavra no nome -> tipo de peça. A ordem importa: a primeira que casar
 # vence, então os termos mais específicos vêm antes.
 TIPOS = [
@@ -279,6 +291,7 @@ def unificar(dsn, truncate):
         for leitor, registros in fontes:
             n = 0
             for r in registros:
+                r = validar_dimensoes(r)
                 fid = forn.get(r["fornecedor"])
                 if not fid:
                     raise ValueError("Fornecedor desconhecido: " + r["fornecedor"])
