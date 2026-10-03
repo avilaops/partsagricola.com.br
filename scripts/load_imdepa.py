@@ -111,6 +111,8 @@ def to_mm(valor: str):
 
     m = RE_FRAC.match(v)                       # fração em polegada
     if m:
+        if float(m.group(3)) == 0:
+            return None
         inteiro = float(m.group(1) or 0)
         pol = inteiro + float(m.group(2)) / float(m.group(3))
         return round(pol * 25.4, 3)
@@ -122,6 +124,9 @@ def to_mm(valor: str):
     if n is None:
         return None
     unit = (m.group(2) or "").strip().lower()
+
+    if unit and not re.match(r'^(mm|cm|m|pol(?:egadas?)?|in(?:ch(?:es)?)?|\")(?=$|\s|/)', unit):
+        return None
 
     if unit.startswith('"') or unit.startswith("pol") or unit.startswith("in"):
         return round(n * 25.4, 3)
@@ -142,6 +147,8 @@ def to_kg(valor: str):
     if n is None:
         return None
     unit = (m.group(2) or "").strip().lower()
+    if unit not in ("", "g", "kg"):
+        return None
     if unit.startswith("g") and not unit.startswith("kg"):
         return round(n / 1000, 4)
     return round(n, 4)
@@ -158,6 +165,8 @@ def to_newton(valor: str):
     if n is None:
         return None
     unit = (m.group(2) or "").strip().lower()
+    if unit not in ("", "n", "kn"):
+        return None
     if unit.startswith("kn"):
         return round(n * 1000, 2)
     return round(n, 2)
@@ -223,9 +232,9 @@ def parse_maquinas(valor: str):
             continue
         mm = RE_MAQ.match(item)
         nome, faixa = (mm.group(1).strip(), mm.group(2).strip()) if mm else (item, None)
-        if not nome or nome in vistos:
+        if not nome or (nome, faixa) in vistos:
             continue
-        vistos.add(nome)
+        vistos.add((nome, faixa))
         maker = next((mk for mk in MONTADORAS if nome.upper().startswith(mk)), None)
         modelo = nome[len(maker):].strip() if maker else nome
         out.append((maker, modelo or nome, nome, faixa))
@@ -238,7 +247,7 @@ def limpar_aplicacao(valor: str):
         return None
     maquinas = parse_maquinas(valor)
     if maquinas:
-        return " | ".join(n for _, _, n, _ in maquinas)
+        return " | ".join(dict.fromkeys(n for _, _, n, _ in maquinas))
     return re.sub(r"\s*\$\(function.*$", "", valor, flags=re.S).strip() or None
 
 
@@ -296,6 +305,11 @@ def gravar_lote(cur, pids, imagens, specs, maquinas, n_img, n_spec, n_pm):
         )
         n_spec += len(specs)
     if maquinas:
+        faixas = {}
+        for pid, mid, faixa in maquinas:
+            faixas.setdefault((pid, mid), set()).add(faixa or "")
+        maquinas = [(pid, mid, " | ".join(sorted(f for f in fs if f)) or None)
+                    for (pid, mid), fs in faixas.items()]
         cur.executemany(
             "INSERT INTO product_machine (product_id, machine_id, serial_range) "
             "VALUES (%s, %s, %s) ON CONFLICT DO NOTHING",
@@ -329,6 +343,8 @@ def carregar(dsn: str, truncate: bool) -> None:
                 if not (r.get("categoria1") or "").strip():
                     r["categoria1"] = dep
                 registros.append(r)
+    # A última ocorrência define também fotos e specs, inclusive no mesmo lote.
+    registros = list({r["product_id"]: r for r in registros}.values())
     print(f"{len(registros)} produtos lidos de {len(arquivos)} arquivos")
 
     with psycopg.connect(dsn, autocommit=False) as conn:
@@ -414,6 +430,8 @@ def carregar(dsn: str, truncate: bool) -> None:
         # ---------- produtos ----------
         n_img = n_spec = n_pm = 0
         pids_lote, imagens_lote, specs_lote, maquinas_lote = [], [], [], []
+        cur.execute("SELECT 1 FROM information_schema.columns WHERE table_schema='imdepa' AND table_name='product' AND column_name='medidas_do_titulo'")
+        tem_proveniencia = cur.fetchone() is not None
         for i, r in enumerate(registros, 1):
             info = r.get("info_tecnica", {}) or {}
 
@@ -453,6 +471,8 @@ def carregar(dsn: str, truncate: bool) -> None:
                     %(tipo)s, %(vedacao)s, %(spec)s, %(erro)s
                 )
                 ON CONFLICT (product_id) DO UPDATE SET
+                    slug = EXCLUDED.slug, url = EXCLUDED.url,
+                    scraped_erro = EXCLUDED.scraped_erro,
                     nome = EXCLUDED.nome, codigo = EXCLUDED.codigo,
                     codigo_imdepa = EXCLUDED.codigo_imdepa,
                     codigo_montadora = EXCLUDED.codigo_montadora,
@@ -509,6 +529,8 @@ def carregar(dsn: str, truncate: bool) -> None:
                 },
             )
             pid = cur.fetchone()[0]
+            if tem_proveniencia:
+                cur.execute("UPDATE product SET medidas_do_titulo = false WHERE id = %s", (pid,))
 
             # As filhas são acumuladas e gravadas em lote (executemany).
             # Uma linha por round-trip derrubava o servidor: ~150 mil
@@ -574,7 +596,7 @@ def carregar(dsn: str, truncate: bool) -> None:
                    SET diametro_interno_mm = COALESCE(p.diametro_interno_mm, e.m[1]),
                        diametro_externo_mm = COALESCE(p.diametro_externo_mm, e.m[2]),
                        largura_mm          = COALESCE(p.largura_mm,          e.m[3]),
-                       medidas_do_titulo   = (p.largura_mm IS NULL)
+                       medidas_do_titulo   = TRUE
                   FROM extraido e
                  WHERE p.id = e.id
                    AND (p.diametro_interno_mm IS NULL

@@ -1,0 +1,39 @@
+name: Catálogo Postgres 16
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  catalogo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: catalogo
+          POSTGRES_PASSWORD: catalogo
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U catalogo -d postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      CATALOGO_TEST_ADMIN_DSN: postgresql://catalogo:catalogo@127.0.0.1:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r tests/requirements.txt
+      - name: Sintaxe Python
+        run: python -m py_compile scripts/load_imdepa.py scripts/unificar_catalogo.py tests/test_catalogo_pr1.py
+      - name: Migrations, normalização, recarga e equivalência
+        run: python -m unittest discover -s tests -v

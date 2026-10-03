@@ -25,11 +25,17 @@ Idempotente: reexecutar atualiza, não duplica.
     python scripts/unificar_catalogo.py --truncate
 """
 import argparse
+import hashlib
 import csv
 import json
 import os
 import re
 import sys
+
+try:
+    from load_imdepa import _num, to_mm
+except ModuleNotFoundError:
+    from scripts.load_imdepa import _num, to_mm
 
 try:
     import psycopg
@@ -53,11 +59,8 @@ def num(valor):
     t = str(valor).strip()
     if not t:
         return None
-    if "," in t:
-        t = t.replace(".", "").replace(",", ".")
-    try:
-        v = float(t)
-    except ValueError:
+    v = _num(t)
+    if v is None:
         return None
     # medida em mm acima disso é dado sujo, não peça
     return round(v, 3) if 0 < v < 100000 else None
@@ -80,7 +83,8 @@ def cod_norm(codigo):
 TIPOS = [
     ("retentor",  ("retentor",)),
     ("o-ring",    ("o-ring", "oring", "anel o'ring", "anel oring")),
-    ("gaxeta",    ("gaxeta", "raspador")),
+    ("raspador",  ("raspador",)),
+    ("gaxeta",    ("gaxeta",)),
     ("rolamento", ("rolamento",)),
     ("mancal",    ("mancal",)),
     ("bucha",     ("bucha",)),
@@ -101,10 +105,14 @@ def tipo_de(nome, padrao="outro"):
 # ---------------------------------------------------------------------
 def ler_imdepa(path="data/imdepa.json"):
     if not os.path.exists(path):
-        return
-    for r in json.load(open(path, encoding="utf-8")):
+        raise FileNotFoundError(path)
+    with open(path, encoding="utf-8") as arquivo:
+        registros = json.load(arquivo)
+    for r in registros:
         info = r.get("info_tecnica", {}) or {}
         nome = r.get("nome") or r.get("codigo") or r.get("product_id")
+        titulo = re.search(r'([\d.,]+)\s*mm\s*x\s*([\d.,]+)\s*mm\s*x\s*([\d.,]+)\s*mm', nome or '', re.I)
+        medidas = [num(v) for v in titulo.groups()] if titulo else [None, None, None]
         yield {
             "fornecedor": "imdepa",
             "origem": "imdepa",
@@ -114,14 +122,14 @@ def ler_imdepa(path="data/imdepa.json"):
             "marca": r.get("marca") or None,
             "linha": r.get("categoria1") or None,
             "tipo": tipo_de(nome or r.get("categoria1")),
-            "interno_mm": mm_de_texto(info.get("Diâmetro Interno")),
-            "externo_mm": mm_de_texto(info.get("Diâmetro Externo")),
+            "interno_mm": to_mm(info.get("Diâmetro Interno")) or medidas[0],
+            "externo_mm": to_mm(info.get("Diâmetro Externo")) or medidas[1],
             # A terceira dimensão muda de nome conforme a peça: rolamento
             # tem "Largura", retentor tem "Altura". É a mesma medida no
             # mesmo eixo — sem juntar as duas, retentor da Imdepa nunca
             # casaria com retentor da Rio Preto (que só tem altura_mm).
-            "altura_mm": (mm_de_texto(info.get("Largura"))
-                          or mm_de_texto(info.get("Altura"))),
+            "altura_mm": (to_mm(info.get("Largura"))
+                          or to_mm(info.get("Altura")) or medidas[2]),
             "secao_mm": None,
             "material": info.get("Material") or info.get("Materiais"),
             "descricao": r.get("descricao") or None,
@@ -137,7 +145,7 @@ def ler_retentores(path="data/retentores.csv"):
         if not r.get("codigo"):
             continue
         yield {
-            "fornecedor": "rio-preto-vedacoes",
+            "fornecedor": "agel" if (r.get("marca") or "").casefold() == "agel" else "rio-preto-vedacoes",
             "origem": "retentores",
             "origem_id": r["codigo"],
             "codigo": r["codigo"],
@@ -166,7 +174,7 @@ def ler_gaxetas(path="data/gaxetas_raspadores.csv"):
             continue
         desc = r.get("descricao") or ""
         yield {
-            "fornecedor": "rio-preto-vedacoes",
+            "fornecedor": "agel" if (r.get("marca") or "").casefold() == "agel" else "rio-preto-vedacoes",
             "origem": "gaxetas",
             "origem_id": r["codigo"],
             "codigo": r["codigo"],
@@ -248,6 +256,11 @@ FONTES = [ler_imdepa, ler_retentores, ler_gaxetas, ler_orings, ler_geomaq]
 
 # ---------------------------------------------------------------------
 def unificar(dsn, truncate):
+    # Ler todas as fontes antes de abrir a transação: --truncate não pode apagar
+    # o catálogo quando falta um arquivo ou quando a entrada está vazia.
+    fontes = [(leitor, list(leitor())) for leitor in FONTES]
+    if any(not registros for _, registros in fontes):
+        raise ValueError("Fonte ausente ou vazia; catálogo preservado")
     with psycopg.connect(dsn, autocommit=False) as conn:
         cur = conn.cursor()
         cur.execute("SET search_path TO imdepa, catalogo, public")
@@ -263,14 +276,21 @@ def unificar(dsn, truncate):
 
         lote, total = [], 0
         por_fonte = {}
-        for leitor in FONTES:
+        for leitor, registros in fontes:
             n = 0
-            for r in leitor():
+            for r in registros:
                 fid = forn.get(r["fornecedor"])
                 if not fid:
-                    continue
+                    raise ValueError("Fornecedor desconhecido: " + r["fornecedor"])
+                identidade = str(r["origem_id"])
+                if r["origem"] in ("retentores", "gaxetas", "orings"):
+                    # Códigos dos PDFs colidem entre marcas. A identidade da
+                    # fonte inclui marca/linha/modelo, sem depender da ordem.
+                    chave = [r.get("marca"), r.get("linha"), (r.get("spec") or {}).get("modelo")]
+                    sufixo = hashlib.sha256(json.dumps(chave, ensure_ascii=False).encode()).hexdigest()[:20]
+                    identidade += ":" + sufixo
                 lote.append((
-                    fid, tipos.get(r["tipo"]), r["origem"], str(r["origem_id"]),
+                    fid, tipos.get(r["tipo"]), r["origem"], identidade,
                     r["codigo"], cod_norm(r["codigo"]), r["nome"],
                     r["marca"], r["linha"],
                     r["interno_mm"], r["externo_mm"], r["altura_mm"], r["secao_mm"],
@@ -280,7 +300,6 @@ def unificar(dsn, truncate):
                 n += 1
                 if len(lote) >= LOTE:
                     gravar(cur, lote)
-                    conn.commit()
                     total += len(lote)
                     lote = []
             por_fonte[leitor.__name__.replace("ler_", "")] = n
@@ -311,6 +330,7 @@ def gravar(cur, lote):
             material, descricao, imagem_url, spec
         ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         ON CONFLICT (origem, origem_id) DO UPDATE SET
+            fornecedor_id = EXCLUDED.fornecedor_id,
             tipo_id = EXCLUDED.tipo_id, codigo = EXCLUDED.codigo,
             codigo_norm = EXCLUDED.codigo_norm, nome = EXCLUDED.nome,
             marca = EXCLUDED.marca, linha = EXCLUDED.linha,
