@@ -27,23 +27,38 @@ if ! grep -q "^LEITURA_DSN=.*127.0.0.1:$PORTA_TUNEL" .env.production.local 2>/de
   exit 1
 fi
 
+# Túnel + build, juntos: o túnel só existe para o build (as páginas SSG leem o
+# Postgres do VPS) e só abre na hora de construir.
+#
 # Sem -f/ControlMaster: o OpenSSH do Windows não tem mux — o túnel roda em
 # background do shell e morre no trap. Se a porta já estiver ocupada por um
 # túnel anterior, este ssh falha sozinho e o build usa o que já existe.
-echo "== túnel para o Postgres do VPS"
-ssh -i "$CHAVE" -N -L "$PORTA_TUNEL:127.0.0.1:5432" "$VPS" &
-TUNEL=$!
-trap 'kill $TUNEL 2>/dev/null || true' EXIT
-sleep 3
+tunel_e_build() {
+  echo "== túnel para o Postgres do VPS"
+  ssh -i "$CHAVE" -N -L "$PORTA_TUNEL:127.0.0.1:5432" "$VPS" &
+  TUNEL=$!
+  trap 'kill $TUNEL 2>/dev/null || true' EXIT
+  sleep 3
 
-echo "== build"
-# No servidor dos agentes (4 GB de RAM) o build passa pelo build-pesado: um
-# build pesado por vez, com teto de heap no Node. Onde ele não existe, o
-# comando é o de sempre.
-if command -v build-pesado >/dev/null 2>&1; then
-  build-pesado npm run build
-else
+  echo "== build"
   npm run build
+}
+
+# Modo interno: é este script rodando por dentro do build-pesado (abaixo).
+if [ "$1" = "--tunel-e-build" ]; then
+  tunel_e_build
+  exit 0
+fi
+
+# No servidor dos agentes (4 GB de RAM) o build passa pelo build-pesado: um
+# build pesado por vez, com teto de heap no Node. O que roda sob a trava é o
+# túnel + build inteiro, para o túnel não ficar aberto enquanto o script
+# espera a vez (até 30 min): sem a trava, nenhuma conexão com o VPS. Onde o
+# build-pesado não existe, o comando é o de sempre.
+if command -v build-pesado >/dev/null 2>&1; then
+  build-pesado sh "$RAIZ/scripts/deploy-storefront.sh" --tunel-e-build
+else
+  tunel_e_build
 fi
 
 # O bug do commit 80496b8: NEXT_PUBLIC_* é compilado no bundle — localhost
