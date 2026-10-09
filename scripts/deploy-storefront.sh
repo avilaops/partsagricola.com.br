@@ -37,7 +37,14 @@ trap 'kill $TUNEL 2>/dev/null || true' EXIT
 sleep 3
 
 echo "== build"
-npm run build
+# No servidor dos agentes (4 GB de RAM) o build passa pelo build-pesado: um
+# build pesado por vez, com teto de heap no Node. Onde ele não existe, o
+# comando é o de sempre.
+if command -v build-pesado >/dev/null 2>&1; then
+  build-pesado npm run build
+else
+  npm run build
+fi
 
 # O bug do commit 80496b8: NEXT_PUBLIC_* é compilado no bundle — localhost
 # baked no build já derrubou canonicals e sitemaps uma vez.
