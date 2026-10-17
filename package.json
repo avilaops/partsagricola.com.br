@@ -18,15 +18,21 @@
     "db:seed": "pnpm --filter @partsagricola/db seed",
     "db:import:catalog": "pnpm --filter @partsagricola/db import:catalog"
   },
+  "pnpm": {
+    "overrides": {
+      "postcss": "8.5.18",
+      "sharp": "0.35.5"
+    }
+  },
   "devDependencies": {
     "@eslint/js": "9.38.0",
-    "@next/eslint-plugin-next": "15.3.9",
+    "@next/eslint-plugin-next": "15.5.24",
     "@playwright/test": "1.56.1",
     "@types/node": "24.9.1",
     "eslint": "9.38.0",
-    "eslint-config-next": "15.3.9",
+    "eslint-config-next": "15.5.24",
     "prettier": "3.6.2",
-    "turbo": "2.5.8",
+    "turbo": "2.11.9",
     "typescript": "5.9.3",
     "typescript-eslint": "8.46.2"
   }

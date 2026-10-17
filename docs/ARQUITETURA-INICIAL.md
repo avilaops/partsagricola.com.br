@@ -136,3 +136,7 @@ A tarefa permanece em andamento até que todos os critérios do Linear sejam
 executados e comprovados: seis apps, pacotes compartilhados, ambiente local em
 um comando, validação de variáveis, lint, typecheck, testes e CI. A existência
 deste documento ou do workflow em rascunho não equivale à homologação.
+
+# Identidade central
+
+`apps/auth` é a autoridade OIDC e o PostgreSQL é a fonte de verdade de identidades, papéis, sessões, revogações e memberships. Os clientes Next.js usam `packages/shared/src/auth.ts` para PKCE, troca de código, introspecção online e guards. Tokens de acesso curtos não são aceitos sem sessão ativa, permitindo logout global imediato. Detalhes operacionais estão em `docs/AUTENTICACAO.md`.

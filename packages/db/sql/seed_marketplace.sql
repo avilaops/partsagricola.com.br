@@ -71,3 +71,49 @@ ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, active = true;
 INSERT INTO public.app_setting (key, value)
 VALUES ('brand_name', 'PARTSAGRICOLA')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now();
+
+INSERT INTO marketplace.auth_role (key, name, requires_totp) VALUES
+  ('USER', 'Usuário', false),
+  ('SUPPORT', 'Suporte', false),
+  ('FINANCE', 'Financeiro', true),
+  ('ADMIN', 'Administrador', true)
+ON CONFLICT (key) DO UPDATE SET
+  name = EXCLUDED.name,
+  requires_totp = EXCLUDED.requires_totp;
+
+INSERT INTO marketplace.auth_connector
+  (provider,enabled,client_id_env,client_secret_env,authorization_endpoint,token_endpoint,userinfo_endpoint,scopes)
+VALUES
+  ('GOOGLE',false,'GOOGLE_CLIENT_ID','GOOGLE_CLIENT_SECRET','https://accounts.google.com/o/oauth2/v2/auth','https://oauth2.googleapis.com/token','https://openidconnect.googleapis.com/v1/userinfo',ARRAY['openid','email','profile']),
+  ('FACEBOOK',false,'FACEBOOK_CLIENT_ID','FACEBOOK_CLIENT_SECRET','https://www.facebook.com/v22.0/dialog/oauth','https://graph.facebook.com/v22.0/oauth/access_token','https://graph.facebook.com/me',ARRAY['email','public_profile']),
+  ('APPLE',false,'APPLE_CLIENT_ID','APPLE_CLIENT_SECRET','https://appleid.apple.com/auth/authorize','https://appleid.apple.com/auth/token','https://appleid.apple.com/auth/userinfo',ARRAY['openid','email','name']),
+  ('MICROSOFT',false,'MICROSOFT_CLIENT_ID','MICROSOFT_CLIENT_SECRET','https://login.microsoftonline.com/common/oauth2/v2.0/authorize','https://login.microsoftonline.com/common/oauth2/v2.0/token','https://graph.microsoft.com/oidc/userinfo',ARRAY['openid','email','profile'])
+ON CONFLICT (provider) DO UPDATE SET
+  client_id_env = EXCLUDED.client_id_env,
+  client_secret_env = EXCLUDED.client_secret_env,
+  authorization_endpoint = EXCLUDED.authorization_endpoint,
+  token_endpoint = EXCLUDED.token_endpoint,
+  userinfo_endpoint = EXCLUDED.userinfo_endpoint,
+  scopes = EXCLUDED.scopes,
+  updated_at = now();
+
+INSERT INTO marketplace.auth_client (client_id,name,scopes) VALUES
+  ('partsagricola-web','Marketplace web',ARRAY['openid','profile','email','offline_access']),
+  ('partsagricola-seller','Área do fornecedor',ARRAY['openid','profile','email','offline_access']),
+  ('partsagricola-admin','Administração',ARRAY['openid','profile','email','offline_access']),
+  ('partsagricola-mobile','Aplicativos móveis',ARRAY['openid','profile','email','offline_access'])
+ON CONFLICT (client_id) DO UPDATE SET
+  name = EXCLUDED.name,
+  scopes = EXCLUDED.scopes,
+  active = true,
+  updated_at = now();
+
+INSERT INTO marketplace.auth_client_redirect (client_id,redirect_uri,kind) VALUES
+  ('partsagricola-web','http://127.0.0.1:3000/auth/callback','LOGIN'),
+  ('partsagricola-seller','http://127.0.0.1:3001/auth/callback','LOGIN'),
+  ('partsagricola-admin','http://127.0.0.1:3002/auth/callback','LOGIN'),
+  ('partsagricola-mobile','br.com.partsagricola.app:/oauth/callback','LOGIN'),
+  ('partsagricola-web','http://127.0.0.1:3000','POST_LOGOUT'),
+  ('partsagricola-seller','http://127.0.0.1:3001','POST_LOGOUT'),
+  ('partsagricola-admin','http://127.0.0.1:3002','POST_LOGOUT')
+ON CONFLICT (client_id,redirect_uri,kind) DO NOTHING;
