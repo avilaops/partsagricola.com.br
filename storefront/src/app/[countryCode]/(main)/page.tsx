@@ -12,9 +12,9 @@ import { selectPrimaryDepartments } from "@lib/catalog/departments"
 import LatestProducts from "@modules/home/components/latest-products"
 
 export const metadata: Metadata = {
-  title: "Peças agrícolas, industriais e para máquinas pesadas",
+  title: "Marketplace de peças agrícolas e para máquinas pesadas",
   description:
-    "Catálogo pesquisável de peças agrícolas, industriais, máquinas pesadas, retentores, O-Rings, gaxetas e kits de reparo.",
+    "Marketplace para pesquisar peças agrícolas, industriais e para máquinas pesadas, comparar fornecedores e solicitar confirmação técnica.",
   alternates: {
     canonical: "/br",
     languages: {
