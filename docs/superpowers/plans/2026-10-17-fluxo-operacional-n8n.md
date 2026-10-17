@@ -53,5 +53,5 @@
 
 - [x] Criar o workflow desativado no n8n.
 - [x] Executar todas as rotas com pin data e inspecionar as saídas.
-- [ ] Rodar lint, typecheck, testes, Playwright e build no GitHub Actions.
-- [ ] Registrar evidências no PR e no Linear.
+- [x] Rodar lint, typecheck, testes, Playwright e build no GitHub Actions.
+- [x] Registrar evidências no PR e no Linear.
