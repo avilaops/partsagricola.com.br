@@ -14,6 +14,11 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  // Cada worker de build cria uma pool PostgreSQL própria. Um único worker
+  // mantém o prerender dentro do limite de conexões da role de leitura.
+  experimental: {
+    cpus: 1,
+  },
   // CSP calibrada para a stack real: Next (inline scripts/styles do App
   // Router exigem 'unsafe-inline'), GTM/GA4 e Meta Pixel (tags que o GTM
   // injeta), fotos do R2. Qualquer vendor novo no GTM precisa entrar aqui —
