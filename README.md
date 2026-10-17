@@ -1,5 +1,9 @@
 # Marketplace Agricola
 
+> A fundação do marketplace PARTSAGRICOLA está sendo consolidada a partir dos
+> ativos atuais. Consulte [a arquitetura inicial](docs/ARQUITETURA-INICIAL.md)
+> para as fronteiras adotadas do CMS Ávila Ops e a sequência de migração.
+
 Pipeline de extração, tratamento e publicação de catálogos agrícolas e de
 vedação, com storefront Next.js em <https://partsagricola.com.br>. Desde
 20/08/2026 a fonte da verdade do catálogo é o **Odoo** (o Medusa foi
