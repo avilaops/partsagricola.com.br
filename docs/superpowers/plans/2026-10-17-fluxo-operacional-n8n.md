@@ -32,18 +32,18 @@
 - Modify: `tests/monorepo/contracts.test.mjs`
 - Modify: `docs/ARQUITETURA-INICIAL.md`
 
-- [ ] Criar teste que exija as cinco rotas B2B e rejeite eventos de e-commerce.
-- [ ] Executar no GitHub Actions e comprovar a falha anterior à implementação.
+- [x] Criar teste que exija as cinco rotas B2B e rejeite eventos de e-commerce.
+- [x] Executar no GitHub Actions e comprovar a falha anterior à implementação.
 
 ### Task 2: Workflow operacional
 
 **Files:**
 - Modify: `n8n/partsagricola-operacao.ts`
 
-- [ ] Normalizar o envelope e deduplicar por `id`.
-- [ ] Rotear os cinco tipos de evento e a saída desconhecida.
-- [ ] Preparar notificações sem serviço externo.
-- [ ] Validar o código com o n8n Workflow SDK.
+- [x] Normalizar o envelope e deduplicar por `id`.
+- [x] Rotear os cinco tipos de evento e a saída desconhecida.
+- [x] Preparar notificações sem serviço externo.
+- [x] Validar o código com o n8n Workflow SDK.
 
 ### Task 3: Homologação
 
@@ -51,7 +51,7 @@
 - Modify: `README.md`
 - Modify: `docs/ARQUITETURA-INICIAL.md`
 
-- [ ] Criar o workflow desativado no n8n.
-- [ ] Executar todas as rotas com pin data e inspecionar as saídas.
+- [x] Criar o workflow desativado no n8n.
+- [x] Executar todas as rotas com pin data e inspecionar as saídas.
 - [ ] Rodar lint, typecheck, testes, Playwright e build no GitHub Actions.
 - [ ] Registrar evidências no PR e no Linear.

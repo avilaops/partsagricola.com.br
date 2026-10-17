@@ -56,17 +56,29 @@ no envelope. O consumidor busca detalhes autorizados na API quando necessário.
 
 Tipos iniciais reservados:
 
-- `fornecedor.cadastro_solicitado`
-- `fornecedor.aprovado`
+- `empresa.cadastro_solicitado`
+- `empresa.aprovada`
+- `anuncio.moderacao_solicitada`
 - `anuncio.publicado`
-- `solicitacao.criada`
-- `proposta.recebida`
-- `pedido.criado`
-- `pagamento.atualizado`
-- `envio.atualizado`
+- `interesse.recebido`
 
 Reservar o nome não significa que a funcionalidade já esteja implementada ou
 contratada.
+
+Não existem eventos de carrinho, pedido, checkout, pagamento ou envio: a
+PARTSAGRICOLA aproxima compradores e empresas anunciantes, sem operar a venda.
+
+## Workflow operacional
+
+O código versionado em `n8n/partsagricola-operacao.ts` corresponde ao workflow
+`jcMc1KFHLETFE0yh`, criado no projeto pessoal do n8n como rascunho desativado.
+Ele contém 10 nós e prepara notificações para as cinco rotas acima. Nenhum nó
+envia e-mail, mensagem ou chamada externa nesta fase.
+
+Em 17 de outubro de 2026 foram executadas seis homologações manuais com dados
+fixados: execuções `93961` a `93966`, todas concluídas com sucesso, incluindo o
+fallback de evento desconhecido. A execução `93967` repetiu o identificador da
+primeira e foi interrompida pelo nó de deduplicação antes da notificação.
 
 ## Sequência de implementação
 

@@ -91,9 +91,11 @@ autenticação e limites de requisição.
 
 ## Automação n8n
 
-`n8n/partsagricola-operacao.ts` mantém o workflow versionado e validado
-estruturalmente. Os comandos deste repositório não publicam nem ativam o
-workflow. Publicação exige autorização explícita e credenciais do ambiente.
+[`n8n/partsagricola-operacao.ts`](n8n/partsagricola-operacao.ts) mantém o
+workflow operacional versionado. O rascunho desativado cobre cadastro e
+aprovação de empresas, moderação e publicação de anúncios, interesse comercial,
+deduplicação e eventos desconhecidos. Não há automação de pedido, pagamento,
+frete ou checkout. Publicação exige autorização explícita.
 
 ## Documentação
 
