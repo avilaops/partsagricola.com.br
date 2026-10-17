@@ -1,15 +1,33 @@
 # PARTSAGRICOLA
 
-Fundação do marketplace de peças agrícolas, organizada como monorepo pnpm/Turborepo.
-A arquitetura vigente não utiliza Odoo. O catálogo é tratado por uma fronteira
-PostgreSQL própria e incremental, conforme [a arquitetura inicial](docs/ARQUITETURA-INICIAL.md).
+[![Monorepo](https://github.com/avilaops/partsagricola.com.br/actions/workflows/monorepo.yml/badge.svg)](https://github.com/avilaops/partsagricola.com.br/actions/workflows/monorepo.yml)
+[![Catálogo PostgreSQL](https://github.com/avilaops/partsagricola.com.br/actions/workflows/catalogo-postgres.yml/badge.svg)](https://github.com/avilaops/partsagricola.com.br/actions/workflows/catalogo-postgres.yml)
+
+Marketplace B2B para empresas comprarem e venderem produtos, equipamentos e
+soluções para o setor agrícola.
+
+A PARTSAGRICOLA é a plataforma que conecta compradores a empresas anunciantes.
+Ela não opera como uma loja ou e-commerce com estoque e catálogo próprios:
+cada empresa é responsável por seus anúncios, condições comerciais e oferta.
+
+## Visão do produto
+
+- Empresas verificadas criam seus perfis e publicam anúncios.
+- Compradores pesquisam, comparam e negociam dentro da plataforma.
+- Administração, moderação e auditoria protegem a qualidade do marketplace.
+- Dados históricos de catálogos servem apenas como referência técnica e não
+  representam estoque, propriedade ou venda direta da PARTSAGRICOLA.
+- Odoo e Medusa não fazem parte da arquitetura vigente.
+
+A base técnica está organizada como monorepo pnpm/Turborepo e evolui de forma
+incremental conforme [a arquitetura inicial](docs/ARQUITETURA-INICIAL.md).
 
 ## Componentes
 
 | Workspace     | Porta | Responsabilidade                        |
 | ------------- | ----: | --------------------------------------- |
-| `apps/web`    |  3000 | Marketplace público                     |
-| `apps/seller` |  3001 | Portal de fornecedores                  |
+| `apps/web`    |  3000 | Marketplace para compradores            |
+| `apps/seller` |  3001 | Portal das empresas anunciantes         |
 | `apps/admin`  |  3002 | Administração da operação               |
 | `apps/api`    |  4100 | API principal                           |
 | `apps/auth`   |  4101 | Serviço de autenticação                 |
@@ -45,6 +63,8 @@ Todas as portas são ligadas apenas ao loopback no ambiente local.
 
 ## Qualidade e validação
 
+Todo pull request é validado no GitHub Actions. O pipeline executa:
+
 ```bash
 pnpm lint
 pnpm typecheck
@@ -59,8 +79,8 @@ A suíte Playwright verifica os três frontends em Chromium desktop e emulação
 móvel, incluindo landmarks, navegação por teclado, overflow horizontal e erros
 de console.
 
-O pipeline equivalente está em `.github/workflows/monorepo.yml`. A migration
-inicial é idempotente e fica em `packages/db/sql/001_foundation.sql`.
+O pipeline está em `.github/workflows/monorepo.yml`. A migration inicial é
+idempotente e fica em `packages/db/sql/001_foundation.sql`.
 
 ## Configuração
 
