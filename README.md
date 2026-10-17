@@ -97,6 +97,12 @@ aprovação de empresas, moderação e publicação de anúncios, interesse come
 deduplicação e eventos desconhecidos. Não há automação de pedido, pagamento,
 frete ou checkout. Publicação exige autorização explícita.
 
+Evidências visuais da homologação:
+
+- [Fluxo e execuções — desktop](docs/evidencias/n8n-fluxo-operacional.png)
+- [Fluxo e execuções — mobile](docs/evidencias/n8n-fluxo-operacional-mobile.png)
+- [Fonte reproduzível das evidências](docs/evidencias/n8n-fluxo-operacional.html)
+
 ## Documentação
 
 - [Arquitetura incremental](docs/ARQUITETURA-INICIAL.md)

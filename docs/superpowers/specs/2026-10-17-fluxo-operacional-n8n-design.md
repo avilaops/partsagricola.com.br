@@ -7,8 +7,9 @@ regras de negócio, a autorização ou a persistência principal da plataforma.
 
 ## Escopo
 
-O workflow recebe eventos v1 produzidos pela aplicação, normaliza e elimina
-duplicidades pelo identificador. Em seguida, roteia cinco acontecimentos:
+O workflow recebe eventos v1 produzidos pela aplicação, normaliza, valida UUIDs,
+versão, data e entidades obrigatórias, e elimina duplicidades pelo identificador
+numa Data Table persistente. Em seguida, roteia cinco acontecimentos:
 
 - solicitação de cadastro de empresa;
 - aprovação de empresa;
@@ -25,7 +26,11 @@ atrás de credenciais próprias e não será ativado durante a homologação.
 - A aplicação e o PostgreSQL continuam como fonte de verdade.
 - Eventos não carregam documentos, tokens, pagamentos ou dados pessoais
   completos.
-- `id` e `chave` garantem rastreabilidade; o consumidor deduplica por `id`.
+- `id` e `chave` garantem rastreabilidade; o consumidor registra cada `id`
+  processado em armazenamento persistente.
+- A Data Table evita repetição sequencial, sem prometer atomicidade concorrente;
+  a garantia forte exige PostgreSQL próprio e uma restrição única sobre `id`.
+- Envelopes inválidos são rejeitados antes da consulta de idempotência.
 - Eventos desconhecidos terminam numa saída explícita de não suportado.
 - Não existem pedido, checkout, pagamento, frete ou estoque próprio.
 - O workflow será criado como rascunho desativado e testado com dados fixados,

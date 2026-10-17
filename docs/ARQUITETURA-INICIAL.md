@@ -71,14 +71,34 @@ PARTSAGRICOLA aproxima compradores e empresas anunciantes, sem operar a venda.
 ## Workflow operacional
 
 O código versionado em `n8n/partsagricola-operacao.ts` corresponde ao workflow
-`jcMc1KFHLETFE0yh`, criado no projeto pessoal do n8n como rascunho desativado.
-Ele contém 10 nós e prepara notificações para as cinco rotas acima. Nenhum nó
-envia e-mail, mensagem ou chamada externa nesta fase.
+`t2rlskN2x1OYthGF`, criado no projeto pessoal do n8n como rascunho desativado.
+Ele contém 14 nós, valida o contrato v1 e prepara notificações para as cinco
+rotas acima. Nenhum nó envia e-mail, mensagem ou chamada externa nesta fase.
+Os identificadores processados ficam na Data Table persistente
+`partsagricola_eventos_processados`, fora da janela limitada do nó de
+deduplicação em memória. A consulta seguida do registro impede reprocessamentos
+sequenciais, como comprovado na homologação, mas não é uma operação atômica sob
+concorrência. A garantia forte depende de uma tabela PostgreSQL própria com
+índice único, que só poderá ser conectada quando existir uma credencial isolada
+da PARTSAGRICOLA; nenhuma credencial de outro produto será reutilizada.
+O rascunho anterior `jcMc1KFHLETFE0yh` foi arquivado após a homologação da v2,
+evitando duas definições operacionais concorrentes.
 
-Em 17 de outubro de 2026 foram executadas seis homologações manuais com dados
-fixados: execuções `93961` a `93966`, todas concluídas com sucesso, incluindo o
-fallback de evento desconhecido. A execução `93967` repetiu o identificador da
-primeira e foi interrompida pelo nó de deduplicação antes da notificação.
+Em 17 de outubro de 2026 foram executadas sete homologações manuais com dados
+fixados: execuções `94000`, `94002` a `94007`, todas concluídas com sucesso,
+incluindo o fallback desconhecido e a rejeição de envelope inválido. A execução
+`94009` repetiu o identificador da primeira e foi interrompida pela consulta ao
+histórico persistente antes da notificação.
+As execuções `94012`, `94013` e `94014` rejeitaram, respectivamente, versão
+incorreta, data inválida e entidade obrigatória ausente. A execução `94015`
+comprovou que o normalizador também aceita o envelope diretamente na raiz.
+Após remover os defaults permissivos, as execuções `94023`, `94024` e `94025`
+comprovaram a rejeição de versão, data e correlação ausentes.
+
+As capturas Playwright em `docs/evidencias/` apresentam o fluxo e os resultados
+em desktop e mobile. O aviso visual sobre caixas no nível superior foi mantido
+conscientemente: as saídas são mutuamente exclusivas e não podem compartilhar
+um grupo válido do n8n sem ocultar o roteamento.
 
 ## Sequência de implementação
 

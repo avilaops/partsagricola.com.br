@@ -19,7 +19,8 @@
 ## Review Focus
 
 - Envelope com campos sob `body` e envelope já normalizado.
-- Evento repetido não pode gerar uma segunda notificação.
+- Evento repetido não pode gerar uma segunda notificação e deve ser consultado
+  em histórico persistente.
 - Evento desconhecido precisa de resultado rastreável.
 - Cada rota deve preservar correlação e identificador da entidade.
 - Testes não podem acionar serviços ou credenciais externas.
@@ -29,6 +30,7 @@
 ### Task 1: Contrato verificável
 
 **Files:**
+
 - Modify: `tests/monorepo/contracts.test.mjs`
 - Modify: `docs/ARQUITETURA-INICIAL.md`
 
@@ -38,16 +40,23 @@
 ### Task 2: Workflow operacional
 
 **Files:**
+
 - Modify: `n8n/partsagricola-operacao.ts`
 
 - [x] Normalizar o envelope e deduplicar por `id`.
+- [x] Rejeitar versão, UUID, data ou entidade obrigatória inválida.
+- [x] Persistir identificadores processados em Data Table sem janela de 10 mil.
 - [x] Rotear os cinco tipos de evento e a saída desconhecida.
 - [x] Preparar notificações sem serviço externo.
 - [x] Validar o código com o n8n Workflow SDK.
+- [x] Testar o contrato e as cinco rotas com funções executáveis locais.
+- [x] Documentar o limite concorrente da Data Table e a dependência de banco
+      isolado para idempotência atômica.
 
 ### Task 3: Homologação
 
 **Files:**
+
 - Modify: `README.md`
 - Modify: `docs/ARQUITETURA-INICIAL.md`
 
