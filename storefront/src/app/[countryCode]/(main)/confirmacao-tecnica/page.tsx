@@ -79,7 +79,7 @@ export default function ConfirmacaoTecnicaPage() {
 
           <div className="relative min-h-[360px] overflow-hidden medium:min-h-[620px]">
             <Image
-              src="/images/campaigns/confirmacao-tecnica-v2.webp"
+              src="/images/marketplace/confirmacao-tecnica-marketplace.webp"
               alt="Componente mecânico em bancada de inspeção técnica com etiqueta e paquímetro"
               fill
               sizes="(min-width: 1024px) 52vw, 100vw"

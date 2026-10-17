@@ -10,6 +10,7 @@ import DimensionFinderCta from "@modules/home/components/dimension-finder-cta"
 import RecentlyViewedProducts from "@modules/recently-viewed/components/recently-viewed-products"
 import { selectPrimaryDepartments } from "@lib/catalog/departments"
 import LatestProducts from "@modules/home/components/latest-products"
+import MarketplaceNetwork from "@modules/home/components/marketplace-network"
 
 export const metadata: Metadata = {
   title: "Marketplace de peças agrícolas e para máquinas pesadas",
@@ -44,6 +45,7 @@ export default async function Home(props: {
     <>
       <Hero countryCode={countryCode} />
       <TrustRow />
+      <MarketplaceNetwork />
       <ProductLines categories={departments} totais={totaisPorHandle} />
       <LatestProducts region={region} />
       <DimensionFinderCta />
