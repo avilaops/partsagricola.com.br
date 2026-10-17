@@ -1,3 +1,4 @@
+import { BRAND } from "@partsagricola/config";
 import type { ReactNode } from "react";
 
 type AppShellProps = {
@@ -8,27 +9,25 @@ type AppShellProps = {
 
 export function AppShell({ area, description, children }: AppShellProps) {
   return (
-    <main className="shell">
+    <div className="shell">
       <a className="skip" href="#conteudo">
         Ir para o conteúdo
       </a>
-      <header>
+      <header className="app-header">
         <span className="mark" aria-hidden="true">
           PA
         </span>
-        <strong>PARTSAGRICOLA</strong>
+        <strong>{BRAND.name}</strong>
         <span className="area">{area}</span>
       </header>
-      <section id="conteudo" className="content">
+      <main id="conteudo" className="content" tabIndex={-1}>
         <p className="eyebrow">Marketplace de peças agrícolas</p>
         <h1>{area}</h1>
         <p className="description">{description}</p>
         {children ?? (
-          <div className="state" role="status">
-            Base pronta para a próxima entrega.
-          </div>
+          <p className="state">Base pronta para a próxima entrega.</p>
         )}
-      </section>
-    </main>
+      </main>
+    </div>
   );
 }

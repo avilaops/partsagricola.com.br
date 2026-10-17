@@ -12,7 +12,7 @@
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "test": "node --experimental-strip-types --test tests/monorepo/*.test.mjs && turbo test",
-    "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs apps packages tests/monorepo docs/ARQUITETURA-INICIAL.md docs/superpowers n8n/partsagricola-operacao.ts",
+    "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs apps packages tests/monorepo docs/ARQUITETURA-INICIAL.md docs/APPLE-DESIGN-AUDIT.md docs/superpowers n8n/partsagricola-operacao.ts",
     "db:migrate": "pnpm --filter @partsagricola/db migrate",
     "db:seed": "pnpm --filter @partsagricola/db seed"
   },

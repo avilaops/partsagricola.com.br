@@ -10,6 +10,8 @@
 body {
   margin: 0;
   min-width: 320px;
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 .shell {
   min-height: 100svh;
@@ -29,7 +31,7 @@ body {
 .skip:focus {
   top: 1rem;
 }
-header {
+.app-header {
   min-height: 4.5rem;
   display: flex;
   align-items: center;
@@ -56,6 +58,9 @@ header {
   width: min(68rem, 100%);
   margin: auto;
   padding: clamp(3rem, 10vw, 8rem) clamp(1rem, 5vw, 4rem);
+}
+.content:focus {
+  outline: none;
 }
 .eyebrow {
   color: #18723b;
@@ -88,7 +93,7 @@ h1 {
   outline-offset: 3px;
 }
 @media (max-width: 36rem) {
-  header {
+  .app-header {
     align-items: flex-start;
     flex-wrap: wrap;
   }
@@ -118,7 +123,7 @@ h1 {
     background:
       radial-gradient(circle at 85% 5%, #123d23 0, transparent 35%), #07150c;
   }
-  header {
+  .app-header {
     background: rgba(7, 21, 12, 0.9);
     border-color: #24442e;
   }
@@ -128,5 +133,15 @@ h1 {
   }
   .state {
     background: #102b19;
+  }
+}
+@media (forced-colors: active) {
+  .mark,
+  .state {
+    border: 1px solid CanvasText;
+  }
+  .skip,
+  :focus-visible {
+    outline: 2px solid Highlight;
   }
 }
