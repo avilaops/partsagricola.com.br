@@ -80,7 +80,25 @@ móvel, incluindo landmarks, navegação por teclado, overflow horizontal e erro
 de console.
 
 O pipeline está em `.github/workflows/monorepo.yml`. A migration inicial é
-idempotente e fica em `packages/db/sql/001_foundation.sql`.
+idempotente e fica em `packages/db/sql/001_foundation.sql`. O domínio do
+marketplace é criado pela migration `002_marketplace_domain.sql`; o pipeline
+usa um PostgreSQL 16 descartável para comprovar migrations, seeds, isolamento
+entre empresas e importação transacional.
+
+## Banco do marketplace
+
+O schema `marketplace` contém empresas anunciantes, catálogo de referência,
+anúncios, interesses, propostas e conversas. Não contém carrinho, pedido,
+pagamento, estoque ou logística.
+
+```bash
+DATABASE_URL=postgresql://partsagricola:partsagricola@127.0.0.1:55432/partsagricola pnpm db:migrate
+DATABASE_URL=postgresql://partsagricola:partsagricola@127.0.0.1:55432/partsagricola pnpm db:seed
+DATABASE_URL=postgresql://partsagricola:partsagricola@127.0.0.1:55432/partsagricola pnpm db:import:catalog -- packages/db/fixtures/catalog-example.csv
+```
+
+O contrato CSV, operação segura e fronteira com o catálogo histórico estão em
+[Banco do marketplace](docs/BANCO-MARKETPLACE.md).
 
 ## Configuração
 
@@ -106,6 +124,8 @@ Evidências visuais da homologação:
 ## Documentação
 
 - [Arquitetura incremental](docs/ARQUITETURA-INICIAL.md)
+- [Banco do marketplace](docs/BANCO-MARKETPLACE.md)
+- [Evidências do AVL-167](docs/evidencias/avl-167-schema-marketplace.md)
 - [Decisão de design do AVL-166](docs/superpowers/specs/2026-10-17-avl-166-design.md)
 - [Plano executado do AVL-166](docs/superpowers/plans/2026-10-17-avl-166.md)
 

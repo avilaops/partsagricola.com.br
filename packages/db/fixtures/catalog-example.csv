@@ -1,0 +1,2 @@
+schema_version,source,external_id,part_name,part_code,code_type,brand,category,description,machine_type,machine_brand,machine_model,year_start,year_end
+1,example,PART-001,Bomba hidráulica,BH-001,ORIGINAL,John Deere,Hidráulica,Bomba hidráulica de demonstração,Trator,John Deere,6110J,2015,2020
