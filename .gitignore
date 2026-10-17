@@ -38,3 +38,11 @@ data/*.stderr.log
 data/imdepa/
 
 deploy-final-*/
+
+# monorepo
+node_modules/
+.next/
+dist/
+.turbo/
+coverage/
+.superpowers/

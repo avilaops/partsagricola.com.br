@@ -1,0 +1,30 @@
+{
+  "name": "partsagricola",
+  "private": true,
+  "packageManager": "pnpm@10.18.3",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "docker compose -f infra/docker-compose.yml up -d --wait && turbo dev",
+    "dev:apps": "turbo dev",
+    "infra:up": "docker compose -f infra/docker-compose.yml up -d --wait",
+    "infra:down": "docker compose -f infra/docker-compose.yml down",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "node --experimental-strip-types --test tests/monorepo/*.test.mjs && turbo test",
+    "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs apps packages tests/monorepo docs/ARQUITETURA-INICIAL.md docs/superpowers n8n/partsagricola-operacao.ts",
+    "db:migrate": "pnpm --filter @partsagricola/db migrate",
+    "db:seed": "pnpm --filter @partsagricola/db seed"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.38.0",
+    "@next/eslint-plugin-next": "15.3.9",
+    "@types/node": "24.9.1",
+    "eslint": "9.38.0",
+    "eslint-config-next": "15.3.9",
+    "prettier": "3.6.2",
+    "turbo": "2.5.8",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.2"
+  }
+}
