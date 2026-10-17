@@ -12,13 +12,15 @@
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "test": "node --experimental-strip-types --test tests/monorepo/*.test.mjs && turbo test",
-    "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs apps packages tests/monorepo docs/ARQUITETURA-INICIAL.md docs/APPLE-DESIGN-AUDIT.md docs/superpowers n8n/partsagricola-operacao.ts",
+    "test:e2e": "playwright test",
+    "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs playwright.config.ts apps packages tests/monorepo tests/e2e docs/ARQUITETURA-INICIAL.md docs/APPLE-DESIGN-AUDIT.md docs/superpowers n8n/partsagricola-operacao.ts",
     "db:migrate": "pnpm --filter @partsagricola/db migrate",
     "db:seed": "pnpm --filter @partsagricola/db seed"
   },
   "devDependencies": {
     "@eslint/js": "9.38.0",
     "@next/eslint-plugin-next": "15.3.9",
+    "@playwright/test": "1.56.1",
     "@types/node": "24.9.1",
     "eslint": "9.38.0",
     "eslint-config-next": "15.3.9",

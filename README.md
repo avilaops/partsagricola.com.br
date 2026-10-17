@@ -49,9 +49,15 @@ Todas as portas são ligadas apenas ao loopback no ambiente local.
 pnpm lint
 pnpm typecheck
 pnpm test
+pnpm exec playwright install chromium
+pnpm test:e2e
 pnpm build
 pnpm format:check
 ```
+
+A suíte Playwright verifica os três frontends em Chromium desktop e emulação
+móvel, incluindo landmarks, navegação por teclado, overflow horizontal e erros
+de console.
 
 O pipeline equivalente está em `.github/workflows/monorepo.yml`. A migration
 inicial é idempotente e fica em `packages/db/sql/001_foundation.sql`.
