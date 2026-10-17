@@ -1,0 +1,83 @@
+name: Storefront marketplace
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "storefront/**"
+      - ".github/workflows/storefront-marketplace.yml"
+  push:
+    branches:
+      - "hotfix/desligar-catalogo-marketplace"
+      - main
+    paths:
+      - "storefront/**"
+      - ".github/workflows/storefront-marketplace.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    name: Testes, build e telas
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: storefront
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: storefront/package-lock.json
+      - run: npm ci --ignore-scripts
+      - name: Política de desligamento do catálogo
+        run: npm test
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Formatação dos arquivos alterados
+        run: >-
+          npx prettier --check
+          src/app/[countryCode]/\(main\)/contato/page.tsx
+          src/app/[countryCode]/\(main\)/layout.tsx
+          src/app/[countryCode]/\(main\)/page.tsx
+          src/app/layout.tsx
+          src/app/llms.txt/route.ts
+          src/app/robots.ts
+          src/app/sitemap.xml/route.ts
+          src/app/sitemaps/products/[page]/route.ts
+          src/app/sitemaps/static.xml/route.ts
+          src/lib/marketplace-route-policy.ts
+          src/middleware.ts
+          src/modules/home/components/marketplace-home/index.tsx
+          src/modules/layout/components/side-menu/index.tsx
+          src/modules/layout/templates/footer/index.tsx
+          src/modules/layout/templates/nav/index.tsx
+          src/styles/globals.css
+          tailwind.config.js
+          tests/marketplace-route-policy.test.mjs
+          tests/e2e/marketplace.spec.ts
+          playwright.config.ts
+          package.json
+          ../.github/workflows/storefront-marketplace.yml
+      - name: Build de produção
+        run: npm run build
+      - name: Instala navegador do Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Playwright desktop e mobile
+        run: npm run test:e2e
+      - name: Publica prints e relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: storefront-marketplace-evidencias
+          path: |
+            storefront/test-results/**/*.png
+            storefront/playwright-report/**
+          if-no-files-found: warn
+          retention-days: 30

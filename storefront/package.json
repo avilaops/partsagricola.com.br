@@ -1,16 +1,20 @@
 {
-  "name": "medusa-next",
+  "name": "partsagricola-marketplace",
   "version": "1.0.3",
   "private": true,
-  "author": "Kasper Fabricius Kristensen <kasper@medusajs.com> & Victor Gerbrands <victor@medusajs.com> (https://www.medusajs.com)",
-  "description": "Next.js Starter to be used with Medusa V2",
+  "author": "Ávila Ops",
+  "description": "Marketplace B2B que conecta compradores a empresas anunciantes do agro",
   "keywords": [
-    "medusa-storefront"
+    "marketplace-agricola",
+    "b2b"
   ],
   "scripts": {
     "dev": "next dev --turbopack -p 8000",
     "build": "next build",
     "start": "next start -p 8000",
+    "test": "node --experimental-strip-types --test --disable-warning=MODULE_TYPELESS_PACKAGE_JSON tests/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
     "lint": "next lint",
     "submit:indexnow": "node scripts/submit-indexnow.mjs",
     "analyze": "ANALYZE=true next build",
@@ -37,6 +41,7 @@
     "@babel/core": "^7.17.5",
     "@medusajs/types": "latest",
     "@medusajs/ui-preset": "latest",
+    "@playwright/test": "^1.56.1",
     "@types/lodash": "^4.14.195",
     "@types/node": "17.0.21",
     "@types/pg": "^8.11.0",
@@ -46,7 +51,7 @@
     "ansi-colors": "^4.1.3",
     "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
-    "eslint": "8.10.0",
+    "eslint": "^8.57.1",
     "eslint-config-next": "15.0.8",
     "postcss": "^8.4.8",
     "prettier": "^2.8.8",

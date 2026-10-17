@@ -1,69 +1,82 @@
-import ContactCtas from "@modules/analytics/components/contact-ctas"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Contato e orçamento",
+  title: "Participe do marketplace",
   description:
-    "Solicite uma cotação de peças agrícolas, industriais e para máquinas pesadas com confirmação técnica.",
-  alternates: {
-    canonical: "/br/contato",
-  },
+    "Cadastre sua empresa ou manifeste interesse em comprar pelo marketplace Parts Agrícola.",
+  alternates: { canonical: "/br/contato" },
 }
 
 export default async function ContatoPage({
   searchParams,
 }: {
-  searchParams: Promise<{ codigo?: string; produto?: string }>
+  searchParams: Promise<{ perfil?: string }>
 }) {
-  const { codigo, produto } = await searchParams
-  const productLabel = produto || "Peça não localizada no catálogo"
-  const codeLabel = codigo || "A confirmar"
+  const { perfil } = await searchParams
+  const isCompany = perfil === "empresa"
+  const profile = isCompany ? "empresa anunciante" : "comprador"
+  const subject = encodeURIComponent(`Quero participar como ${profile}`)
+  const body = encodeURIComponent(
+    `Olá! Quero participar da Parts Agrícola como ${profile}.\n\nNome:\nEmpresa (se aplicável):\nCidade/UF:\nTelefone:`
+  )
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
+    /\D/g,
+    ""
+  )
+  const whatsappMessage = encodeURIComponent(
+    `Olá! Quero participar da Parts Agrícola como ${profile}.`
+  )
+
   return (
-    <main className="bg-[#f7faf8] py-16 small:py-24">
+    <main className="bg-[#eef5f1] py-16 small:py-24">
       <div className="content-container max-w-5xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]">
-            Atendimento técnico
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pa-verde">
+            Participe da nova plataforma
           </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight small:text-5xl">
-            Solicite sua cotação
+          <h1 className="mt-4 text-4xl text-pa-grafite small:text-6xl">
+            {isCompany
+              ? "Leve sua empresa para o marketplace"
+              : "Encontre empresas do agro em um só lugar"}
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-ui-fg-subtle small:text-lg">
-            Envie o código e os dados da aplicação. Nossa equipe confirma a peça
-            correta, disponibilidade, prazo e condição comercial.
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-ui-fg-subtle">
+            {isCompany
+              ? "Conte sobre sua empresa e seja avisado sobre o credenciamento de anunciantes."
+              : "Conte o que você busca e seja avisado quando o acesso para compradores estiver disponível."}
           </p>
         </div>
 
-        {(codigo || produto) && (
-          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-[#0B6B3F]/20 bg-white p-6 shadow-sm">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0B6B3F]">
-              Item selecionado
-            </p>
-            <h2 className="mt-2 text-xl font-semibold">{productLabel}</h2>
-            <p className="mt-2 font-mono text-sm text-ui-fg-subtle">
-              Código {codeLabel}
-            </p>
-          </div>
-        )}
-
-        <ContactCtas
-          productLabel={productLabel}
-          codeLabel={codeLabel}
-          whatsappNumber={process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(
-            /\D/g,
-            ""
+        <div className="mx-auto mt-10 grid max-w-2xl gap-4 xsmall:grid-cols-2">
+          {whatsappNumber && (
+            <a
+              href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-36 flex-col justify-between rounded-2xl bg-pa-verde p-6 text-white transition hover:-translate-y-0.5 hover:bg-[#08552e]"
+            >
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+                Atendimento direto
+              </span>
+              <strong className="text-xl">Falar no WhatsApp →</strong>
+            </a>
           )}
-        />
-
-        <div className="mx-auto mt-10 max-w-2xl border-t border-ui-border-base pt-8">
-          <h2 className="font-semibold">Para agilizar a confirmação, envie:</h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 text-sm text-ui-fg-subtle xsmall:grid-cols-2">
-            <li>• Código ou foto da peça</li>
-            <li>• Marca e modelo da máquina</li>
-            <li>• Ano ou número de série</li>
-            <li>• Cidade de entrega e quantidade</li>
-          </ul>
+          <a
+            href={`mailto:contato@partsagricola.com.br?subject=${subject}&body=${body}`}
+            className="flex min-h-36 flex-col justify-between rounded-2xl border border-ui-border-base bg-white p-6 transition hover:-translate-y-0.5 hover:border-pa-verde"
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-ui-fg-muted">
+              E-mail
+            </span>
+            <strong className="text-xl text-pa-grafite">
+              contato@partsagricola.com.br →
+            </strong>
+          </a>
         </div>
+
+        <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-ui-fg-muted">
+          A Parts Agrícola é a plataforma intermediadora. Produtos, anúncios e
+          condições comerciais são de responsabilidade das empresas anunciantes.
+        </p>
       </div>
     </main>
   )

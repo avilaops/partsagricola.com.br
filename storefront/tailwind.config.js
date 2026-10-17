@@ -73,12 +73,8 @@ module.exports = {
         "3xl": "2rem",
       },
       fontFamily: {
-        // As duas famílias são carregadas por next/font em src/app/layout.tsx e
-        // chegam aqui como variável CSS. A pilha de fallback continua porque a
-        // variável não existe antes da hidratação do <html> — sem ela o
-        // primeiro paint sairia em serifada.
+        // Fontes do sistema mantêm o build independente de serviços externos.
         sans: [
-          "var(--font-inter)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
@@ -88,10 +84,10 @@ module.exports = {
           "sans-serif",
         ],
         display: [
-          "var(--font-manrope)",
-          "var(--font-inter)",
           "-apple-system",
+          "BlinkMacSystemFont",
           "Segoe UI",
+          "Roboto",
           "sans-serif",
         ],
       },
