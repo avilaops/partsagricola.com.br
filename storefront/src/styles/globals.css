@@ -3,11 +3,8 @@
 @import "tailwindcss/utilities";
 
 @layer base {
-  /* Manrope nos títulos, conforme a seção 3 do manual de identidade.
-     Aplicado na camada base e não componente a componente: assim título novo
-     nasce na fonte certa em vez de esperar alguém lembrar da classe. O peso
-     vem junto porque a Manrope só foi carregada em 700 e 800 — pedir 600 aqui
-     faria o browser sintetizar um seminegrito falso. */
+  /* A pilha display usa fontes do sistema para evitar dependência de rede no
+     build e manter métricas estáveis desde o primeiro paint. */
   h1,
   h2,
   h3 {
@@ -16,8 +13,6 @@
     letter-spacing: -0.02em;
   }
 
-  /* Manrope tem contraforma mais aberta que a Inter e, no mesmo corpo, parece
-     maior. Sem isso os títulos grandes ficam frouxos. */
   h1 {
     letter-spacing: -0.03em;
   }

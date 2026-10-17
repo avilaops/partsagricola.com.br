@@ -5,18 +5,15 @@ import { XMark } from "@medusajs/icons"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { HttpTypes } from "@medusajs/types"
 
 const NAVEGACAO = [
   { href: "/", label: "Início" },
-  { href: "/store", label: "Catálogo completo" },
-  { href: "/medidas", label: "Busca por medidas" },
-  { href: "/confirmacao-tecnica", label: "Confirmação técnica" },
+  { href: "/#como-funciona", label: "Como funciona" },
+  { href: "/#para-empresas", label: "Para empresas" },
   { href: "/contato", label: "Contato" },
 ]
 
 type SideMenuProps = {
-  categories: HttpTypes.StoreProductCategory[]
   whatsappNumber?: string
 }
 
@@ -26,7 +23,7 @@ type SideMenuProps = {
  * starter era um vidro escuro sobre a página, com links gigantes e seletor de
  * país/idioma que esta loja nunca teve.
  */
-const SideMenu = ({ categories, whatsappNumber }: SideMenuProps) => {
+const SideMenu = ({ whatsappNumber }: SideMenuProps) => {
   return (
     <div className="h-full">
       <div className="flex h-full items-center">
@@ -87,27 +84,10 @@ const SideMenu = ({ categories, whatsappNumber }: SideMenuProps) => {
                               className="flex items-center justify-between py-3.5 text-base font-medium hover:text-pa-verde"
                             >
                               {item.label}
-                              <span aria-hidden="true" className="text-ui-fg-muted">
-                                →
-                              </span>
-                            </LocalizedClientLink>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <p className="mb-2 mt-7 text-xs font-semibold uppercase tracking-[0.16em] text-ui-fg-muted">
-                        Departamentos
-                      </p>
-                      <ul className="divide-y divide-ui-border-base">
-                        {categories.map((category) => (
-                          <li key={category.id}>
-                            <LocalizedClientLink
-                              href={`/categories/${category.handle}`}
-                              onClick={close}
-                              className="flex items-center justify-between py-3 text-sm hover:text-pa-verde"
-                            >
-                              {category.name}
-                              <span aria-hidden="true" className="text-ui-fg-muted">
+                              <span
+                                aria-hidden="true"
+                                className="text-ui-fg-muted"
+                              >
                                 →
                               </span>
                             </LocalizedClientLink>
@@ -124,7 +104,7 @@ const SideMenu = ({ categories, whatsappNumber }: SideMenuProps) => {
                           rel="noreferrer"
                           className="flex min-h-11 items-center justify-center rounded-base bg-pa-verde px-4 text-sm font-semibold text-white hover:bg-[#08552e]"
                         >
-                          Falar no WhatsApp
+                          Quero participar
                         </a>
                       ) : (
                         <LocalizedClientLink
@@ -132,7 +112,7 @@ const SideMenu = ({ categories, whatsappNumber }: SideMenuProps) => {
                           onClick={close}
                           className="flex min-h-11 items-center justify-center rounded-base bg-pa-verde px-4 text-sm font-semibold text-white hover:bg-[#08552e]"
                         >
-                          Falar com a equipe
+                          Quero participar
                         </LocalizedClientLink>
                       )}
                       <p className="mt-3 text-center text-xs text-ui-fg-muted">

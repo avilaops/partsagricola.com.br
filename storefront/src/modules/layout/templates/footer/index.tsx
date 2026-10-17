@@ -1,106 +1,61 @@
-import { listCategories } from "@lib/data/categories"
-import { selectPrimaryDepartments } from "@lib/catalog/departments"
-import { Text } from "@medusajs/ui"
 import Image from "next/image"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import MedusaCTA from "@modules/layout/components/medusa-cta"
 
-export default async function Footer() {
-  const productCategories = await listCategories()
-  const departments = selectPrimaryDepartments(productCategories)
-
+export default function Footer() {
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col items-start justify-between gap-10 py-14 small:flex-row small:py-16">
-          <div>
-            <LocalizedClientLink href="/" className="flex items-center">
+    <footer className="w-full border-t border-ui-border-base bg-white">
+      <div className="content-container py-12 small:py-16">
+        <div className="grid gap-10 small:grid-cols-[1fr_auto] small:items-start">
+          <div className="max-w-md">
+            <LocalizedClientLink href="/" className="inline-flex items-center">
               <Image
                 src="/images/marca/logo-partsagricola.png"
-                alt="Parts Agricola"
+                alt="Parts Agrícola"
                 width={800}
                 height={138}
                 className="h-8 w-auto"
               />
             </LocalizedClientLink>
+            <p className="mt-5 leading-7 text-ui-fg-subtle">
+              Marketplace que conecta empresas anunciantes a compradores do
+              setor agrícola. A Parts Agrícola não vende estoque próprio.
+            </p>
           </div>
-          <div className="grid grid-cols-2 gap-10 text-small-regular small:grid-cols-3 medium:gap-x-16">
-            {departments.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categorias
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {departments.map((c) => (
-                    <li className="text-ui-fg-subtle txt-small" key={c.id}>
-                      <LocalizedClientLink
-                        className="hover:text-[#0B6B3F]"
-                        href={`/categories/${c.handle}`}
-                        data-testid="category-link"
-                      >
-                        {c.name}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">
-                Encontrar peças
-              </span>
-              <ul className="grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small">
+          <nav aria-label="Rodapé" className="grid grid-cols-2 gap-8 text-sm">
+            <div>
+              <p className="font-semibold text-pa-grafite">Marketplace</p>
+              <ul className="mt-3 space-y-2 text-ui-fg-subtle">
                 <li>
-                  <LocalizedClientLink
-                    className="hover:text-[#0B6B3F]"
-                    href="/store"
-                  >
-                    Catálogo completo
-                  </LocalizedClientLink>
+                  <a href="#como-funciona" className="hover:text-pa-verde">
+                    Como funciona
+                  </a>
                 </li>
                 <li>
-                  <LocalizedClientLink
-                    className="hover:text-[#0B6B3F]"
-                    href="/medidas"
-                  >
-                    Buscar por medidas
-                  </LocalizedClientLink>
+                  <a href="#para-empresas" className="hover:text-pa-verde">
+                    Para empresas
+                  </a>
                 </li>
               </ul>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Empresa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+            <div>
+              <p className="font-semibold text-pa-grafite">Atendimento</p>
+              <ul className="mt-3 space-y-2 text-ui-fg-subtle">
                 <li>
                   <LocalizedClientLink
                     href="/contato"
-                    className="hover:text-ui-fg-base"
+                    className="hover:text-pa-verde"
                   >
-                    Fale com a gente
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/confirmacao-tecnica"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Confirmação técnica
+                    Fale com a equipe
                   </LocalizedClientLink>
                 </li>
               </ul>
             </div>
-          </div>
+          </nav>
         </div>
-        <div className="flex w-full flex-col justify-between gap-3 border-t border-ui-border-base py-6 text-ui-fg-muted xsmall:flex-row">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Parts Agricola. Todos os direitos
-            reservados.
-          </Text>
-          <MedusaCTA />
+        <div className="mt-12 border-t border-ui-border-base pt-6 text-sm text-ui-fg-muted">
+          © {new Date().getFullYear()} Parts Agrícola. Todos os direitos
+          reservados.
         </div>
       </div>
     </footer>
