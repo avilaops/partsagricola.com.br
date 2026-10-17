@@ -3,12 +3,15 @@
 Este documento registra a fundação técnica iniciada na tarefa Linear
 [`AVL-166`](https://linear.app/avilaops/issue/AVL-166/marketplace-t00-estrutura-do-monorepo-e-infraestrutura-local).
 Ele descreve o estado real do repositório e a direção de evolução sem apagar o
-catálogo, a integração Odoo ou o storefront existentes.
+catálogo PostgreSQL, os dados importados ou o storefront legado existentes.
 
 ## Estado encontrado
 
 - Catálogo consolidado em PostgreSQL 16, com carga e testes em Python.
-- Odoo como fonte atual do catálogo e camada `catalogo_odoo` para leitura.
+- Odoo não faz parte do projeto. Referências a Odoo no código e na documentação
+  são legado inconsistente e não definem a nova arquitetura.
+- `catalogo_unificado`/PostgreSQL é a fronteira de catálogo adotada para a
+  evolução do marketplace.
 - Storefront Next.js em `storefront/`.
 - Infraestrutura local do catálogo em `docker-compose.yml`.
 - Validação do catálogo em `.github/workflows/catalogo-postgres.yml`.
@@ -67,8 +70,8 @@ contratada.
 
 ## Sequência de implementação
 
-1. Consolidar scripts e gerenciador de pacotes sem interromper Odoo e
-   storefront.
+1. Consolidar scripts e gerenciador de pacotes sem interromper o catálogo
+   PostgreSQL e o storefront legado.
 2. Introduzir o pacote compartilhado de configuração e validação de ambiente.
 3. Expandir a infraestrutura local com Redis, MinIO e Mailpit.
 4. Criar outbox transacional e dispatcher com teste de idempotência.
