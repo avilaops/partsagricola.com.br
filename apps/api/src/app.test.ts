@@ -263,6 +263,21 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
     async referenceData() {
       return { categories: [], brands: [] };
     },
+    async publicCatalog() {
+      return { items: [] };
+    },
+    async publicSeller() {
+      throw new Error("not used");
+    },
+    async sellerListings() {
+      return { items: [] };
+    },
+    async createListing() {
+      return {
+        id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        status: "PENDING_REVIEW",
+      };
+    },
   };
   const app = await testApp({ marketplace });
   const headers = {

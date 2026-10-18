@@ -25,6 +25,35 @@ export type PartRequestInput = {
   categoryId?: string;
   brandId?: string;
 };
+export type ListingInput = {
+  title: string;
+  description: string;
+  condition: "NEW" | "USED" | "RECONDITIONED" | "REMANUFACTURED";
+  stateCode: string;
+  city: string;
+  partId?: string | undefined;
+  priceAmountMinor?: number | undefined;
+  priceOnRequest: boolean;
+  imageUrls: string[];
+};
+export type CatalogFilters = {
+  query?: string | undefined;
+  categoryId?: string | undefined;
+  brandId?: string | undefined;
+  stateCode?: string | undefined;
+};
+export type ListingSummary = {
+  id: string;
+  title: string;
+  description: string;
+  condition: string;
+  priceAmountMinor: number | null;
+  priceOnRequest: boolean;
+  stateCode: string;
+  city: string;
+  imageUrl: string | null;
+  company: { tradeName: string; slug: string; verified: boolean };
+};
 
 export interface MarketplaceRepository {
   createCompanyApplication(
@@ -49,6 +78,27 @@ export interface MarketplaceRepository {
     categories: Array<{ id: string; name: string }>;
     brands: Array<{ id: string; name: string }>;
   }>;
+  publicCatalog(filters: CatalogFilters): Promise<{ items: ListingSummary[] }>;
+  publicSeller(slug: string): Promise<{
+    company: {
+      tradeName: string;
+      slug: string;
+      description: string | null;
+      city: string;
+      stateCode: string;
+      verified: boolean;
+      categories: string[];
+      serviceRegions: string[];
+    };
+    listings: ListingSummary[];
+  }>;
+  sellerListings(
+    companyId: string,
+  ): Promise<{ items: Array<ListingSummary & { status: string }> }>;
+  createListing(
+    companyId: string,
+    input: ListingInput,
+  ): Promise<{ id: string; status: "PENDING_REVIEW" }>;
 }
 
 const headersSchema = z
@@ -88,6 +138,42 @@ const requestInput = z.object({
   categoryId: z.string().uuid().optional(),
   brandId: z.string().uuid().optional(),
 });
+const listingInput = z
+  .object({
+    title: z.string().trim().min(3).max(160),
+    description: z.string().trim().min(10).max(3000),
+    condition: z.enum(["NEW", "USED", "RECONDITIONED", "REMANUFACTURED"]),
+    stateCode: z.string().trim().toUpperCase().length(2),
+    city: z.string().trim().min(2).max(120),
+    partId: z.string().uuid().optional(),
+    priceAmountMinor: z.number().int().nonnegative().optional(),
+    priceOnRequest: z.boolean(),
+    imageUrls: z.array(z.string().url()).max(8).default([]),
+  })
+  .superRefine((value, context) => {
+    if (!value.priceOnRequest && value.priceAmountMinor === undefined)
+      context.addIssue({
+        code: "custom",
+        message: "Informe o preço",
+        path: ["priceAmountMinor"],
+      });
+  });
+const listingSummarySchema = z.object({
+  id: z.string().uuid(),
+  title: z.string(),
+  description: z.string(),
+  condition: z.string(),
+  priceAmountMinor: z.number().int().nullable(),
+  priceOnRequest: z.boolean(),
+  stateCode: z.string(),
+  city: z.string(),
+  imageUrl: z.string().nullable(),
+  company: z.object({
+    tradeName: z.string(),
+    slug: z.string(),
+    verified: z.boolean(),
+  }),
+});
 
 export async function registerMarketplaceRoutes(
   app: FastifyInstance,
@@ -107,6 +193,54 @@ export async function registerMarketplaceRoutes(
       );
     return options.repository;
   };
+
+  api.get(
+    "/v1/marketplace/listings",
+    {
+      schema: {
+        tags: ["catalog"],
+        querystring: z.object({
+          query: z.string().trim().max(120).optional(),
+          categoryId: z.string().uuid().optional(),
+          brandId: z.string().uuid().optional(),
+          stateCode: z.string().length(2).optional(),
+        }),
+        response: {
+          200: z.object({ items: z.array(listingSummarySchema) }),
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => repository().publicCatalog(request.query),
+  );
+
+  api.get(
+    "/v1/marketplace/sellers/:slug",
+    {
+      schema: {
+        tags: ["sellers"],
+        params: z.object({ slug: z.string().min(2).max(160) }),
+        response: {
+          200: z.object({
+            company: z.object({
+              tradeName: z.string(),
+              slug: z.string(),
+              description: z.string().nullable(),
+              city: z.string(),
+              stateCode: z.string(),
+              verified: z.boolean(),
+              categories: z.array(z.string()),
+              serviceRegions: z.array(z.string()),
+            }),
+            listings: z.array(listingSummarySchema),
+          }),
+          404: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => repository().publicSeller(request.params.slug),
+  );
 
   api.get(
     "/v1/catalog/reference-data",
@@ -233,6 +367,77 @@ export async function registerMarketplaceRoutes(
           "Acesso à empresa negado",
         );
       return repository().sellerDashboard(context.sellerId);
+    },
+  );
+
+  api.get(
+    "/v1/sellers/listings",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["listings"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        response: {
+          200: z.object({
+            items: z.array(listingSummarySchema.extend({ status: z.string() })),
+          }),
+          401: errorSchema,
+          403: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => {
+      const context = options.contextFor(request);
+      if (
+        !context.sellerId ||
+        !context.principal.seller_ids.includes(context.sellerId)
+      )
+        throw new ApiError(
+          403,
+          "SELLER_SCOPE_FORBIDDEN",
+          "Acesso à empresa negado",
+        );
+      return repository().sellerListings(context.sellerId);
+    },
+  );
+
+  api.post(
+    "/v1/sellers/listings",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["listings"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        body: listingInput,
+        response: {
+          201: z.object({
+            id: z.string().uuid(),
+            status: z.literal("PENDING_REVIEW"),
+          }),
+          400: errorSchema,
+          401: errorSchema,
+          403: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const context = options.contextFor(request);
+      if (
+        !context.sellerId ||
+        !context.principal.seller_ids.includes(context.sellerId)
+      )
+        throw new ApiError(
+          403,
+          "SELLER_SCOPE_FORBIDDEN",
+          "Acesso à empresa negado",
+        );
+      return reply
+        .status(201)
+        .send(await repository().createListing(context.sellerId, request.body));
     },
   );
 }

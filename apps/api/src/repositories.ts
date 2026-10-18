@@ -10,6 +10,8 @@ import type {
   CompanyApplicationInput,
   MarketplaceRepository,
   PartRequestInput,
+  CatalogFilters,
+  ListingInput,
 } from "./marketplace.ts";
 import type { SessionPrincipal } from "@partsagricola/shared";
 
@@ -212,6 +214,119 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
       ),
     ]);
     return { categories: categories.rows, brands: brands.rows };
+  }
+
+  async publicCatalog(filters: CatalogFilters) {
+    const values: unknown[] = [];
+    const where = ["l.status='PUBLISHED'", "c.status='APPROVED'"];
+    if (filters.query) {
+      values.push(`%${filters.query}%`);
+      where.push(
+        `(l.title ilike $${values.length} or l.description ilike $${values.length} or exists (select 1 from marketplace.part_code pc where pc.part_id=l.part_id and pc.code ilike $${values.length}))`,
+      );
+    }
+    if (filters.categoryId) {
+      values.push(filters.categoryId);
+      where.push(`p.category_id=$${values.length}`);
+    }
+    if (filters.brandId) {
+      values.push(filters.brandId);
+      where.push(`p.brand_id=$${values.length}`);
+    }
+    if (filters.stateCode) {
+      values.push(filters.stateCode.toUpperCase());
+      where.push(`l.state_code=$${values.length}`);
+    }
+    const result = await this.pool.query(
+      this.listingSelect(
+        `${where.join(" and ")} order by l.published_at desc limit 60`,
+      ),
+      values,
+    );
+    return { items: result.rows };
+  }
+
+  async publicSeller(slug: string) {
+    const companyResult = await this.pool.query<{
+      tradeName: string;
+      slug: string;
+      description: string | null;
+      city: string;
+      stateCode: string;
+      verified: boolean;
+      categories: string[];
+      serviceRegions: string[];
+    }>(
+      `select c.trade_name as "tradeName",c.slug,c.description,c.city,c.state_code as "stateCode",(c.status='APPROVED') as verified,
+       coalesce((select array_agg(pc.name order by pc.name) from marketplace.company_category cc join marketplace.part_category pc on pc.id=cc.category_id where cc.company_id=c.id),'{}') as categories,
+       coalesce((select array_agg(csr.state_code order by csr.state_code) from marketplace.company_service_region csr where csr.company_id=c.id),'{}') as "serviceRegions"
+       from marketplace.company c where c.slug=$1 and c.status='APPROVED'`,
+      [slug],
+    );
+    const company = companyResult.rows[0];
+    if (!company)
+      throw new ApiError(404, "SELLER_NOT_FOUND", "Vendedor não encontrado");
+    const listings = await this.pool.query(
+      this.listingSelect(
+        "c.slug=$1 and l.status='PUBLISHED' order by l.published_at desc",
+      ),
+      [slug],
+    );
+    return { company, listings: listings.rows };
+  }
+
+  async sellerListings(companyId: string) {
+    const result = await this.pool.query(
+      this.listingSelect("l.company_id=$1 order by l.created_at desc", true),
+      [companyId],
+    );
+    return { items: result.rows };
+  }
+
+  async createListing(
+    companyId: string,
+    input: ListingInput,
+  ): Promise<{ id: string; status: "PENDING_REVIEW" }> {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      const created = await client.query<{ id: string }>(
+        `insert into marketplace.listing (company_id,listing_type,part_id,title,description,condition,price_amount_minor,price_currency,price_on_request,state_code,city,status)
+         values ($1,'PART',$2,$3,$4,$5,$6,$7,$8,$9,$10,'PENDING_REVIEW') returning id`,
+        [
+          companyId,
+          input.partId ?? null,
+          input.title,
+          input.description,
+          input.condition,
+          input.priceOnRequest ? null : input.priceAmountMinor,
+          "BRL",
+          input.priceOnRequest,
+          input.stateCode,
+          input.city,
+        ],
+      );
+      const id = created.rows[0]!.id;
+      for (const [index, url] of input.imageUrls.entries())
+        await client.query(
+          "insert into marketplace.listing_image(listing_id,url,alt_text,position) values ($1,$2,$3,$4)",
+          [id, url, input.title, index + 1],
+        );
+      await client.query("commit");
+      return { id, status: "PENDING_REVIEW" };
+    } catch (error) {
+      await client.query("rollback");
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  private listingSelect(where: string, includeStatus = false) {
+    return `select l.id,l.title,l.description,l.condition,l.price_amount_minor::int as "priceAmountMinor",l.price_on_request as "priceOnRequest",l.state_code as "stateCode",l.city,
+      (select li.url from marketplace.listing_image li where li.listing_id=l.id order by li.position limit 1) as "imageUrl",
+      json_build_object('tradeName',c.trade_name,'slug',c.slug,'verified',(c.status='APPROVED')) as company${includeStatus ? ",l.status" : ""}
+      from marketplace.listing l join marketplace.company c on c.id=l.company_id left join marketplace.part p on p.id=l.part_id where ${where}`;
   }
 
   private async ensureUser(client: pg.PoolClient, principal: SessionPrincipal) {

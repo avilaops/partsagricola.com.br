@@ -240,6 +240,75 @@ h1 {
   border-radius: 1rem;
   background: #fff;
 }
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.listing-card,
+.empty-state,
+.seller-profile {
+  padding: 1.4rem;
+  border: 1px solid #d5dfd7;
+  border-radius: 1rem;
+  background: #fff;
+}
+.listing-card img,
+.image-placeholder {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  border-radius: 0.7rem;
+  margin-bottom: 1rem;
+}
+.image-placeholder {
+  display: grid;
+  place-items: center;
+  background: #e8eee9;
+  color: #52675a;
+}
+.listing-card p {
+  color: #52675a;
+  line-height: 1.5;
+}
+.listing-card a {
+  color: #18723b;
+  font-weight: 700;
+}
+.search-bar {
+  display: grid;
+  grid-template-columns: 1fr 6rem auto;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.search-bar input {
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #aebdb2;
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #102116;
+  font: inherit;
+}
+.verified-badge,
+.status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: #dff4e6;
+  color: #0a552b;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+.compact-actions .action-card {
+  min-height: 10rem;
+}
 :focus-visible {
   outline: 3px solid #18723b;
   outline-offset: 3px;
@@ -261,6 +330,10 @@ h1 {
   .metric-grid,
   .check-grid,
   .check-grid.states {
+    grid-template-columns: 1fr;
+  }
+  .catalog-grid,
+  .search-bar {
     grid-template-columns: 1fr;
   }
 }

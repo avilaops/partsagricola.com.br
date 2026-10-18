@@ -7,6 +7,14 @@ export default function Page() {
       description="Encontre empresas, publique sua necessidade e receba respostas de quem realmente tem a peça."
     >
       <div className="action-grid">
+        <Link className="action-card" href="/catalogo">
+          <span className="tag">Marketplace</span>
+          <strong>Buscar peças e vendedores</strong>
+          <p>
+            Pesquise anúncios publicados por empresas verificadas em todo o
+            Brasil.
+          </p>
+        </Link>
         <Link
           className="action-card action-primary"
           href="/conta/solicitacoes/nova"

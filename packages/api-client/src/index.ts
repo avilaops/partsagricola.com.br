@@ -41,6 +41,14 @@ export type SellerDashboardResponse =
   paths["/v1/sellers/dashboard"]["get"]["responses"][200]["content"]["application/json"];
 export type ReferenceDataResponse =
   paths["/v1/catalog/reference-data"]["get"]["responses"][200]["content"]["application/json"];
+export type PublicCatalogResponse =
+  paths["/v1/marketplace/listings"]["get"]["responses"][200]["content"]["application/json"];
+export type PublicSellerResponse =
+  paths["/v1/marketplace/sellers/{slug}"]["get"]["responses"][200]["content"]["application/json"];
+export type ListingInput =
+  paths["/v1/sellers/listings"]["post"]["requestBody"]["content"]["application/json"];
+export type SellerListingsResponse =
+  paths["/v1/sellers/listings"]["get"]["responses"][200]["content"]["application/json"];
 
 export class ApiClientError extends Error {
   readonly status: number;
@@ -154,6 +162,34 @@ export function createApiClient(input: {
       request<SellerDashboardResponse>("/v1/sellers/dashboard", token, {
         "x-seller-id": sellerId,
       }),
+    publicCatalog: (
+      filters: {
+        query?: string | undefined;
+        categoryId?: string | undefined;
+        brandId?: string | undefined;
+        stateCode?: string | undefined;
+      } = {},
+    ) => {
+      const url = new URL("/v1/marketplace/listings", input.baseUrl);
+      for (const [key, value] of Object.entries(filters))
+        if (value) url.searchParams.set(key, value);
+      return request<PublicCatalogResponse>(`${url.pathname}${url.search}`);
+    },
+    publicSeller: (slug: string) =>
+      request<PublicSellerResponse>(
+        `/v1/marketplace/sellers/${encodeURIComponent(slug)}`,
+      ),
+    sellerListings: (token: string, sellerId: string) =>
+      request<SellerListingsResponse>("/v1/sellers/listings", token, {
+        "x-seller-id": sellerId,
+      }),
+    createListing: (token: string, sellerId: string, body: ListingInput) =>
+      request<{ id: string; status: "PENDING_REVIEW" }>(
+        "/v1/sellers/listings",
+        token,
+        { "x-seller-id": sellerId },
+        { method: "POST", body },
+      ),
   };
 }
 

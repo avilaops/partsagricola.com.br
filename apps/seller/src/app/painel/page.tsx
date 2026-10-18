@@ -2,6 +2,7 @@ import { createApiClient } from "@partsagricola/api-client";
 import { AppShell } from "@partsagricola/ui";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function SellerDashboardPage() {
   const token = (await cookies()).get("pa_access")?.value;
@@ -38,6 +39,21 @@ export default async function SellerDashboardPage() {
           Complete o perfil e aguarde a aprovação para publicar os primeiros
           anúncios.
         </p>
+      </div>
+      <div className="action-grid compact-actions">
+        <Link
+          className="action-card action-primary"
+          href="/painel/anuncios/novo"
+        >
+          <span className="tag">Catálogo</span>
+          <strong>Novo anúncio</strong>
+          <p>Cadastre uma peça e envie para análise.</p>
+        </Link>
+        <Link className="action-card" href="/painel/anuncios">
+          <span className="tag">Gestão</span>
+          <strong>Meus anúncios</strong>
+          <p>Acompanhe publicação e disponibilidade.</p>
+        </Link>
       </div>
     </AppShell>
   );

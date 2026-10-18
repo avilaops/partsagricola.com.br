@@ -117,6 +117,35 @@ test(
         openInterests: 0,
         openRequests: 0,
       });
+      const listing = await marketplace.createListing(company.rows[0]!.id, {
+        title: "Bomba hidráulica John Deere",
+        description: "Peça nova para colheitadeira, pronta para envio.",
+        condition: "NEW",
+        stateCode: "SP",
+        city: "Ribeirao Preto",
+        priceAmountMinor: 125000,
+        priceOnRequest: false,
+        imageUrls: ["https://cdn.example.test/bomba.jpg"],
+      });
+      assert.equal(listing.status, "PENDING_REVIEW");
+      await pool.query(
+        "update marketplace.listing set status='PUBLISHED',published_at=now() where id=$1",
+        [listing.id],
+      );
+      const catalog = await marketplace.publicCatalog({
+        query: "hidráulica",
+        stateCode: "SP",
+      });
+      assert.equal(catalog.items.length, 1);
+      assert.equal(catalog.items[0]?.company.tradeName, "API");
+      const showcase = await marketplace.publicSeller("api");
+      assert.equal(showcase.company.verified, true);
+      assert.equal(
+        showcase.listings[0]?.imageUrl,
+        "https://cdn.example.test/bomba.jpg",
+      );
+      const managed = await marketplace.sellerListings(company.rows[0]!.id);
+      assert.equal(managed.items[0]?.status, "PUBLISHED");
       const onboarding = await pool.query(
         "select event_type,payload from outbox_event where event_type='empresa.cadastro_solicitado'",
       );
