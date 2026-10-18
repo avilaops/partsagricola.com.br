@@ -200,7 +200,7 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
         (select count(*)::int from marketplace.listing l where l.company_id=c.id and l.status='PENDING_REVIEW') as "pendingListings",
         (select count(*)::int from marketplace.listing_interest i where i.advertiser_company_id=c.id and i.status='OPEN') as "openInterests",
         (select count(*)::int from marketplace.part_request r where r.target_company_id=c.id and r.status='OPEN') as "openRequests",
-        (select count(*)::int from marketplace.proposal p where p.seller_company_id=c.id and p.status='ACCEPTED') as "acceptedProposals"
+        (select count(*)::int from marketplace.proposal p where p.advertiser_company_id=c.id and p.status='ACCEPTED') as "acceptedProposals"
        from marketplace.company c where c.id=$1`,
       [companyId],
     );

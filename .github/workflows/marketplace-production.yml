@@ -2,6 +2,12 @@ name: Marketplace production
 
 on:
   workflow_dispatch:
+    inputs:
+      public_smoke:
+        description: "Executar smoke test nos domínios públicos"
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -138,6 +144,7 @@ jobs:
           rm -f "$package"
           REMOTE
       - name: Smoke test público
+        if: ${{ inputs.public_smoke }}
         run: |
           curl --fail --silent --show-error --retry 5 https://api.partsagricola.com.br/v1/health
           curl --fail --silent --show-error --retry 5 https://marketplace.partsagricola.com.br/ | grep -q "Peças agrícolas"
