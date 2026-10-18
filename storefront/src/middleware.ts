@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
+import { resolveMarketplacePath } from "@lib/marketplace-route-policy"
+
 const PAIS = (process.env.NEXT_PUBLIC_DEFAULT_REGION || "br").toLowerCase()
 
 /**
@@ -9,9 +11,32 @@ const PAIS = (process.env.NEXT_PUBLIC_DEFAULT_REGION || "br").toLowerCase()
  * é uma e o país é fixo.
  */
 export async function middleware(request: NextRequest) {
-  const primeiroSegmento = request.nextUrl.pathname
-    .split("/")[1]
-    ?.toLowerCase()
+  const routeDecision = resolveMarketplacePath(request.nextUrl.pathname)
+
+  if (routeDecision.action === "gone") {
+    return NextResponse.json(
+      {
+        error: "catalogo_desativado",
+        message:
+          "O catálogo próprio foi desativado. A Parts Agrícola opera como marketplace de anúncios empresariais.",
+      },
+      { status: 410 }
+    )
+  }
+
+  if (routeDecision.action === "redirect") {
+    // O proxy reverso acessa o Next internamente por localhost:3006. O host
+    // canônico é fixado no build do GitHub para nunca vazar o endereço interno.
+    const publicBaseURL =
+      process.env.NEXT_PUBLIC_BASE_URL || "https://partsagricola.com.br"
+
+    return NextResponse.redirect(
+      new URL(routeDecision.destination, publicBaseURL),
+      308
+    )
+  }
+
+  const primeiroSegmento = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
 
   if (primeiroSegmento === PAIS) {
     return NextResponse.next()
@@ -43,6 +68,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|sitemaps|llms.txt|images|assets|png|svg|jpg|jpeg|gif|webp).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|sitemaps|llms.txt|images|assets|png|svg|jpg|jpeg|gif|webp).*)",
   ],
 }

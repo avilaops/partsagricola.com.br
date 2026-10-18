@@ -37,7 +37,7 @@ const CtaBanner = () => {
         </div>
         <div className="relative hidden min-h-[420px] medium:block">
           <Image
-            src="/images/campaigns/confirmacao-tecnica-v2.webp"
+            src="/images/marketplace/confirmacao-tecnica-marketplace.webp"
             alt="Componente mecânico em bancada de inspeção técnica"
             fill
             sizes="(min-width: 1024px) 45vw, 100vw"

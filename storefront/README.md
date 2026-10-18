@@ -1,125 +1,46 @@
-> ⚠️ This repository is now deprecated. Use the [dtc-starter](https://github.com/medusajs/dtc-starter) instead.
+# Storefront Parts Agrícola
 
-<p align="center">
-  <a href="https://www.medusajs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    </picture>
-  </a>
-</p>
+Interface pública do marketplace B2B Parts Agrícola, construída com Next.js 15,
+React 19 e Tailwind CSS.
 
-<h1 align="center">
-  Medusa Next.js Starter Template
-</h1>
+## Regra de negócio
 
-<p align="center">
-Combine Medusa's modules for your commerce backend with the newest Next.js 15 features for a performant storefront.</p>
+A Parts Agrícola é a plataforma que conecta compradores a empresas anunciantes.
+A plataforma não é lojista, não mantém estoque próprio e não publica catálogo
+próprio. Cada empresa participante é responsável pelos seus anúncios e pelas
+condições comerciais apresentadas.
 
-<p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
-  <a href="https://discord.gg/xpCwq3Kfn8">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
-  </a>
-</p>
+As rotas históricas de catálogo, categorias e produtos redirecionam para a home.
+As APIs públicas antigas de busca e cotação retornam `410 Gone`.
 
-### Prerequisites
+## Desenvolvimento
 
-To use the [Next.js Starter Template](https://medusajs.com/nextjs-commerce/), you should have a Medusa server running locally on port 9000.
-For a quick setup, run:
+Requisitos: Node.js 24 e npm.
 
-```shell
-npx create-medusa-app@latest
+```bash
+npm ci --ignore-scripts
+npm run dev
 ```
 
-Check out [create-medusa-app docs](https://docs.medusajs.com/learn/installation) for more details and troubleshooting.
+O site fica disponível em <http://localhost:8000/br>.
 
-# Overview
+## Validação
 
-The Medusa Next.js Starter is built with:
-
-- [Next.js](https://nextjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Medusa](https://medusajs.com/)
-
-Features include:
-
-- Full ecommerce support:
-  - Product Detail Page
-  - Product Overview Page
-  - Product Collections
-  - Cart
-  - Checkout manual (pagamento combinado com a loja)
-  - User Accounts
-  - Order Details
-- Full Next.js 15 support:
-  - App Router
-  - Next fetching/caching
-  - Server Components
-  - Server Actions
-  - Streaming
-  - Static Pre-Rendering
-
-# Quickstart
-
-### Setting up the environment variables
-
-Navigate into your projects directory and get your environment variables ready:
-
-```shell
-cd nextjs-starter-medusa/
-mv .env.template .env.local
+```bash
+npm test
+npm run typecheck
+npm run build
+npx playwright install chromium
+npm run test:e2e
 ```
 
-### Install dependencies
+O workflow `Storefront marketplace` executa essas verificações no GitHub,
+publica os prints de desktop e celular e envia a produção somente o runtime
+aprovado. Build e testes de navegador ocorrem no GitHub; não execute build no
+servidor de produção.
 
-Use Yarn to install all dependencies.
+## Publicação
 
-```shell
-yarn
-```
-
-### Start developing
-
-You are now ready to start up your project.
-
-```shell
-yarn dev
-```
-
-### Open the code and start customizing
-
-Your site is now running at http://localhost:8000!
-
-# Payment integrations
-
-By default this starter supports the following payment integrations
-
-
-To enable the integrations you need to add the following to your `.env.local` file:
-
-```shell
-```
-
-You'll also need to setup the integrations in your Medusa server. See the [Medusa documentation](https://docs.medusajs.com) for more information.
-
-# Resources
-
-## Learn more about Medusa
-
-- [Website](https://www.medusajs.com/)
-- [GitHub](https://github.com/medusajs)
-- [Documentation](https://docs.medusajs.com/)
-
-## Learn more about Next.js
-
-- [Website](https://nextjs.org/)
-- [GitHub](https://github.com/vercel/next.js)
-- [Documentation](https://nextjs.org/docs)
+Alterações passam por pull request para `main`. Após as verificações, o push em
+`main` publica o artefato com troca atômica e rollback automático se o smoke test
+falhar. Não há dependência de Odoo neste fluxo.

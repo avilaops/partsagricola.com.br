@@ -1,54 +1,17 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
-import Hero from "@modules/home/components/hero"
-import ProductLines from "@modules/home/components/product-lines"
-import TrustRow from "@modules/home/components/trust-row"
-import CtaBanner from "@modules/home/components/cta-banner"
-import { getRegion } from "@lib/data/regions"
-import { listCategories, listCategoryCounts } from "@lib/data/categories"
-import DimensionFinderCta from "@modules/home/components/dimension-finder-cta"
-import RecentlyViewedProducts from "@modules/recently-viewed/components/recently-viewed-products"
-import { selectPrimaryDepartments } from "@lib/catalog/departments"
-import LatestProducts from "@modules/home/components/latest-products"
+import MarketplaceHome from "@modules/home/components/marketplace-home"
 
 export const metadata: Metadata = {
-  title: "Peças agrícolas, industriais e para máquinas pesadas",
+  title: "Marketplace agrícola para empresas e compradores",
   description:
-    "Catálogo pesquisável de peças agrícolas, industriais, máquinas pesadas, retentores, O-Rings, gaxetas e kits de reparo.",
+    "A Parts Agrícola conecta empresas anunciantes a compradores do agro. Publique anúncios, encontre fornecedores e negocie em uma plataforma especializada.",
   alternates: {
     canonical: "/br",
-    languages: {
-      "pt-BR": "/br",
-    },
+    languages: { "pt-BR": "/br" },
   },
 }
 
-export default async function Home(props: {
-  params: Promise<{ countryCode: string }>
-}) {
-  const params = await props.params
-
-  const { countryCode } = params
-
-  const region = await getRegion(countryCode)
-  const [categories, totais] = await Promise.all([
-    listCategories(),
-    listCategoryCounts(),
-  ])
-  const departments = selectPrimaryDepartments(categories)
-  const totaisPorHandle = Object.fromEntries(
-    departments.map((d) => [d.handle, totais.get(d.handle) ?? 0])
-  )
-
-  return (
-    <>
-      <Hero countryCode={countryCode} />
-      <TrustRow />
-      <ProductLines categories={departments} totais={totaisPorHandle} />
-      <LatestProducts region={region} />
-      <DimensionFinderCta />
-      <RecentlyViewedProducts />
-      <CtaBanner />
-    </>
-  )
+export default function Home() {
+  return <MarketplaceHome />
 }
