@@ -169,6 +169,11 @@ test(
           redirect_uri: "http://127.0.0.1:3002/auth/callback",
         },
         {
+          client_id: "partsagricola-admin",
+          redirect_uri:
+            "https://admin.partsagricola.com.br/auth/callback",
+        },
+        {
           client_id: "partsagricola-mobile",
           redirect_uri: "br.com.partsagricola.app:/oauth/callback",
         },
@@ -177,8 +182,18 @@ test(
           redirect_uri: "http://127.0.0.1:3001/auth/callback",
         },
         {
+          client_id: "partsagricola-seller",
+          redirect_uri:
+            "https://vendedor.partsagricola.com.br/auth/callback",
+        },
+        {
           client_id: "partsagricola-web",
           redirect_uri: "http://127.0.0.1:3000/auth/callback",
+        },
+        {
+          client_id: "partsagricola-web",
+          redirect_uri:
+            "https://marketplace.partsagricola.com.br/auth/callback",
         },
       ]);
       await assert.rejects(
