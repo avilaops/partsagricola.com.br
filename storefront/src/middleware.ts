@@ -25,8 +25,13 @@ export async function middleware(request: NextRequest) {
   }
 
   if (routeDecision.action === "redirect") {
+    // O proxy reverso acessa o Next internamente por localhost:3006. O host
+    // canônico é fixado no build do GitHub para nunca vazar o endereço interno.
+    const publicBaseURL =
+      process.env.NEXT_PUBLIC_BASE_URL || "https://partsagricola.com.br"
+
     return NextResponse.redirect(
-      new URL(routeDecision.destination, request.url),
+      new URL(routeDecision.destination, publicBaseURL),
       308
     )
   }

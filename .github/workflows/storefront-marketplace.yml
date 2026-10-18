@@ -18,6 +18,9 @@ on:
 permissions:
   contents: read
 
+env:
+  NEXT_PUBLIC_BASE_URL: https://partsagricola.com.br
+
 concurrency:
   group: storefront-${{ github.ref }}
   cancel-in-progress: false
