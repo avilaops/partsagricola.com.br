@@ -81,6 +81,183 @@ h1 {
   max-width: 48rem;
   color: #395243;
 }
+.home-hero {
+  position: relative;
+  min-height: 30rem;
+  margin-top: 2.5rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: #183c27;
+}
+.home-hero > img {
+  object-fit: cover;
+}
+.home-hero::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    rgba(5, 24, 14, 0.82),
+    rgba(5, 24, 14, 0.05) 72%
+  );
+}
+.hero-search {
+  position: absolute;
+  z-index: 1;
+  left: clamp(1rem, 5vw, 3.5rem);
+  bottom: clamp(1rem, 5vw, 3.5rem);
+  width: min(40rem, calc(100% - 2rem));
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.96);
+}
+.hero-search label {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: #102116;
+  font-weight: 800;
+}
+.hero-search div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
+}
+.hero-search input {
+  min-width: 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #aebdb2;
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #102116;
+  font: inherit;
+}
+.trust-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1.2rem 0;
+  color: #395243;
+  font-size: 0.9rem;
+}
+.trust-strip span {
+  padding-left: 1rem;
+  border-left: 3px solid #2fbf71;
+}
+.trust-strip strong {
+  display: block;
+  color: #102116;
+}
+.home-section {
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+.home-section h2,
+.seller-callout h2 {
+  max-width: 18ch;
+  margin: 0.4rem 0 1.5rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.steps-grid article {
+  padding: 1.5rem;
+  border-top: 1px solid #aebdb2;
+}
+.steps-grid span {
+  color: #18723b;
+  font-weight: 800;
+}
+.steps-grid strong {
+  display: block;
+  margin: 2.5rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+.steps-grid p {
+  color: #52675a;
+  line-height: 1.55;
+}
+.seller-callout {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: clamp(4rem, 8vw, 7rem);
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border-radius: 1.5rem;
+  background: #0d3525;
+  color: #fff;
+}
+.seller-callout p:not(.eyebrow) {
+  max-width: 44rem;
+  color: #c9dbd0;
+  line-height: 1.6;
+}
+.seller-callout .button {
+  background: #fff;
+  color: #0d3525;
+  white-space: nowrap;
+}
+.field-help {
+  margin: 0 0 1rem;
+  color: #52675a;
+  font-weight: 400;
+}
+.upload-dropzone {
+  position: relative;
+  display: grid !important;
+  place-items: center;
+  min-height: 9rem;
+  padding: 1rem;
+  border: 2px dashed #8ca393;
+  border-radius: 0.9rem;
+  background: #f5f7f4;
+  text-align: center;
+  cursor: pointer;
+}
+.upload-dropzone span {
+  color: #52675a;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+.upload-dropzone input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.upload-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.upload-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: #e8eee9;
+}
+.upload-preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.upload-preview button {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  background: rgba(9, 46, 26, 0.9);
+  color: #fff;
+  cursor: pointer;
+}
 .state {
   margin-top: 2.5rem;
   padding: 1rem 1.25rem;
@@ -397,6 +574,32 @@ h1 {
   .catalog-grid,
   .search-bar {
     grid-template-columns: 1fr;
+  }
+  .home-hero {
+    min-height: 24rem;
+    margin-inline: -0.25rem;
+  }
+  .home-hero::after {
+    background: linear-gradient(
+      0deg,
+      rgba(5, 24, 14, 0.88),
+      rgba(5, 24, 14, 0.05) 85%
+    );
+  }
+  .hero-search div,
+  .trust-strip,
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .trust-strip {
+    margin-top: 0.5rem;
+  }
+  .seller-callout {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .upload-preview-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (prefers-reduced-motion: reduce) {

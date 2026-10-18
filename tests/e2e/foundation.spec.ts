@@ -4,7 +4,7 @@ const surfaces = [
   {
     url: "http://127.0.0.1:3000",
     title: /Marketplace/,
-    heading: "Marketplace",
+    heading: "Peças agrícolas, de quem vende para quem precisa",
   },
   {
     url: "http://127.0.0.1:3001",
@@ -48,6 +48,25 @@ for (const surface of surfaces) {
     expect(consoleErrors).toEqual([]);
   });
 }
+
+test("marketplace separa os fluxos de compradores e vendedores", async ({
+  page,
+}) => {
+  await page.goto("http://127.0.0.1:3000");
+
+  await expect(
+    page.getByRole("button", { name: "Buscar no marketplace" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Publicar uma solicitação/ }),
+  ).toHaveAttribute("href", "/conta/solicitacoes/nova");
+  await expect(
+    page.getByRole("link", { name: /Vender na plataforma/ }),
+  ).toHaveAttribute("href", "http://localhost:3001/cadastro");
+  await expect(
+    page.getByAltText("Componentes agrícolas anunciados por empresas do setor"),
+  ).toBeVisible();
+});
 
 test("skip link leva o teclado ao conteúdo principal", async ({ page }) => {
   await page.goto("/");

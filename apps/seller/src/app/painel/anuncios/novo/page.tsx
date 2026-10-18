@@ -1,5 +1,6 @@
 import { AppShell } from "@partsagricola/ui";
 import { createListing } from "./actions";
+import { ImageUploader } from "./image-uploader";
 
 export default async function NewListingPage({
   searchParams,
@@ -69,10 +70,7 @@ export default async function NewListingPage({
             placeholder="Informe códigos, aplicações, medidas e estado da peça."
           />
         </label>
-        <label>
-          URL da imagem
-          <input name="imageUrls" type="url" placeholder="https://..." />
-        </label>
+        <ImageUploader />
         <button className="button" type="submit">
           Enviar para análise
         </button>
