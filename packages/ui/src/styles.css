@@ -88,6 +88,158 @@ h1 {
   background: #fff;
   border-radius: 0.25rem 0.75rem 0.75rem 0.25rem;
 }
+.action-grid,
+.metric-grid,
+.form-grid,
+.check-grid {
+  display: grid;
+  gap: 1rem;
+}
+.action-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 2.5rem;
+}
+.action-card {
+  display: flex;
+  min-height: 14rem;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.75rem;
+  border: 1px solid #cad8ce;
+  border-radius: 1.25rem;
+  background: #fff;
+  color: #102116;
+  text-decoration: none;
+}
+.action-card strong {
+  font-size: 1.5rem;
+}
+.action-card p {
+  color: #52675a;
+  line-height: 1.55;
+}
+.action-primary {
+  background: #0d3525;
+  color: #fff;
+  border-color: #0d3525;
+}
+.action-primary p {
+  color: #c9dbd0;
+}
+.tag {
+  color: #2fbf71;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.form-card {
+  display: grid;
+  gap: 1.4rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: 1px solid #d5dfd7;
+  border-radius: 1.25rem;
+  background: #fff;
+}
+.form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.form-card label {
+  display: grid;
+  gap: 0.45rem;
+  font-weight: 700;
+}
+.form-card input,
+.form-card select,
+.form-card textarea {
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #aebdb2;
+  border-radius: 0.65rem;
+  background: #fff;
+  color: #102116;
+  font: inherit;
+}
+.form-card textarea {
+  resize: vertical;
+}
+.form-card fieldset {
+  padding: 1rem;
+  border: 1px solid #d5dfd7;
+  border-radius: 0.75rem;
+}
+.form-card legend {
+  padding: 0 0.4rem;
+  font-weight: 800;
+}
+.check-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.5rem;
+}
+.check-grid.states {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+.form-card .check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+.form-card .check input {
+  width: 1rem;
+  height: 1rem;
+}
+.button {
+  justify-self: start;
+  min-height: 3rem;
+  padding: 0.75rem 1.25rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #18723b;
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.notice {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+}
+.notice.success {
+  background: #dff4e6;
+  color: #0a552b;
+}
+.notice.error {
+  background: #fde8e8;
+  color: #8c1d1d;
+}
+.metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 2.5rem;
+}
+.metric {
+  padding: 1.4rem;
+  border: 1px solid #d5dfd7;
+  border-radius: 1rem;
+  background: #fff;
+}
+.metric span {
+  color: #52675a;
+}
+.metric strong {
+  display: block;
+  margin-top: 1rem;
+  font-size: 2.4rem;
+  color: #18723b;
+}
+.panel-section {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #fff;
+}
 :focus-visible {
   outline: 3px solid #18723b;
   outline-offset: 3px;
@@ -103,6 +255,13 @@ h1 {
   }
   .content {
     padding-top: 4rem;
+  }
+  .action-grid,
+  .form-grid,
+  .metric-grid,
+  .check-grid,
+  .check-grid.states {
+    grid-template-columns: 1fr;
   }
 }
 @media (prefers-reduced-motion: reduce) {

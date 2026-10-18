@@ -87,3 +87,11 @@ remove somente esse banco. Nunca aponte essa variável para produção.
 - preço é informativo: `bigint` em minor units + moeda ISO, ou sob consulta;
 - códigos são normalizados, mas o valor original é preservado;
 - mensagens só podem ser enviadas por participantes da conversa.
+
+## Cadastro comercial inicial
+
+A migration `005_marketplace_onboarding.sql` complementa a empresa com descrição,
+site, categorias atendidas e estados cobertos. O cadastro nasce como `PENDING`,
+vincula o usuário autenticado como `OWNER` e grava
+`empresa.cadastro_solicitado` na outbox na mesma transação. O cadastro não cria
+anúncios nem atribui produtos à plataforma.

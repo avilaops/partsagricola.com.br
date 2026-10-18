@@ -14,6 +14,10 @@ segurança, persistência de auditoria e processamento de mídia reutilizáveis.
   `chat`, `orders`, `payments`, `shipping`, `reviews`, `moderation`, `admin` e
   `markets` sob `/v1`.
 - Upload: `POST /v1/uploads/sign` e `POST /v1/uploads/complete`.
+- Referências para formulários: `GET /v1/catalog/reference-data`.
+- Cadastro de empresa anunciante: `POST /v1/sellers/applications`.
+- Solicitação de peça: `POST /v1/requests`.
+- Indicadores da empresa: `GET /v1/sellers/dashboard` com `x-seller-id`.
 
 Erros usam `{ "error": { "code", "message", "requestId", "details"? } }`.
 Listas usam `{ "data": [], "page": { "nextCursor": null } }`; o cursor é

@@ -6,6 +6,7 @@ import {
   loadMarkets,
   PostgresAuditRepository,
   PostgresImageJobQueue,
+  PostgresMarketplaceRepository,
 } from "./repositories.js";
 const env = parseServiceEnv(process.env);
 const pool = createPool();
@@ -14,6 +15,7 @@ const app = await createApp({
   markets: await loadMarkets(pool),
   audit: new PostgresAuditRepository(pool),
   imageJobs: new PostgresImageJobQueue(pool),
+  marketplace: new PostgresMarketplaceRepository(pool),
   ...(storage ? { uploads: createS3UploadSigner(storage) } : {}),
 });
 app.addHook("onClose", async () => pool.end());

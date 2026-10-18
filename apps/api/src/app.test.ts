@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { SessionPrincipal } from "@partsagricola/shared";
 import { createApp, type AuditEntry } from "./app.ts";
+import type { MarketplaceRepository } from "./marketplace.ts";
 
 const principal: SessionPrincipal = {
   active: true,
@@ -227,5 +228,88 @@ test("assina upload validado e audita a ação sensível", async () => {
   });
   assert.equal(invalid.statusCode, 400);
   assert.equal(invalid.json().error.code, "VALIDATION_ERROR");
+  await app.close();
+});
+
+test("cria cadastro de empresa, solicitação e consulta painel", async () => {
+  const calls: string[] = [];
+  const marketplace: MarketplaceRepository = {
+    async createCompanyApplication(_principal, _marketId, input) {
+      calls.push(`company:${input.cnpj}`);
+      return {
+        id: "77777777-7777-4777-8777-777777777777",
+        status: "PENDING",
+      };
+    },
+    async createPartRequest(_principal, input) {
+      calls.push(`request:${input.title}`);
+      return {
+        id: "88888888-8888-4888-8888-888888888888",
+        status: "OPEN",
+      };
+    },
+    async sellerDashboard(companyId) {
+      calls.push(`dashboard:${companyId}`);
+      return {
+        company: { id: companyId, tradeName: "Agro Teste", status: "APPROVED" },
+        metrics: {
+          listings: 8,
+          publishedListings: 5,
+          openInterests: 3,
+          openRequests: 2,
+        },
+      };
+    },
+    async referenceData() {
+      return { categories: [], brands: [] };
+    },
+  };
+  const app = await testApp({ marketplace });
+  const headers = {
+    authorization: "Bearer valid-token",
+    "content-type": "application/json",
+  };
+  const company = await app.inject({
+    method: "POST",
+    url: "/v1/sellers/applications",
+    headers,
+    payload: {
+      cnpj: "12.345.678/0001-95",
+      legalName: "Agro Teste Ltda",
+      tradeName: "Agro Teste",
+      email: "contato@agroteste.example",
+      stateCode: "SP",
+      city: "Ribeirão Preto",
+      categoryIds: ["99999999-9999-4999-8999-999999999999"],
+      serviceRegions: ["SP", "MG"],
+    },
+  });
+  assert.equal(company.statusCode, 201);
+  assert.equal(company.json().status, "PENDING");
+  const request = await app.inject({
+    method: "POST",
+    url: "/v1/requests",
+    headers,
+    payload: {
+      title: "Bomba hidráulica",
+      description: "Aplicação em colheitadeira, código ainda não identificado.",
+    },
+  });
+  assert.equal(request.statusCode, 201);
+  const dashboard = await app.inject({
+    method: "GET",
+    url: "/v1/sellers/dashboard",
+    headers: {
+      authorization: "Bearer valid-token",
+      "x-seller-id": principal.seller_ids[0]!,
+    },
+  });
+  assert.equal(dashboard.statusCode, 200);
+  assert.equal(dashboard.json().metrics.publishedListings, 5);
+  assert.deepEqual(calls, [
+    "company:12345678000195",
+    "request:Bomba hidráulica",
+    `dashboard:${principal.seller_ids[0]}`,
+  ]);
   await app.close();
 });

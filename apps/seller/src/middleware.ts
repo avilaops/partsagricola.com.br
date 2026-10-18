@@ -9,8 +9,18 @@ export async function middleware(request: NextRequest) {
         .session(token)
         .catch(() => null)
     : null;
-  return principal?.seller_ids.length
-    ? NextResponse.next()
-    : NextResponse.redirect(new URL("/auth/login", request.url));
+  if (!principal)
+    return NextResponse.redirect(
+      new URL(
+        `/auth/login?next=${encodeURIComponent(request.nextUrl.pathname)}`,
+        request.url,
+      ),
+    );
+  if (
+    request.nextUrl.pathname.startsWith("/painel") &&
+    !principal.seller_ids.length
+  )
+    return NextResponse.redirect(new URL("/cadastro", request.url));
+  return NextResponse.next();
 }
-export const config = { matcher: ["/painel/:path*"] };
+export const config = { matcher: ["/painel/:path*", "/cadastro/:path*"] };

@@ -11,6 +11,11 @@ export async function middleware(request: NextRequest) {
     : null;
   return principal
     ? NextResponse.next()
-    : NextResponse.redirect(new URL("/auth/login", request.url));
+    : NextResponse.redirect(
+        new URL(
+          `/auth/login?next=${encodeURIComponent(request.nextUrl.pathname)}`,
+          request.url,
+        ),
+      );
 }
 export const config = { matcher: ["/conta/:path*"] };

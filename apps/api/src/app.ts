@@ -19,6 +19,10 @@ import {
 } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { ApiError, errorBody } from "./errors.ts";
+import {
+  registerMarketplaceRoutes,
+  type MarketplaceRepository,
+} from "./marketplace.ts";
 import { registerDomainModules } from "./modules/index.ts";
 import { createPrincipalRateLimiter } from "./rate-limit.ts";
 
@@ -60,6 +64,7 @@ export type AppOptions = {
   audit?: AuditRepository;
   uploads?: UploadSigner;
   imageJobs?: ImageJobQueue;
+  marketplace?: MarketplaceRepository;
 };
 type RequestContext = {
   principal: SessionPrincipal;
@@ -265,6 +270,13 @@ export async function createApp(options: AppOptions = {}) {
     contextFor(request) {
       return contexts.get(request)!;
     },
+  });
+  await registerMarketplaceRoutes(app, {
+    authenticate,
+    contextFor(request) {
+      return contexts.get(request)!;
+    },
+    ...(options.marketplace ? { repository: options.marketplace } : {}),
   });
   const uploadBody = z.object({
     fileName: z.string().min(1).max(200),

@@ -5,6 +5,7 @@ import { applyMigrations } from "../../../packages/db/src/migrations.ts";
 import {
   PostgresAuditRepository,
   PostgresImageJobQueue,
+  PostgresMarketplaceRepository,
 } from "./repositories.ts";
 
 const adminUrl = process.env.MARKETPLACE_TEST_ADMIN_URL;
@@ -73,6 +74,54 @@ test(
           diff: { sourceKey },
         },
       ]);
+      const category = await pool.query<{ id: string }>(
+        "insert into marketplace.part_category(name,slug) values ('Hidráulica','hidraulica') returning id",
+      );
+      const marketplace = new PostgresMarketplaceRepository(pool);
+      const principal = {
+        active: true as const,
+        sub: user.rows[0]!.id,
+        sid: "repository-test",
+        email: "api@example.test",
+        email_verified: true,
+        roles: ["USER"],
+        seller_ids: [],
+        scope: "openid profile",
+      };
+      const application = await marketplace.createCompanyApplication(
+        principal,
+        market.rows[0]!.id,
+        {
+          cnpj: "98765432000198",
+          legalName: "Fornecedor Teste Ltda",
+          tradeName: "Fornecedor Teste",
+          email: "vendas@fornecedor.example",
+          stateCode: "SP",
+          city: "Campinas",
+          categoryIds: [category.rows[0]!.id],
+          serviceRegions: ["SP", "MG"],
+        },
+      );
+      assert.equal(application.status, "PENDING");
+      const request = await marketplace.createPartRequest(principal, {
+        title: "Bomba hidráulica",
+        description: "Aplicação agrícola para teste integrado",
+        categoryId: category.rows[0]!.id,
+      });
+      assert.equal(request.status, "OPEN");
+      const dashboard = await marketplace.sellerDashboard(application.id);
+      assert.equal(dashboard.company.tradeName, "Fornecedor Teste");
+      assert.deepEqual(dashboard.metrics, {
+        listings: 0,
+        publishedListings: 0,
+        openInterests: 0,
+        openRequests: 0,
+      });
+      const onboarding = await pool.query(
+        "select event_type,payload from outbox_event where event_type='empresa.cadastro_solicitado'",
+      );
+      assert.equal(onboarding.rowCount, 1);
+      assert.equal(onboarding.rows[0].payload.companyId, application.id);
     } finally {
       await pool.end();
       await admin.query(`DROP DATABASE ${database}`);

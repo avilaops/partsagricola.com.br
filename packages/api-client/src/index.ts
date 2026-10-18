@@ -29,6 +29,18 @@ export type CompleteUploadInput =
   paths["/v1/uploads/complete"]["post"]["requestBody"]["content"]["application/json"];
 export type CompleteUploadResponse =
   paths["/v1/uploads/complete"]["post"]["responses"][202]["content"]["application/json"];
+export type CompanyApplicationInput =
+  paths["/v1/sellers/applications"]["post"]["requestBody"]["content"]["application/json"];
+export type CompanyApplicationResponse =
+  paths["/v1/sellers/applications"]["post"]["responses"][201]["content"]["application/json"];
+export type PartRequestInput =
+  paths["/v1/requests"]["post"]["requestBody"]["content"]["application/json"];
+export type PartRequestResponse =
+  paths["/v1/requests"]["post"]["responses"][201]["content"]["application/json"];
+export type SellerDashboardResponse =
+  paths["/v1/sellers/dashboard"]["get"]["responses"][200]["content"]["application/json"];
+export type ReferenceDataResponse =
+  paths["/v1/catalog/reference-data"]["get"]["responses"][200]["content"]["application/json"];
 
 export class ApiClientError extends Error {
   readonly status: number;
@@ -122,6 +134,26 @@ export function createApiClient(input: {
         { "x-seller-id": sellerId },
         { method: "POST", body },
       ),
+    referenceData: (token: string) =>
+      request<ReferenceDataResponse>("/v1/catalog/reference-data", token),
+    createCompanyApplication: (token: string, body: CompanyApplicationInput) =>
+      request<CompanyApplicationResponse>(
+        "/v1/sellers/applications",
+        token,
+        {},
+        { method: "POST", body },
+      ),
+    createPartRequest: (token: string, body: PartRequestInput) =>
+      request<PartRequestResponse>(
+        "/v1/requests",
+        token,
+        {},
+        { method: "POST", body },
+      ),
+    sellerDashboard: (token: string, sellerId: string) =>
+      request<SellerDashboardResponse>("/v1/sellers/dashboard", token, {
+        "x-seller-id": sellerId,
+      }),
   };
 }
 

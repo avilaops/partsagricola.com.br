@@ -21,7 +21,13 @@ export async function GET(request: Request) {
     clientId: process.env.OIDC_CLIENT_ID ?? "partsagricola-web",
     redirectUri: `${app}/auth/callback`,
   });
-  const response = NextResponse.redirect(app);
+  const returnTo = jar.get("pa_return_to")?.value;
+  const response = NextResponse.redirect(
+    new URL(
+      returnTo?.startsWith("/") && !returnTo.startsWith("//") ? returnTo : "/",
+      app,
+    ),
+  );
   response.cookies.set(
     "pa_access",
     result.access_token,
@@ -35,6 +41,7 @@ export async function GET(request: Request) {
     );
   response.cookies.delete("pa_verifier");
   response.cookies.delete("pa_state");
+  response.cookies.delete("pa_return_to");
   return response;
 }
 function sessionCookie(maxAge: number) {
