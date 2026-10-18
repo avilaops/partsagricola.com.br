@@ -72,6 +72,14 @@ jobs:
           pnpm --filter @partsagricola/api deploy --prod --legacy .deploy/api
           pnpm --filter @partsagricola/auth deploy --prod --legacy .deploy/auth
           pnpm --filter @partsagricola/worker deploy --prod --legacy .deploy/worker
+          for service in api auth worker; do
+            for package in config db providers shared; do
+              manifest=".deploy/$service/node_modules/@partsagricola/$package/package.json"
+              if [ -f "$manifest" ]; then
+                node -e 'const fs=require("fs");const path=process.argv[1];const manifest=JSON.parse(fs.readFileSync(path,"utf8"));manifest.exports["."]="./dist/index.js";fs.writeFileSync(path,JSON.stringify(manifest));' "$manifest"
+              fi
+            done
+          done
           cp -a packages/db/sql .deploy/sql
           find .deploy -name '.env*' -delete
           tar -czf marketplace-runtime.tar.gz -C .deploy .
