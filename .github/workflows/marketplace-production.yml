@@ -135,13 +135,13 @@ jobs:
           done
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$release/sql/seed_marketplace.sql" >/dev/null
 
-          ln -sfn "$release" "$root/current-next"
-          mv -Tf "$root/current-next" "$root/current"
+          ln -sfn "$release" "$root/.current-$RELEASE"
+          mv -Tf "$root/.current-$RELEASE" "$root/current"
 
           rollback() {
             if [ -n "$previous" ] && [ -d "$previous" ]; then
-              ln -sfn "$previous" "$root/current-rollback"
-              mv -Tf "$root/current-rollback" "$root/current"
+              ln -sfn "$previous" "$root/.current-rollback"
+              mv -Tf "$root/.current-rollback" "$root/current"
               systemctl restart partsagricola-{auth,api,worker,web,seller,admin}.service || true
             fi
             exit 1
