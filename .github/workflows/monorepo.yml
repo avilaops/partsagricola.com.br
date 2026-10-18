@@ -1,7 +1,6 @@
 name: Monorepo
 on:
   pull_request:
-    branches: [main, avl-168-autenticacao-centralizada]
   push:
     branches: [main]
   workflow_dispatch:
@@ -112,5 +111,12 @@ jobs:
         with:
           name: avl-170-design-system-screenshots
           path: docs/evidencias/avl-170/*.png
+          if-no-files-found: error
+      - name: Upload AVL-171 catalog screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: avl-171-catalog-admin-screenshots
+          path: docs/evidencias/avl-171/*.png
           if-no-files-found: error
       - run: pnpm build

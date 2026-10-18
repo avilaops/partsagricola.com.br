@@ -167,20 +167,29 @@ test(
         links: 1,
       });
       const imported = await pool.query(`
-        select p.name, p.description, pc.normalized_code,
-               pf.year_start, pf.year_end, l.source, l.external_id
+        select p.name, p.description, p.active as part_active,
+               pc.normalized_code, pc.active as code_active,
+               pf.year_start, pf.year_end, pf.active as fitment_active,
+               mtb.active as brand_type_active, l.source, l.external_id
           from marketplace.part p
           join marketplace.part_code pc on pc.part_id = p.id
           join marketplace.part_fitment pf on pf.part_id = p.id
+          join marketplace.machine_model mm on mm.id = pf.machine_model_id
+          join marketplace.machine_type_brand mtb
+            on mtb.machine_type_id = mm.machine_type_id and mtb.brand_id = mm.brand_id
           join marketplace.legacy_catalog_link l on l.entity_id = p.id
       `);
       assert.deepEqual(imported.rows, [
         {
           name: "Bomba hidráulica",
           description: "Bomba para circuito hidráulico",
+          part_active: true,
           normalized_code: "BH01A",
+          code_active: true,
           year_start: 2015,
           year_end: 2020,
+          fitment_active: true,
+          brand_type_active: true,
           source: "geomaq",
           external_id: "G-1",
         },
@@ -195,6 +204,12 @@ test(
   async () => {
     await withDatabase(async (pool) => {
       await importCatalog(pool, [validImportRow()]);
+      await pool.query("update marketplace.part set active=false");
+      await pool.query("update marketplace.part_code set active=false");
+      await pool.query("update marketplace.part_fitment set active=false");
+      await pool.query("update marketplace.brand set active=false");
+      await pool.query("update marketplace.part_category set active=false");
+      await pool.query("update marketplace.machine_type set active=false");
       const before = await pool.query(
         "select p.id,l.id as link_id from marketplace.part p join marketplace.legacy_catalog_link l on l.entity_id=p.id",
       );
@@ -205,7 +220,22 @@ test(
         }),
       ]);
       const after = await pool.query(
-        "select p.id,p.name,p.description,l.id as link_id from marketplace.part p join marketplace.legacy_catalog_link l on l.entity_id=p.id",
+        `select p.id,p.name,p.description,p.active,
+                bool_and(pc.active) as codes_active,
+                bool_and(pf.active) as fitments_active,
+                bool_and(b.active) as brands_active,
+                bool_and(pc2.active) as categories_active,
+                bool_and(mt.active) as machine_types_active,
+                l.id as link_id
+           from marketplace.part p
+           join marketplace.part_code pc on pc.part_id=p.id
+           join marketplace.part_fitment pf on pf.part_id=p.id
+           join marketplace.part_category pc2 on pc2.id=p.category_id
+           join marketplace.machine_model mm on mm.id=pf.machine_model_id
+           join marketplace.machine_type mt on mt.id=mm.machine_type_id
+           join marketplace.brand b on b.id=mm.brand_id
+           join marketplace.legacy_catalog_link l on l.entity_id=p.id
+          group by p.id,l.id`,
       );
 
       assert.deepEqual(summary, {
@@ -219,6 +249,12 @@ test(
       assert.equal(after.rows[0].link_id, before.rows[0].link_id);
       assert.equal(after.rows[0].name, "Bomba hidráulica revisada");
       assert.equal(after.rows[0].description, "Descrição atualizada");
+      assert.equal(after.rows[0].active, true);
+      assert.equal(after.rows[0].codes_active, true);
+      assert.equal(after.rows[0].fitments_active, true);
+      assert.equal(after.rows[0].brands_active, true);
+      assert.equal(after.rows[0].categories_active, true);
+      assert.equal(after.rows[0].machine_types_active, true);
     });
   },
 );

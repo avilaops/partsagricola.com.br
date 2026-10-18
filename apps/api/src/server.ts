@@ -2,6 +2,7 @@ import { parseServiceEnv } from "@partsagricola/config";
 import { createPool } from "@partsagricola/db";
 import { createS3UploadSigner } from "@partsagricola/providers";
 import { createApp } from "./app.js";
+import { PostgresCatalogRepository } from "./catalog/postgres-repository.js";
 import {
   loadMarkets,
   PostgresAuditRepository,
@@ -13,6 +14,7 @@ const storage = storageConfig(process.env);
 const app = await createApp({
   markets: await loadMarkets(pool),
   audit: new PostgresAuditRepository(pool),
+  catalog: new PostgresCatalogRepository(pool),
   imageJobs: new PostgresImageJobQueue(pool),
   ...(storage ? { uploads: createS3UploadSigner(storage) } : {}),
 });

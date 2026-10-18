@@ -52,6 +52,20 @@ desenvolvimento e cobre estados, interações e layouts responsivos.
 Evidências Playwright: [desktop](docs/evidencias/avl-170/ui-desktop.png) e
 [mobile](docs/evidencias/avl-170/ui-mobile.png).
 
+## Catálogo de referências e busca
+
+A API oferece busca pública por texto, código e compatibilidade, filtros
+agrícolas, ordenação e conversão monetária aproximada. O painel autenticado em
+`http://localhost:3002/administracao/catalogo` permite que `ADMIN` e `SUPPORT`
+mantenham referências e importem CSV com validação transacional e auditoria.
+Isso não transforma a base em estoque próprio: ofertas continuam sendo
+anúncios de empresas.
+
+Contrato, filtros, segurança e benchmark de 100 mil anúncios:
+[Catálogo e busca](docs/CATALOGO-E-BUSCA.md). Evidências do painel:
+[desktop](docs/evidencias/avl-171/catalog-admin-desktop.png) e
+[mobile](docs/evidencias/avl-171/catalog-admin-mobile.png).
+
 ## Execução local
 
 Pré-requisitos: Node.js 20+, Corepack e Docker com Compose.
@@ -162,6 +176,7 @@ Evidências visuais da homologação:
 - [Design system AVL-170 — decisão](docs/superpowers/specs/2026-10-18-avl-170-design-system-design.md)
 - [Design system AVL-170 — execução](docs/superpowers/plans/2026-10-18-avl-170-design-system.md)
 - [Guia de uso do design system](docs/DESIGN-SYSTEM.md)
+- [Catálogo de referências e busca](docs/CATALOGO-E-BUSCA.md)
 - [Evidências do AVL-167](docs/evidencias/avl-167-schema-marketplace.md)
 - [Decisão de design do AVL-166](docs/superpowers/specs/2026-10-17-avl-166-design.md)
 - [Plano executado do AVL-166](docs/superpowers/plans/2026-10-17-avl-166.md)

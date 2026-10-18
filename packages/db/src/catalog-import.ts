@@ -216,7 +216,7 @@ export async function importCatalog(
         await client.query(
           `update marketplace.part
               set name = $2, description = $3, brand_id = $4, category_id = $5,
-                  updated_at = now()
+                  active = true, updated_at = now()
             where id = $1`,
           [partId, row.partName, row.description, brandId, categoryId],
         );
@@ -241,7 +241,7 @@ export async function importCatalog(
         `insert into marketplace.part_code (part_id,code,kind,source)
          values ($1,$2,$3,$4)
          on conflict (part_id,normalized_code,kind)
-         do update set code = excluded.code, source = excluded.source`,
+         do update set code = excluded.code, source = excluded.source, active = true`,
         [partId, row.partCode, row.codeType, row.source],
       );
       summary.codes += 1;
@@ -266,6 +266,7 @@ export async function importCatalog(
              name = excluded.name,
              year_start = excluded.year_start,
              year_end = excluded.year_end,
+             active = true,
              updated_at = now()
            returning id`,
           [
@@ -276,6 +277,22 @@ export async function importCatalog(
             row.yearStart,
             row.yearEnd,
           ],
+        );
+        await client.query(
+          `insert into marketplace.machine_type_brand
+             (machine_type_id,brand_id,active)
+           values ($1,$2,true)
+           on conflict (machine_type_id,brand_id)
+           do update set active=true,updated_at=now()`,
+          [machineTypeId, machineBrandId],
+        );
+        await client.query(
+          `update marketplace.part_fitment
+              set active=true
+            where part_id=$1 and machine_model_id=$2
+              and year_start is not distinct from $3::smallint
+              and year_end is not distinct from $4::smallint`,
+          [partId, machine.rows[0]!.id, row.yearStart, row.yearEnd],
         );
         await client.query(
           `insert into marketplace.part_fitment
@@ -325,7 +342,7 @@ async function upsertNamedReference(
   const result = await client.query<{ id: string }>(
     `insert into marketplace.${table} (name,slug)
      values ($1,$2)
-     on conflict (slug) do update set name = excluded.name
+     on conflict (slug) do update set name = excluded.name, active = true
      returning id`,
     [name, slug(name)],
   );

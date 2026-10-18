@@ -55,6 +55,34 @@ INSERT INTO marketplace.brand (name, slug) VALUES
   ('Volvo CE', 'volvo-ce')
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, active = true, updated_at = now();
 
+WITH associations(machine_type_slug, brand_slug) AS (
+  VALUES
+    ('trator','john-deere'), ('trator','massey-ferguson'),
+    ('trator','valtra'), ('trator','new-holland'), ('trator','case-ih'),
+    ('trator','agrale'), ('trator','mahindra'), ('trator','fendt'),
+    ('trator','claas'), ('trator','kubota'), ('trator','ls-tractor'),
+    ('trator','landini'), ('trator','yanmar'),
+    ('colheitadeira','john-deere'), ('colheitadeira','new-holland'),
+    ('colheitadeira','case-ih'), ('colheitadeira','claas'),
+    ('plantadeira','john-deere'), ('plantadeira','new-holland'),
+    ('plantadeira','case-ih'), ('pulverizador','john-deere'),
+    ('pulverizador','new-holland'), ('pulverizador','case-ih'),
+    ('caminhao','scania'), ('caminhao','volvo'),
+    ('caminhao','mercedes-benz'), ('caminhao','iveco'), ('caminhao','daf'),
+    ('onibus','volvo'), ('onibus','mercedes-benz'), ('onibus','iveco'),
+    ('linha-amarela','caterpillar'), ('linha-amarela','komatsu'),
+    ('linha-amarela','jcb'), ('linha-amarela','hyundai'),
+    ('linha-amarela','volvo-ce')
+)
+INSERT INTO marketplace.machine_type_brand(machine_type_id,brand_id,active)
+SELECT mt.id,b.id,true
+  FROM associations a
+  JOIN marketplace.machine_type mt ON mt.slug=a.machine_type_slug
+  JOIN marketplace.brand b ON b.slug=a.brand_slug
+ON CONFLICT (machine_type_id,brand_id) DO UPDATE SET
+  active=true,
+  updated_at=now();
+
 INSERT INTO marketplace.part_category (name, slug) VALUES
   ('Motor', 'motor'),
   ('Transmissão', 'transmissao'),
