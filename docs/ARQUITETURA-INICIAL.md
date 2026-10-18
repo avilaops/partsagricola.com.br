@@ -21,6 +21,24 @@ O repositório já contém produto e dados úteis. A implantação de um segundo
 monorepo em paralelo criaria duas fontes de verdade; por isso a migração para a
 estrutura final será incremental e preservará as rotas e dados atuais.
 
+## Domínio persistente do marketplace
+
+O AVL-167 introduz o schema PostgreSQL `marketplace`, separado de `catalogo` e
+`imdepa`. Ele modela usuários, empresas anunciantes, catálogo canônico de
+referência, anúncios, solicitações, interesses, propostas e conversas. Apenas
+empresas aprovadas podem publicar anúncios; compradores são usuários e podem
+representar opcionalmente uma empresa da qual sejam membros.
+
+Catálogos históricos entram apenas pelo importador transacional e permanecem
+rastreáveis por `legacy_catalog_link`. Uma peça importada não é estoque, oferta
+ou propriedade da PARTSAGRICOLA. A oferta existe somente quando uma empresa cria
+um `listing`. O modelo não possui carrinho, pedido, pagamento, split, frete,
+devolução ou estoque.
+
+O executor de migrations aplica arquivos numerados com lock consultivo,
+transação individual e checksum SHA-256 imutável. Seeds e importações são
+idempotentes. A operação detalhada está em `docs/BANCO-MARKETPLACE.md`.
+
 ## Padrão herdado do CMS Ávila Ops
 
 A PARTSAGRICOLA adota as mesmas fronteiras do `cms.avilaops.com`:

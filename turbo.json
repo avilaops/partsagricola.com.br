@@ -5,6 +5,9 @@
     "dev": { "cache": false, "persistent": true },
     "lint": { "dependsOn": ["^lint"] },
     "typecheck": { "dependsOn": ["^typecheck"] },
-    "test": { "dependsOn": ["^test"] }
+    "test": {
+      "dependsOn": ["^test"],
+      "env": ["MARKETPLACE_TEST_ADMIN_URL"]
+    }
   }
 }

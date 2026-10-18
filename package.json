@@ -13,9 +13,10 @@
     "typecheck": "turbo typecheck",
     "test": "node --experimental-strip-types --test tests/monorepo/*.test.mjs && turbo test",
     "test:e2e": "playwright test",
-    "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs playwright.config.ts apps packages tests/monorepo tests/e2e docs/ARQUITETURA-INICIAL.md docs/APPLE-DESIGN-AUDIT.md docs/superpowers n8n/partsagricola-operacao.ts",
+    "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs playwright.config.ts apps packages tests/monorepo tests/e2e docs/ARQUITETURA-INICIAL.md docs/APPLE-DESIGN-AUDIT.md docs/BANCO-MARKETPLACE.md docs/evidencias docs/superpowers n8n/partsagricola-operacao.ts n8n/partsagricola-operacao-contract.mjs",
     "db:migrate": "pnpm --filter @partsagricola/db migrate",
-    "db:seed": "pnpm --filter @partsagricola/db seed"
+    "db:seed": "pnpm --filter @partsagricola/db seed",
+    "db:import:catalog": "pnpm --filter @partsagricola/db import:catalog"
   },
   "devDependencies": {
     "@eslint/js": "9.38.0",
