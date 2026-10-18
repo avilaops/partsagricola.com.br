@@ -109,6 +109,19 @@ autenticação e limites de requisição.
 
 O login é centralizado em `apps/auth` por OIDC Authorization Code + PKCE, com SSO para web, fornecedor e administração. Consulte [docs/AUTENTICACAO.md](docs/AUTENTICACAO.md) para configuração, conectores, TTLs e recuperação.
 
+## API central
+
+`apps/api` expõe contratos versionados em `/v1`, documentação interativa em
+`/v1/docs` e o documento OpenAPI em `/v1/openapi.json`. Autenticação, papéis,
+escopo da empresa anunciante, mercado, CORS, rate limit e erros são aplicados de
+forma uniforme. O cliente de `packages/api-client` é gerado desse contrato e é
+usado por web, seller e admin.
+
+Uploads de imagens são enviados diretamente ao MinIO/S3 por URL assinada. Após
+a confirmação, `apps/worker` gera WebP sem EXIF nas larguras 480, 960 e 1600 e
+mantém falhas recuperáveis na fila PostgreSQL. A operação e os exemplos estão
+em [API central](docs/API-CENTRAL.md).
+
 ## Automação n8n
 
 [`n8n/partsagricola-operacao.ts`](n8n/partsagricola-operacao.ts) mantém o
@@ -127,6 +140,9 @@ Evidências visuais da homologação:
 
 - [Arquitetura incremental](docs/ARQUITETURA-INICIAL.md)
 - [Banco do marketplace](docs/BANCO-MARKETPLACE.md)
+- [API central](docs/API-CENTRAL.md)
+- [Evidência da API desktop](docs/evidencias/avl-169-api-docs-desktop.png)
+- [Evidência da API mobile](docs/evidencias/avl-169-api-docs-mobile.png)
 - [Evidências do AVL-167](docs/evidencias/avl-167-schema-marketplace.md)
 - [Decisão de design do AVL-166](docs/superpowers/specs/2026-10-17-avl-166-design.md)
 - [Plano executado do AVL-166](docs/superpowers/plans/2026-10-17-avl-166.md)

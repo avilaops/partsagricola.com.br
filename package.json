@@ -2,7 +2,9 @@
   "name": "partsagricola",
   "private": true,
   "packageManager": "pnpm@10.18.3",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "docker compose -f infra/docker-compose.yml up -d --wait && turbo dev",
     "dev:apps": "turbo dev",
@@ -16,11 +18,12 @@
     "format:check": "prettier --check README.md .github/workflows/monorepo.yml infra package.json pnpm-workspace.yaml turbo.json tsconfig.json eslint.config.mjs playwright.config.ts apps packages tests/monorepo tests/e2e docs/ARQUITETURA-INICIAL.md docs/APPLE-DESIGN-AUDIT.md docs/BANCO-MARKETPLACE.md docs/evidencias docs/superpowers n8n/partsagricola-operacao.ts n8n/partsagricola-operacao-contract.mjs",
     "db:migrate": "pnpm --filter @partsagricola/db migrate",
     "db:seed": "pnpm --filter @partsagricola/db seed",
-    "db:import:catalog": "pnpm --filter @partsagricola/db import:catalog"
+    "db:import:catalog": "pnpm --filter @partsagricola/db import:catalog",
+    "api:generate": "pnpm --filter @partsagricola/api generate:openapi && openapi-typescript apps/api/openapi.json -o packages/api-client/src/schema.ts && prettier --write apps/api/openapi.json packages/api-client/src/schema.ts"
   },
   "pnpm": {
     "overrides": {
-      "postcss": "8.5.18",
+      "postcss": "8.5.23",
       "sharp": "0.35.5"
     }
   },
@@ -31,6 +34,7 @@
     "@types/node": "24.9.1",
     "eslint": "9.38.0",
     "eslint-config-next": "15.5.24",
+    "openapi-typescript": "^7.13.0",
     "prettier": "3.6.2",
     "turbo": "2.11.9",
     "typescript": "5.9.3",

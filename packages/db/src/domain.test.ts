@@ -127,6 +127,7 @@ test(
           "currency",
           "favorite",
           "feature_flag",
+          "image_job",
           "legacy_catalog_link",
           "listing",
           "listing_image",
