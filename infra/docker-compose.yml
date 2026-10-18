@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: partsagricola
+      POSTGRES_PASSWORD: partsagricola
+      POSTGRES_DB: partsagricola
+    ports: ["127.0.0.1:55432:5432"]
+    volumes:
+      - partsagricola_postgres:/var/lib/postgresql/data
+      - ../packages/db/sql/001_foundation.sql:/docker-entrypoint-initdb.d/001_foundation.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U partsagricola -d partsagricola"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    ports: ["127.0.0.1:56379:6379"]
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  minio:
+    image: bitnamilegacy/minio:latest
+    environment:
+      MINIO_ROOT_USER: partsagricola
+      MINIO_ROOT_PASSWORD: partsagricola-local
+    ports: ["127.0.0.1:59000:9000", "127.0.0.1:59001:9001"]
+    volumes: ["partsagricola_minio:/data"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports: ["127.0.0.1:51025:1025", "127.0.0.1:58025:8025"]
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+volumes:
+  partsagricola_postgres:
+  partsagricola_minio:
