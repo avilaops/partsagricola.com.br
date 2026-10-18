@@ -2,7 +2,7 @@ import { createApiClient } from "@partsagricola/api-client";
 import { AppShell } from "@partsagricola/ui";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { moderate } from "../actions";
+import { moderate, resolveCase } from "../actions";
 export default async function Page({
   searchParams,
 }: {
@@ -56,6 +56,45 @@ export default async function Page({
             ))
           ) : (
             <p>Nenhuma empresa pendente.</p>
+          )}
+        </div>
+      </section>
+      <section className="panel-section">
+        <h2>Denúncias abertas</h2>
+        <div className="moderation-list">
+          {queue.cases.length ? (
+            queue.cases.map((item) => (
+              <article className="moderation-item" key={item.id}>
+                <div>
+                  <strong>{item.entityType}</strong>
+                  <p>{item.reason}</p>
+                  <small>{item.entityId}</small>
+                </div>
+                <form action={resolveCase} className="proposal-form">
+                  <input type="hidden" name="id" value={item.id} />
+                  <input
+                    name="resolution"
+                    required
+                    minLength={3}
+                    placeholder="Conclusão da análise"
+                  />
+                  <div className="decision-row">
+                    <button className="button" name="decision" value="RESOLVED">
+                      Resolver
+                    </button>
+                    <button
+                      className="button button-secondary"
+                      name="decision"
+                      value="DISMISSED"
+                    >
+                      Descartar
+                    </button>
+                  </div>
+                </form>
+              </article>
+            ))
+          ) : (
+            <p>Nenhuma denúncia aberta.</p>
           )}
         </div>
       </section>

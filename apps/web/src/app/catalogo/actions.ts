@@ -22,3 +22,22 @@ export async function createInterest(formData: FormData) {
     throw error;
   }
 }
+
+export async function reportListing(formData: FormData) {
+  const token = (await cookies()).get("pa_access")?.value;
+  if (!token) redirect("/auth/login?next=/catalogo");
+  try {
+    await createApiClient({
+      baseUrl: process.env.API_ORIGIN ?? "http://localhost:4100",
+    }).report(token, {
+      entityType: "LISTING",
+      entityId: String(formData.get("listingId") ?? ""),
+      reason: String(formData.get("reason") ?? ""),
+    });
+    redirect("/catalogo?reported=1");
+  } catch (error) {
+    if (error instanceof ApiClientError)
+      redirect(`/catalogo?error=${encodeURIComponent(error.code)}`);
+    throw error;
+  }
+}

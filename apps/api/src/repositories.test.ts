@@ -142,6 +142,11 @@ test(
       });
       assert.equal(catalog.items.length, 1);
       assert.equal(catalog.items[0]?.company.tradeName, "API");
+      const taxonomy = await marketplace.publicTaxonomy();
+      assert.equal(
+        taxonomy.categories.some((item) => item.slug === "hidraulica"),
+        true,
+      );
       const showcase = await marketplace.publicSeller("api");
       assert.equal(showcase.company.verified, true);
       assert.equal(
@@ -209,6 +214,26 @@ test(
         "PUBLISHED",
       );
       assert.equal(moderatedListing.status, "PUBLISHED");
+      const moderationCase = await marketplace.createModerationCase(
+        { ...principal, sub: buyerId, email: "comprador@example.test" },
+        {
+          entityType: "LISTING",
+          entityId: listing.id,
+          reason: "Informação divergente no anúncio.",
+        },
+      );
+      const queueWithCase = await marketplace.adminModeration();
+      assert.equal(
+        queueWithCase.cases.some((item) => item.id === moderationCase.id),
+        true,
+      );
+      const resolvedCase = await marketplace.resolveModerationCase(
+        principal,
+        moderationCase.id,
+        "RESOLVED",
+        "Anúncio conferido pela equipe.",
+      );
+      assert.equal(resolvedCase.status, "RESOLVED");
       const onboarding = await pool.query(
         "select event_type,payload from outbox_event where event_type='empresa.cadastro_solicitado'",
       );

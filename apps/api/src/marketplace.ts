@@ -41,6 +41,8 @@ export type CatalogFilters = {
   categoryId?: string | undefined;
   brandId?: string | undefined;
   stateCode?: string | undefined;
+  categorySlug?: string | undefined;
+  brandSlug?: string | undefined;
 };
 export type ListingSummary = {
   id: string;
@@ -92,6 +94,10 @@ export interface MarketplaceRepository {
     brands: Array<{ id: string; name: string }>;
   }>;
   publicCatalog(filters: CatalogFilters): Promise<{ items: ListingSummary[] }>;
+  publicTaxonomy(): Promise<{
+    categories: Array<{ name: string; slug: string }>;
+    brands: Array<{ name: string; slug: string }>;
+  }>;
   publicSeller(slug: string): Promise<{
     company: {
       tradeName: string;
@@ -137,6 +143,14 @@ export interface MarketplaceRepository {
     proposalId: string,
     input: { rating: number; comment?: string | undefined },
   ): Promise<{ id: string; status: "PUBLISHED" }>;
+  createModerationCase(
+    principal: SessionPrincipal,
+    input: {
+      entityType: "COMPANY" | "LISTING" | "REVIEW";
+      entityId: string;
+      reason: string;
+    },
+  ): Promise<{ id: string; status: "OPEN" }>;
   adminModeration(): Promise<{
     companies: Array<{
       id: string;
@@ -152,6 +166,13 @@ export interface MarketplaceRepository {
       companyName: string;
       status: string;
     }>;
+    cases: Array<{
+      id: string;
+      entityType: string;
+      entityId: string;
+      reason: string;
+      status: string;
+    }>;
   }>;
   moderateCompany(
     principal: SessionPrincipal,
@@ -162,6 +183,12 @@ export interface MarketplaceRepository {
     principal: SessionPrincipal,
     id: string,
     decision: "PUBLISHED" | "REJECTED",
+  ): Promise<{ id: string; status: string }>;
+  resolveModerationCase(
+    principal: SessionPrincipal,
+    id: string,
+    decision: "RESOLVED" | "DISMISSED",
+    resolution: string,
   ): Promise<{ id: string; status: string }>;
 }
 
@@ -283,6 +310,8 @@ export async function registerMarketplaceRoutes(
           categoryId: z.string().uuid().optional(),
           brandId: z.string().uuid().optional(),
           stateCode: z.string().length(2).optional(),
+          categorySlug: z.string().min(2).max(120).optional(),
+          brandSlug: z.string().min(2).max(120).optional(),
         }),
         response: {
           200: z.object({ items: z.array(listingSummarySchema) }),
@@ -291,6 +320,25 @@ export async function registerMarketplaceRoutes(
       },
     },
     async (request) => repository().publicCatalog(request.query),
+  );
+
+  api.get(
+    "/v1/marketplace/taxonomy",
+    {
+      schema: {
+        tags: ["catalog"],
+        response: {
+          200: z.object({
+            categories: z.array(
+              z.object({ name: z.string(), slug: z.string() }),
+            ),
+            brands: z.array(z.object({ name: z.string(), slug: z.string() })),
+          }),
+          503: errorSchema,
+        },
+      },
+    },
+    async () => repository().publicTaxonomy(),
   );
 
   api.get(
@@ -576,6 +624,37 @@ export async function registerMarketplaceRoutes(
         ),
   );
 
+  api.post(
+    "/v1/moderation/reports",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["moderation"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        body: z.object({
+          entityType: z.enum(["COMPANY", "LISTING", "REVIEW"]),
+          entityId: z.string().uuid(),
+          reason: z.string().trim().min(3).max(1200),
+        }),
+        response: {
+          201: z.object({ id: z.string().uuid(), status: z.literal("OPEN") }),
+          401: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request, reply) =>
+      reply
+        .status(201)
+        .send(
+          await repository().createModerationCase(
+            options.contextFor(request).principal,
+            request.body,
+          ),
+        ),
+  );
+
   api.get(
     "/v1/admin/moderation",
     {
@@ -604,6 +683,15 @@ export async function registerMarketplaceRoutes(
                 status: z.string(),
               }),
             ),
+            cases: z.array(
+              z.object({
+                id: z.string().uuid(),
+                entityType: z.string(),
+                entityId: z.string().uuid(),
+                reason: z.string(),
+                status: z.string(),
+              }),
+            ),
           }),
           401: errorSchema,
           403: errorSchema,
@@ -620,6 +708,45 @@ export async function registerMarketplaceRoutes(
       )
         throw new ApiError(403, "AUTH_FORBIDDEN", "Papel insuficiente");
       return repository().adminModeration();
+    },
+  );
+
+  api.post(
+    "/v1/admin/moderation/cases/:id",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["moderation"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({ id: z.string().uuid() }),
+        body: z.object({
+          decision: z.enum(["RESOLVED", "DISMISSED"]),
+          resolution: z.string().trim().min(3).max(1200),
+        }),
+        response: {
+          200: z.object({ id: z.string().uuid(), status: z.string() }),
+          401: errorSchema,
+          403: errorSchema,
+          404: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => {
+      const context = options.contextFor(request);
+      if (
+        !context.principal.roles.some((role) =>
+          ["ADMIN", "SUPPORT"].includes(role),
+        )
+      )
+        throw new ApiError(403, "AUTH_FORBIDDEN", "Papel insuficiente");
+      return repository().resolveModerationCase(
+        context.principal,
+        request.params.id,
+        request.body.decision,
+        request.body.resolution,
+      );
     },
   );
 

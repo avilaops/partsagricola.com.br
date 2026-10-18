@@ -1,12 +1,17 @@
 import { createApiClient } from "@partsagricola/api-client";
 import { AppShell } from "@partsagricola/ui";
 import Link from "next/link";
-import { createInterest } from "./actions";
+import { createInterest, reportListing } from "./actions";
 
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ busca?: string; estado?: string; error?: string }>;
+  searchParams: Promise<{
+    busca?: string;
+    estado?: string;
+    error?: string;
+    reported?: string;
+  }>;
 }) {
   const filters = await searchParams;
   const { items } = await createApiClient({
@@ -21,6 +26,9 @@ export default async function CatalogPage({
         <p className="notice error">
           Não foi possível registrar o interesse: {filters.error}
         </p>
+      ) : null}
+      {filters.reported ? (
+        <p className="notice success">Denúncia enviada para análise.</p>
       ) : null}
       <form className="search-bar">
         <input
@@ -80,6 +88,21 @@ export default async function CatalogPage({
                   Tenho interesse
                 </button>
               </form>
+              <details className="report-box">
+                <summary>Denunciar anúncio</summary>
+                <form action={reportListing} className="interest-form">
+                  <input type="hidden" name="listingId" value={item.id} />
+                  <input
+                    name="reason"
+                    required
+                    minLength={3}
+                    placeholder="Explique o problema"
+                  />
+                  <button className="button button-secondary" type="submit">
+                    Enviar denúncia
+                  </button>
+                </form>
+              </details>
             </article>
           ))
         ) : (

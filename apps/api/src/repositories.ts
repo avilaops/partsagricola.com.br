@@ -237,6 +237,18 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
       values.push(filters.stateCode.toUpperCase());
       where.push(`l.state_code=$${values.length}`);
     }
+    if (filters.categorySlug) {
+      values.push(filters.categorySlug);
+      where.push(
+        `exists (select 1 from marketplace.part_category pc where pc.id=p.category_id and pc.slug=$${values.length})`,
+      );
+    }
+    if (filters.brandSlug) {
+      values.push(filters.brandSlug);
+      where.push(
+        `exists (select 1 from marketplace.brand b where b.id=p.brand_id and b.slug=$${values.length})`,
+      );
+    }
     const result = await this.pool.query(
       this.listingSelect(
         `${where.join(" and ")} order by l.published_at desc limit 60`,
@@ -244,6 +256,18 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
       values,
     );
     return { items: result.rows };
+  }
+
+  async publicTaxonomy() {
+    const [categories, brands] = await Promise.all([
+      this.pool.query<{ name: string; slug: string }>(
+        "select name,slug from marketplace.part_category where active=true order by name",
+      ),
+      this.pool.query<{ name: string; slug: string }>(
+        "select name,slug from marketplace.brand where active=true order by name",
+      ),
+    ]);
+    return { categories: categories.rows, brands: brands.rows };
   }
 
   async publicSeller(slug: string) {
@@ -484,7 +508,7 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
   }
 
   async adminModeration() {
-    const [companies, listings] = await Promise.all([
+    const [companies, listings, cases] = await Promise.all([
       this.pool.query<{
         id: string;
         tradeName: string;
@@ -503,8 +527,77 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
       }>(
         `select l.id,l.title,c.trade_name as "companyName",l.status from marketplace.listing l join marketplace.company c on c.id=l.company_id where l.status='PENDING_REVIEW' order by l.created_at`,
       ),
+      this.pool.query<{
+        id: string;
+        entityType: string;
+        entityId: string;
+        reason: string;
+        status: string;
+      }>(
+        `select id,entity_type as "entityType",entity_id as "entityId",reason,status from marketplace.moderation_case where status='OPEN' order by created_at`,
+      ),
     ]);
-    return { companies: companies.rows, listings: listings.rows };
+    return {
+      companies: companies.rows,
+      listings: listings.rows,
+      cases: cases.rows,
+    };
+  }
+
+  async createModerationCase(
+    principal: SessionPrincipal,
+    input: {
+      entityType: "COMPANY" | "LISTING" | "REVIEW";
+      entityId: string;
+      reason: string;
+    },
+  ): Promise<{ id: string; status: "OPEN" }> {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      await this.ensureUser(client, principal);
+      const result = await client.query<{ id: string }>(
+        `insert into marketplace.moderation_case(reporter_user_id,entity_type,entity_id,reason) values ($1,$2,$3,$4) returning id`,
+        [principal.sub, input.entityType, input.entityId, input.reason],
+      );
+      await client.query("commit");
+      return { id: result.rows[0]!.id, status: "OPEN" };
+    } catch (error) {
+      await client.query("rollback");
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  async resolveModerationCase(
+    principal: SessionPrincipal,
+    id: string,
+    decision: "RESOLVED" | "DISMISSED",
+    resolution: string,
+  ) {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      await this.ensureUser(client, principal);
+      const result = await client.query<{ id: string; status: string }>(
+        `update marketplace.moderation_case set status=$2,resolution=$3,resolved_by_user_id=$4,resolved_at=now(),updated_at=now() where id=$1 and status='OPEN' returning id,status`,
+        [id, decision, resolution, principal.sub],
+      );
+      if (!result.rows[0])
+        throw new ApiError(
+          404,
+          "MODERATION_CASE_NOT_FOUND",
+          "Caso não encontrado",
+        );
+      await client.query("commit");
+      return result.rows[0];
+    } catch (error) {
+      await client.query("rollback");
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   async moderateCompany(

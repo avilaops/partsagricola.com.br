@@ -266,6 +266,9 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
     async publicCatalog() {
       return { items: [] };
     },
+    async publicTaxonomy() {
+      return { categories: [], brands: [] };
+    },
     async publicSeller() {
       throw new Error("not used");
     },
@@ -300,12 +303,18 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
       };
     },
     async adminModeration() {
-      return { companies: [], listings: [] };
+      return { companies: [], listings: [], cases: [] };
+    },
+    async createModerationCase() {
+      return { id: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee", status: "OPEN" };
     },
     async moderateCompany(_principal, id, decision) {
       return { id, status: decision };
     },
     async moderateListing(_principal, id, decision) {
+      return { id, status: decision };
+    },
+    async resolveModerationCase(_principal, id, decision) {
       return { id, status: decision };
     },
   };

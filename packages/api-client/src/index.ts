@@ -170,6 +170,8 @@ export function createApiClient(input: {
         categoryId?: string | undefined;
         brandId?: string | undefined;
         stateCode?: string | undefined;
+        categorySlug?: string | undefined;
+        brandSlug?: string | undefined;
       } = {},
     ) => {
       const url = new URL("/v1/marketplace/listings", input.baseUrl);
@@ -181,6 +183,10 @@ export function createApiClient(input: {
       request<PublicSellerResponse>(
         `/v1/marketplace/sellers/${encodeURIComponent(slug)}`,
       ),
+    publicTaxonomy: () =>
+      request<
+        paths["/v1/marketplace/taxonomy"]["get"]["responses"][200]["content"]["application/json"]
+      >("/v1/marketplace/taxonomy"),
     sellerListings: (token: string, sellerId: string) =>
       request<SellerListingsResponse>("/v1/sellers/listings", token, {
         "x-seller-id": sellerId,
@@ -254,6 +260,32 @@ export function createApiClient(input: {
         token,
         {},
         { method: "POST", body: { decision } },
+      ),
+    report: (
+      token: string,
+      body: {
+        entityType: "COMPANY" | "LISTING" | "REVIEW";
+        entityId: string;
+        reason: string;
+      },
+    ) =>
+      request<{ id: string; status: "OPEN" }>(
+        "/v1/moderation/reports",
+        token,
+        {},
+        { method: "POST", body },
+      ),
+    resolveModerationCase: (
+      token: string,
+      id: string,
+      decision: "RESOLVED" | "DISMISSED",
+      resolution: string,
+    ) =>
+      request<{ id: string; status: string }>(
+        `/v1/admin/moderation/cases/${encodeURIComponent(id)}`,
+        token,
+        {},
+        { method: "POST", body: { decision, resolution } },
       ),
   };
 }
