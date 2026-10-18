@@ -177,16 +177,30 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
       id: string;
       tradeName: string;
       status: string;
+      description: string | null;
+      website: string | null;
+      email: string;
+      phone: string | null;
+      city: string;
+      stateCode: string;
+      rating: number | null;
+      reviewCount: number;
       listings: number;
       publishedListings: number;
+      pendingListings: number;
       openInterests: number;
       openRequests: number;
+      acceptedProposals: number;
     }>(
-      `select c.id,c.trade_name as "tradeName",c.status,
+      `select c.id,c.trade_name as "tradeName",c.status,c.description,c.website,c.email,c.phone,c.city,c.state_code as "stateCode",
+        (select round(avg(r.rating)::numeric,1)::float from marketplace.review r where r.reviewed_company_id=c.id and r.status='PUBLISHED') as rating,
+        (select count(*)::int from marketplace.review r where r.reviewed_company_id=c.id and r.status='PUBLISHED') as "reviewCount",
         (select count(*)::int from marketplace.listing l where l.company_id=c.id) as listings,
         (select count(*)::int from marketplace.listing l where l.company_id=c.id and l.status='PUBLISHED') as "publishedListings",
+        (select count(*)::int from marketplace.listing l where l.company_id=c.id and l.status='PENDING_REVIEW') as "pendingListings",
         (select count(*)::int from marketplace.listing_interest i where i.advertiser_company_id=c.id and i.status='OPEN') as "openInterests",
-        (select count(*)::int from marketplace.part_request r where r.target_company_id=c.id and r.status='OPEN') as "openRequests"
+        (select count(*)::int from marketplace.part_request r where r.target_company_id=c.id and r.status='OPEN') as "openRequests",
+        (select count(*)::int from marketplace.proposal p where p.seller_company_id=c.id and p.status='ACCEPTED') as "acceptedProposals"
        from marketplace.company c where c.id=$1`,
       [companyId],
     );
@@ -194,14 +208,64 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
     if (!row)
       throw new ApiError(404, "COMPANY_NOT_FOUND", "Empresa não encontrada");
     return {
-      company: { id: row.id, tradeName: row.tradeName, status: row.status },
+      company: {
+        id: row.id,
+        tradeName: row.tradeName,
+        status: row.status,
+        description: row.description,
+        website: row.website,
+        email: row.email,
+        phone: row.phone,
+        city: row.city,
+        stateCode: row.stateCode,
+        rating: row.rating,
+        reviewCount: row.reviewCount,
+      },
       metrics: {
         listings: row.listings,
         publishedListings: row.publishedListings,
+        pendingListings: row.pendingListings,
         openInterests: row.openInterests,
         openRequests: row.openRequests,
+        acceptedProposals: row.acceptedProposals,
       },
     };
+  }
+
+  async updateSellerProfile(
+    companyId: string,
+    input: {
+      tradeName: string;
+      email: string;
+      phone?: string;
+      description?: string;
+      website?: string;
+      city: string;
+      stateCode: string;
+    },
+  ) {
+    const result = await this.pool.query<{
+      id: string;
+      tradeName: string;
+      slug: string;
+    }>(
+      `update marketplace.company set trade_name=$2,email=$3,phone=$4,description=$5,website=$6,city=$7,state_code=$8,updated_at=now()
+       where id=$1 returning id,trade_name as "tradeName",slug`,
+      [
+        companyId,
+        input.tradeName,
+        input.email,
+        input.phone ?? null,
+        input.description ?? null,
+        input.website ?? null,
+        input.city,
+        input.stateCode,
+      ],
+    );
+    const company = result.rows[0];
+    if (!company)
+      throw new ApiError(404, "COMPANY_NOT_FOUND", "Empresa não encontrada");
+    return company;
   }
 
   async referenceData() {

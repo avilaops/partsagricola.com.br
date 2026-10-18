@@ -1910,6 +1910,127 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/sellers/profile": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: {
+      parameters: {
+        query?: never;
+        header?: {
+          "x-market"?: string;
+          "x-seller-id"?: string;
+        };
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            tradeName: string;
+            /** Format: email */
+            email: string;
+            phone?: string;
+            description?: string;
+            /** Format: uri */
+            website?: string;
+            city: string;
+            stateCode: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** Format: uuid */
+              id: string;
+              tradeName: string;
+              slug: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    trace?: never;
+  };
   "/v1/sellers/applications": {
     parameters: {
       query?: never;
@@ -3176,12 +3297,22 @@ export interface paths {
                 id: string;
                 tradeName: string;
                 status: string;
+                description: string | null;
+                website: string | null;
+                email: string;
+                phone: string | null;
+                city: string;
+                stateCode: string;
+                rating: number | null;
+                reviewCount: number;
               };
               metrics: {
                 listings: number;
                 publishedListings: number;
+                pendingListings: number;
                 openInterests: number;
                 openRequests: number;
+                acceptedProposals: number;
               };
             };
           };

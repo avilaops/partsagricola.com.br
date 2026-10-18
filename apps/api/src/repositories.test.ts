@@ -114,8 +114,10 @@ test(
       assert.deepEqual(dashboard.metrics, {
         listings: 0,
         publishedListings: 0,
+        pendingListings: 0,
         openInterests: 0,
         openRequests: 0,
+        acceptedProposals: 0,
       });
       const listing = await marketplace.createListing(company.rows[0]!.id, {
         title: "Bomba hidráulica John Deere",

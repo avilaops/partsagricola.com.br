@@ -80,7 +80,10 @@ export function createApiClient(input: {
     path: string,
     token?: string,
     headers: Record<string, string> = {},
-    options: { method?: "GET" | "POST"; body?: unknown } = {},
+    options: {
+      method?: "GET" | "POST" | "PATCH" | "DELETE";
+      body?: unknown;
+    } = {},
   ): Promise<T> {
     const requestHeaders = {
       ...headers,
@@ -166,6 +169,19 @@ export function createApiClient(input: {
       request<SellerDashboardResponse>("/v1/sellers/dashboard", token, {
         "x-seller-id": sellerId,
       }),
+    updateSellerProfile: (
+      token: string,
+      sellerId: string,
+      body: paths["/v1/sellers/profile"]["patch"]["requestBody"]["content"]["application/json"],
+    ) =>
+      request<
+        paths["/v1/sellers/profile"]["patch"]["responses"][200]["content"]["application/json"]
+      >(
+        "/v1/sellers/profile",
+        token,
+        { "x-seller-id": sellerId },
+        { method: "PATCH", body },
+      ),
     publicCatalog: (
       filters: {
         query?: string | undefined;

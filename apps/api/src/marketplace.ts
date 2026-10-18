@@ -96,14 +96,40 @@ export interface MarketplaceRepository {
     input: PartRequestInput,
   ): Promise<{ id: string; status: "OPEN" }>;
   sellerDashboard(companyId: string): Promise<{
-    company: { id: string; tradeName: string; status: string };
+    company: {
+      id: string;
+      tradeName: string;
+      status: string;
+      description: string | null;
+      website: string | null;
+      email: string;
+      phone: string | null;
+      city: string;
+      stateCode: string;
+      rating: number | null;
+      reviewCount: number;
+    };
     metrics: {
       listings: number;
       publishedListings: number;
+      pendingListings: number;
       openInterests: number;
       openRequests: number;
+      acceptedProposals: number;
     };
   }>;
+  updateSellerProfile(
+    companyId: string,
+    input: {
+      tradeName: string;
+      email: string;
+      phone?: string | undefined;
+      description?: string | undefined;
+      website?: string | undefined;
+      city: string;
+      stateCode: string;
+    },
+  ): Promise<{ id: string; tradeName: string; slug: string }>;
   referenceData(): Promise<{
     categories: Array<{ id: string; name: string }>;
     brands: Array<{ id: string; name: string }>;
@@ -298,6 +324,15 @@ const listingDetailSchema = listingSummarySchema.extend({
     })
     .nullable(),
 });
+const sellerProfileInput = z.object({
+  tradeName: z.string().trim().min(2).max(120),
+  email: z.string().trim().email(),
+  phone: z.string().trim().min(8).max(30).optional(),
+  description: z.string().trim().min(20).max(1200).optional(),
+  website: z.string().trim().url().optional(),
+  city: z.string().trim().min(2).max(120),
+  stateCode: z.string().trim().toUpperCase().length(2),
+});
 const interestSummarySchema = z.object({
   id: z.string().uuid(),
   status: z.string(),
@@ -443,6 +478,43 @@ export async function registerMarketplaceRoutes(
       },
     },
     async () => repository().referenceData(),
+  );
+
+  api.patch(
+    "/v1/sellers/profile",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["sellers"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        body: sellerProfileInput,
+        response: {
+          200: z.object({
+            id: z.string().uuid(),
+            tradeName: z.string(),
+            slug: z.string(),
+          }),
+          400: errorSchema,
+          401: errorSchema,
+          403: errorSchema,
+          404: errorSchema,
+        },
+      },
+    },
+    async (request) => {
+      const context = options.contextFor(request);
+      if (
+        !context.sellerId ||
+        !context.principal.seller_ids.includes(context.sellerId)
+      )
+        throw new ApiError(
+          403,
+          "SELLER_SCOPE_FORBIDDEN",
+          "Acesso à empresa negado",
+        );
+      return repository().updateSellerProfile(context.sellerId, request.body);
+    },
   );
 
   api.post(
@@ -900,12 +972,22 @@ export async function registerMarketplaceRoutes(
               id: z.string().uuid(),
               tradeName: z.string(),
               status: z.string(),
+              description: z.string().nullable(),
+              website: z.string().nullable(),
+              email: z.string(),
+              phone: z.string().nullable(),
+              city: z.string(),
+              stateCode: z.string(),
+              rating: z.number().nullable(),
+              reviewCount: z.number().int(),
             }),
             metrics: z.object({
               listings: z.number().int(),
               publishedListings: z.number().int(),
+              pendingListings: z.number().int(),
               openInterests: z.number().int(),
               openRequests: z.number().int(),
+              acceptedProposals: z.number().int(),
             }),
           }),
           401: errorSchema,

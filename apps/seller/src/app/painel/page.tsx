@@ -17,13 +17,15 @@ export default async function SellerDashboardPage() {
   const metrics = [
     ["Anúncios", dashboard.metrics.listings],
     ["Publicados", dashboard.metrics.publishedListings],
+    ["Em análise", dashboard.metrics.pendingListings],
     ["Interesses abertos", dashboard.metrics.openInterests],
-    ["Solicitações diretas", dashboard.metrics.openRequests],
+    ["Propostas aceitas", dashboard.metrics.acceptedProposals],
+    ["Avaliações", dashboard.company.reviewCount],
   ];
   return (
     <AppShell
       area={dashboard.company.tradeName}
-      description={`Situação da empresa: ${dashboard.company.status}.`}
+      description={`${dashboard.company.city}/${dashboard.company.stateCode} · ${dashboard.company.status === "APPROVED" ? "Empresa verificada" : "Cadastro em análise"}.`}
     >
       <div className="metric-grid">
         {metrics.map(([label, value]) => (
@@ -36,8 +38,9 @@ export default async function SellerDashboardPage() {
       <div className="panel-section">
         <h2>Próximas ações</h2>
         <p>
-          Complete o perfil e aguarde a aprovação para publicar os primeiros
-          anúncios.
+          {dashboard.company.status === "APPROVED"
+            ? `${dashboard.metrics.openInterests} conversas aguardam sua atenção. Sua reputação atual é ${dashboard.company.rating?.toFixed(1) ?? "nova"}.`
+            : "Complete o perfil enquanto a plataforma analisa o cadastro da empresa."}
         </p>
       </div>
       <div className="action-grid compact-actions">
@@ -58,6 +61,11 @@ export default async function SellerDashboardPage() {
           <span className="tag">Comercial</span>
           <strong>Interesses recebidos</strong>
           <p>Responda compradores e envie propostas.</p>
+        </Link>
+        <Link className="action-card" href="/painel/perfil">
+          <span className="tag">Vitrine</span>
+          <strong>Editar perfil público</strong>
+          <p>Atualize apresentação, localização e contatos comerciais.</p>
         </Link>
       </div>
     </AppShell>

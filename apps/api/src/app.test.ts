@@ -251,14 +251,31 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
     async sellerDashboard(companyId) {
       calls.push(`dashboard:${companyId}`);
       return {
-        company: { id: companyId, tradeName: "Agro Teste", status: "APPROVED" },
+        company: {
+          id: companyId,
+          tradeName: "Agro Teste",
+          status: "APPROVED",
+          description: "Fornecedor agrícola para testes da plataforma.",
+          website: null,
+          email: "agro@example.test",
+          phone: null,
+          city: "Ribeirão Preto",
+          stateCode: "SP",
+          rating: null,
+          reviewCount: 0,
+        },
         metrics: {
           listings: 8,
           publishedListings: 5,
+          pendingListings: 1,
           openInterests: 3,
           openRequests: 2,
+          acceptedProposals: 4,
         },
       };
+    },
+    async updateSellerProfile(companyId, input) {
+      return { id: companyId, tradeName: input.tradeName, slug: "agro-teste" };
     },
     async referenceData() {
       return { categories: [], brands: [] };
