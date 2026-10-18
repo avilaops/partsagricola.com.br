@@ -46,7 +46,8 @@ test("shell usa configuração de marca e landmarks acessíveis", async () => {
   );
 
   assert.match(shell, /BRAND\.name/);
-  assert.match(shell, /<header className="app-header">/);
+  assert.match(shell, /<header className="pa-market-header">/);
+  assert.match(shell, /role="search"/);
   assert.match(shell, /<main id="conteudo"/);
   assert.match(shell, /tabIndex=\{-1\}/);
 });
