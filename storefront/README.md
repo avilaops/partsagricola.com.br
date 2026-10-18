@@ -34,11 +34,13 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-O workflow `Storefront marketplace` executa essas verificações no GitHub e
-publica os prints de desktop e celular como artefato. Build e testes de
-navegador devem ocorrer no GitHub; não execute build no servidor de produção.
+O workflow `Storefront marketplace` executa essas verificações no GitHub,
+publica os prints de desktop e celular e envia a produção somente o runtime
+aprovado. Build e testes de navegador ocorrem no GitHub; não execute build no
+servidor de produção.
 
 ## Publicação
 
-Alterações passam por pull request para `main`. Merge ou deploy em produção
-exigem autorização explícita. Não há dependência de Odoo neste fluxo.
+Alterações passam por pull request para `main`. Após as verificações, o push em
+`main` publica o artefato com troca atômica e rollback automático se o smoke test
+falhar. Não há dependência de Odoo neste fluxo.

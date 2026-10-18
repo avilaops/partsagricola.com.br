@@ -55,12 +55,14 @@ npm test
 npm run typecheck
 ```
 
-Build de produção, testes Playwright e geração de prints são realizados pelo
-workflow `Storefront marketplace` no GitHub. Não faça build no servidor de
-produção.
+Build de produção, testes Playwright, geração de prints e publicação são
+realizados pelo workflow `Storefront marketplace` no GitHub. O servidor recebe
+somente o runtime já compilado e validado; não execute build em produção.
 
 ## Publicação
 
-O fluxo é branch → pull request → validações do GitHub → revisão → `main`.
-Merge e deploy em produção exigem autorização explícita. O projeto não usa
-Odoo.
+O fluxo é branch → pull request → validações do GitHub → revisão → `main` →
+deploy do artefato aprovado. A publicação usa os secrets `PRODUCTION_SSH_KEY`,
+`PRODUCTION_KNOWN_HOSTS`, `PRODUCTION_HOST` e `PRODUCTION_USER`.
+
+O projeto não usa Odoo.
