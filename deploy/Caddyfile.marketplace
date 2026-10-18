@@ -1,0 +1,23 @@
+marketplace.partsagricola.com.br {
+	reverse_proxy 127.0.0.1:3050
+}
+
+vendedor.partsagricola.com.br {
+	reverse_proxy 127.0.0.1:3051
+}
+
+admin.partsagricola.com.br {
+	reverse_proxy 127.0.0.1:3052
+}
+
+api.partsagricola.com.br {
+	reverse_proxy 127.0.0.1:4150
+}
+
+conta.partsagricola.com.br {
+	reverse_proxy 127.0.0.1:4151
+}
+
+media.partsagricola.com.br {
+	reverse_proxy 127.0.0.1:59000
+}

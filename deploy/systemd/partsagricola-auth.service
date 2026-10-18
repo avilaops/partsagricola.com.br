@@ -1,0 +1,18 @@
+[Unit]
+Description=PartsAgricola authentication
+After=network-online.target postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/partsagricola-marketplace/current/auth
+EnvironmentFile=/opt/partsagricola-marketplace/shared/.env.auth
+ExecStart=/usr/bin/node dist/server.js
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,144 @@
+name: Marketplace production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: marketplace-production
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - name: Empacota aplicações Next.js
+        run: |
+          set -eu
+          for app in web seller admin; do
+            runtime=".deploy/$app"
+            mkdir -p "$runtime/apps/$app/.next/static"
+            cp -a "apps/$app/.next/standalone/." "$runtime/"
+            cp -a "apps/$app/.next/static/." "$runtime/apps/$app/.next/static/"
+            if [ -d "apps/$app/public" ]; then
+              mkdir -p "$runtime/apps/$app/public"
+              cp -a "apps/$app/public/." "$runtime/apps/$app/public/"
+            fi
+          done
+      - name: Empacota serviços Node.js
+        run: |
+          set -eu
+          pnpm --filter @partsagricola/api deploy --prod --legacy .deploy/api
+          pnpm --filter @partsagricola/auth deploy --prod --legacy .deploy/auth
+          pnpm --filter @partsagricola/worker deploy --prod --legacy .deploy/worker
+          cp -a packages/db/sql .deploy/sql
+          find .deploy -name '.env*' -delete
+          tar -czf marketplace-runtime.tar.gz -C .deploy .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: marketplace-runtime-${{ github.sha }}
+          path: marketplace-runtime.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: marketplace-runtime-${{ github.sha }}
+      - name: Configura SSH
+        env:
+          PRODUCTION_SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+          PRODUCTION_KNOWN_HOSTS: ${{ secrets.PRODUCTION_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$PRODUCTION_SSH_KEY" > ~/.ssh/production
+          printf '%s\n' "$PRODUCTION_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/production ~/.ssh/known_hosts
+      - name: Envia artefato
+        env:
+          PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+          PRODUCTION_USER: ${{ secrets.PRODUCTION_USER }}
+        run: scp -i ~/.ssh/production marketplace-runtime.tar.gz "$PRODUCTION_USER@$PRODUCTION_HOST:/tmp/partsagricola-marketplace-${GITHUB_SHA}.tar.gz"
+      - name: Publica com rollback
+        env:
+          PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+          PRODUCTION_USER: ${{ secrets.PRODUCTION_USER }}
+        run: |
+          ssh -i ~/.ssh/production "$PRODUCTION_USER@$PRODUCTION_HOST" \
+            "RELEASE='$GITHUB_SHA' bash -s" <<'REMOTE'
+          set -eu
+          root=/opt/partsagricola-marketplace
+          release="$root/releases/$RELEASE"
+          package="/tmp/partsagricola-marketplace-$RELEASE.tar.gz"
+          previous="$(readlink -f "$root/current" 2>/dev/null || true)"
+          test -f "$root/shared/.env.api"
+          test -f "$root/shared/.env.auth"
+          test -f "$root/shared/.env.worker"
+          test -f "$root/shared/.env.web"
+          test -f "$root/shared/.env.seller"
+          test -f "$root/shared/.env.admin"
+          mkdir -p "$release"
+          tar -xzf "$package" -C "$release"
+          test -f "$release/web/apps/web/server.js"
+          test -f "$release/api/dist/server.js"
+
+          set -a
+          . "$root/shared/.env.api"
+          set +a
+          for migration in "$release"/sql/*.sql; do
+            psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$migration" >/dev/null
+          done
+
+          ln -sfn "$release" "$root/current-next"
+          mv -Tf "$root/current-next" "$root/current"
+
+          rollback() {
+            if [ -n "$previous" ] && [ -d "$previous" ]; then
+              ln -sfn "$previous" "$root/current-rollback"
+              mv -Tf "$root/current-rollback" "$root/current"
+              systemctl restart partsagricola-{auth,api,worker,web,seller,admin}.service || true
+            fi
+            exit 1
+          }
+
+          systemctl restart partsagricola-{auth,api,worker,web,seller,admin}.service || rollback
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4150/v1/health >/dev/null \
+              && curl -fsS http://127.0.0.1:3050/ >/dev/null \
+              && curl -fsS http://127.0.0.1:3051/ >/dev/null \
+              && curl -fsS http://127.0.0.1:3052/ >/dev/null; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          [ "$ready" = "1" ] || rollback
+          find "$root/releases" -mindepth 1 -maxdepth 1 -type d ! -path "$release" ! -path "$previous" -mtime +7 -exec rm -rf {} +
+          rm -f "$package"
+          REMOTE
+      - name: Smoke test público
+        run: |
+          curl --fail --silent --show-error --retry 5 https://api.partsagricola.com.br/v1/health
+          curl --fail --silent --show-error --retry 5 https://marketplace.partsagricola.com.br/ | grep -q "Peças agrícolas"
+          curl --fail --silent --show-error --retry 5 https://vendedor.partsagricola.com.br/ | grep -q "Área do vendedor"

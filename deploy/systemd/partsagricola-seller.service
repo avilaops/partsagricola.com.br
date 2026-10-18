@@ -1,0 +1,18 @@
+[Unit]
+Description=PartsAgricola seller portal
+After=network-online.target partsagricola-api.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/partsagricola-marketplace/current/seller
+EnvironmentFile=/opt/partsagricola-marketplace/shared/.env.seller
+ExecStart=/usr/bin/node apps/seller/server.js
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
