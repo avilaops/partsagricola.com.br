@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createInterest } from "../../catalogo/actions";
+import { CompareButton } from "../../catalogo/compare";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -61,6 +62,7 @@ export default async function ListingPage({ params }: Props) {
           <p>
             {listing.city}/{listing.stateCode}
           </p>
+          <CompareButton listing={listing} />
           {listing.part ? (
             <dl className="listing-specs">
               <div>

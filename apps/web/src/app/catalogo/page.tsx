@@ -2,6 +2,7 @@ import { createApiClient } from "@partsagricola/api-client";
 import { AppShell } from "@partsagricola/ui";
 import Link from "next/link";
 import { createInterest, reportListing } from "./actions";
+import { CompareButton, CompareTray } from "./compare";
 
 export default async function CatalogPage({
   searchParams,
@@ -81,6 +82,7 @@ export default async function CatalogPage({
                 {item.company.tradeName}
                 {item.company.verified ? " · Verificada" : ""}
               </Link>
+              <CompareButton listing={item} />
               <form action={createInterest} className="interest-form">
                 <input type="hidden" name="listingId" value={item.id} />
                 <input
@@ -119,6 +121,7 @@ export default async function CatalogPage({
           </div>
         )}
       </div>
+      <CompareTray />
     </AppShell>
   );
 }
