@@ -15,5 +15,5 @@ export async function moderate(formData: FormData) {
     String(formData.get("id")),
     String(formData.get("decision")) as "APPROVED" | "PUBLISHED" | "REJECTED",
   );
-  redirect("/?updated=1");
+  redirect("/administracao?updated=1");
 }
