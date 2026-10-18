@@ -8,8 +8,8 @@ const surfaces = [
   },
   {
     url: "http://127.0.0.1:3001",
-    title: /Fornecedor/,
-    heading: "Área do fornecedor",
+    title: /Vendedor/,
+    heading: "Área do vendedor",
   },
   {
     url: "http://127.0.0.1:3002",
