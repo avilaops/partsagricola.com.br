@@ -109,106 +109,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/v1/catalog": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: {
-      parameters: {
-        query?: {
-          cursor?: string;
-          market?: string;
-        };
-        header?: {
-          "x-market"?: string;
-          "x-seller-id"?: string;
-        };
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Default Response */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              data: unknown[];
-              page: {
-                nextCursor: string | null;
-              };
-              module: string;
-              market: {
-                /** Format: uuid */
-                id: string;
-                code: string;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        403: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/v1/sellers": {
     parameters: {
       query?: never;
@@ -1403,6 +1303,678 @@ export interface paths {
     };
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/machine-types": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                name: string;
+                slug: string;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/brands": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          machineTypeId?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                name: string;
+                slug: string;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/models": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          brandId?: string;
+          machineTypeId?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                name: string;
+                slug: string;
+                yearStart: number | null;
+                yearEnd: number | null;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/years": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query: {
+          modelId: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: number[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/categories": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                name: string;
+                slug: string;
+                /** Format: uuid */
+                parentId: string | null;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/parts/{code}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          code: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                name: string;
+                slug: string;
+                description: string | null;
+                brand: {
+                  /** Format: uuid */
+                  id: string;
+                  name: string;
+                  slug: string;
+                } | null;
+                category: {
+                  /** Format: uuid */
+                  id: string;
+                  name: string;
+                  slug: string;
+                } | null;
+                codes: {
+                  code: string;
+                  /** @enum {string} */
+                  kind: "ORIGINAL" | "EQUIVALENT" | "OEM" | "GTIN" | "SUPPLIER";
+                }[];
+                compatibilities: {
+                  /** Format: uuid */
+                  id: string;
+                  /** Format: uuid */
+                  modelId: string;
+                  machineType: string;
+                  brand: string;
+                  model: string;
+                  yearStart: number | null;
+                  yearEnd: number | null;
+                }[];
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/compatibilities": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query: {
+          partId: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                /** Format: uuid */
+                modelId: string;
+                machineType: string;
+                brand: string;
+                model: string;
+                yearStart: number | null;
+                yearEnd: number | null;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/catalog/search": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          q?: string;
+          machineTypeId?: string;
+          brandId?: string;
+          modelId?: string;
+          year?: number;
+          categoryId?: string;
+          condition?: "NEW" | "USED" | "RECONDITIONED" | "REMANUFACTURED";
+          state?: string;
+          city?: string;
+          priceMin?: number;
+          priceMax?: number;
+          hasWarranty?: "true" | "false";
+          displayCurrency?: string;
+          sort?: "RELEVANCE" | "PRICE_ASC" | "NEWEST" | "RATING";
+          cursor?: string;
+          limit?: number;
+          market?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                /** @enum {string} */
+                listingType: "PART" | "MACHINE";
+                title: string;
+                /** @enum {string} */
+                condition: "NEW" | "USED" | "RECONDITIONED" | "REMANUFACTURED";
+                warrantyMonths: number | null;
+                stateCode: string;
+                city: string;
+                /** Format: date-time */
+                publishedAt: string;
+                /** Format: uri */
+                image: string | null;
+                company: {
+                  /** Format: uuid */
+                  id: string;
+                  name: string;
+                  verified: boolean;
+                };
+                part: {
+                  /** Format: uuid */
+                  id: string;
+                  name: string;
+                  codes: string[];
+                } | null;
+                machine: {
+                  /** Format: uuid */
+                  id: string;
+                  type: string;
+                  brand: string;
+                  model: string;
+                } | null;
+                compatibilities: string[];
+                rating: {
+                  average: number;
+                  count: number;
+                };
+                price: {
+                  onRequest: boolean;
+                  original: {
+                    amountMinor: number;
+                    currency: string;
+                  } | null;
+                  display: {
+                    amountMinor: number;
+                    currency: string;
+                  } | null;
+                  approximate: boolean;
+                  /** Format: date-time */
+                  rateEffectiveAt: string | null;
+                };
+              }[];
+              page: {
+                nextCursor: string | null;
+              };
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/admin/catalog/{entity}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          entity:
+            | "machine-types"
+            | "brands"
+            | "brand-associations"
+            | "models"
+            | "categories"
+            | "parts"
+            | "codes"
+            | "compatibilities"
+            | "exchange-rates";
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                [key: string]: unknown;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          entity:
+            | "machine-types"
+            | "brands"
+            | "brand-associations"
+            | "models"
+            | "categories"
+            | "parts"
+            | "codes"
+            | "compatibilities"
+            | "exchange-rates";
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              [key: string]: unknown;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/admin/catalog/{entity}/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          entity:
+            | "machine-types"
+            | "brands"
+            | "brand-associations"
+            | "models"
+            | "categories"
+            | "parts"
+            | "codes"
+            | "compatibilities"
+            | "exchange-rates";
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              [key: string]: unknown;
+            };
+          };
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          entity:
+            | "machine-types"
+            | "brands"
+            | "brand-associations"
+            | "models"
+            | "categories"
+            | "parts"
+            | "codes"
+            | "compatibilities"
+            | "exchange-rates";
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              [key: string]: unknown;
+            };
+          };
+        };
+      };
+    };
+    trace?: never;
+  };
+  "/v1/admin/catalog/imports": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            csv: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              rows: number;
+              parts: number;
+              codes: number;
+              fitments: number;
+              links: number;
+            };
+          };
+        };
+      };
+    };
     delete?: never;
     options?: never;
     head?: never;

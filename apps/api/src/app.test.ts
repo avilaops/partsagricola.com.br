@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { SessionPrincipal } from "@partsagricola/shared";
 import { createApp, type AuditEntry } from "./app.ts";
+import { emptyCatalogRepository } from "./catalog/repository.ts";
 
 const principal: SessionPrincipal = {
   active: true,
@@ -62,7 +63,12 @@ test("expõe health versionado e OpenAPI 3.1 com todos os domínios", async () =
     "admin",
     "markets",
   ])
-    assert.ok(document.paths[`/v1/${module}`], `${module} ausente no OpenAPI`);
+    assert.ok(
+      module === "catalog"
+        ? document.paths["/v1/catalog/search"]
+        : document.paths[`/v1/${module}`],
+      `${module} ausente no OpenAPI`,
+    );
   await app.close();
 });
 
@@ -75,8 +81,7 @@ test("padroniza 404 e rejeita cursor inválido sem expor stack", async () => {
   assert.equal("stack" in missing.json().error, false);
   const invalid = await app.inject({
     method: "GET",
-    url: "/v1/catalog?cursor=nao-e-um-cursor",
-    headers: { authorization: "Bearer valid-token" },
+    url: "/v1/catalog/search?limit=101",
   });
   assert.equal(invalid.statusCode, 400);
   assert.equal(invalid.json().error.code, "VALIDATION_ERROR");
@@ -84,27 +89,39 @@ test("padroniza 404 e rejeita cursor inválido sem expor stack", async () => {
 });
 
 test("resolve mercado por parâmetro, header e domínio e bloqueia conflito", async () => {
-  const app = await testApp();
+  const markets: string[] = [];
+  const app = await testApp({
+    catalog: {
+      ...emptyCatalogRepository,
+      search: async (input) => {
+        markets.push(input.marketId);
+        return { data: [], nextCursor: null };
+      },
+    },
+  });
   const byHeader = await app.inject({
     method: "GET",
-    url: "/v1/catalog",
-    headers: { authorization: "Bearer valid-token", "x-market": "AR" },
+    url: "/v1/catalog/search",
+    headers: { "x-market": "AR" },
   });
   assert.equal(byHeader.statusCode, 200);
-  assert.equal(byHeader.json().market.code, "AR");
+  assert.equal(byHeader.statusCode, 200);
   const byHost = await app.inject({
     method: "GET",
-    url: "/v1/catalog",
+    url: "/v1/catalog/search",
     headers: {
-      authorization: "Bearer valid-token",
       host: "partsagricola.com.ar",
     },
   });
-  assert.equal(byHost.json().market.code, "AR");
+  assert.equal(byHost.statusCode, 200);
+  assert.deepEqual(markets, [
+    "44444444-4444-4444-8444-444444444444",
+    "44444444-4444-4444-8444-444444444444",
+  ]);
   const conflict = await app.inject({
     method: "GET",
-    url: "/v1/catalog?market=BR",
-    headers: { authorization: "Bearer valid-token", "x-market": "AR" },
+    url: "/v1/catalog/search?market=BR",
+    headers: { "x-market": "AR" },
   });
   assert.equal(conflict.statusCode, 400);
   assert.equal(conflict.json().error.code, "MARKET_CONFLICT");

@@ -29,9 +29,22 @@ migration numerada; nunca edite o histórico já executado.
 
 ## Seeds
 
-O seed é reaplicável e preserva IDs. Ele ativa somente Brasil/BRL e cria 8 tipos
-de máquina, 23 marcas e 10 categorias iniciais. Outros mercados não são
-habilitados implicitamente.
+O seed é reaplicável e preserva IDs. Ele ativa somente Brasil/BRL, cria 8 tipos
+de máquina, 23 marcas, 10 categorias iniciais e as associações conhecidas entre
+tipos e marcas. Outros mercados não são habilitados implicitamente.
+
+## Índice do catálogo
+
+A migration `005_catalog_search.sql` mantém `listing.search_text` normalizado
+sem acentos, com título, descrição, peça, códigos, marca, modelo e
+compatibilidades. Triggers atualizam o documento quando anúncio, código, peça,
+modelo ou compatibilidade muda. Índices GIN/trigrama cobrem texto e filtros;
+índices parciais cobrem apenas anúncios publicados.
+
+Referências do catálogo usam `active` para desativação lógica. Anúncios aceitam
+garantia em meses e agregados de avaliação somente leitura. `exchange_rate`
+preserva taxas decimais por par e instante; o preço original em menor unidade
+nunca é sobrescrito.
 
 ## Importação CSV
 
@@ -86,4 +99,8 @@ remove somente esse banco. Nunca aponte essa variável para produção.
 - contatos permanecem privados por padrão;
 - preço é informativo: `bigint` em minor units + moeda ISO, ou sob consulta;
 - códigos são normalizados, mas o valor original é preservado;
+- busca pública considera somente empresas aprovadas, anúncios publicados e o
+  mercado solicitado;
+- taxas cambiais são aproximativas, datadas e nunca transformam o preço
+  persistido;
 - mensagens só podem ser enviadas por participantes da conversa.

@@ -116,3 +116,115 @@ test("cliente cobre assinatura e conclusão de upload do OpenAPI", async () => {
     ],
   );
 });
+
+test("cliente serializa busca pública e referências sem bearer", async () => {
+  const calls: Array<{ url: string; authorization: string | null }> = [];
+  const client = createApiClient({
+    baseUrl: "https://api.example",
+    fetcher: async (input, init) => {
+      calls.push({
+        url: input.toString(),
+        authorization: new Headers(init?.headers).get("authorization"),
+      });
+      return Response.json({ data: [], page: { nextCursor: null } });
+    },
+  });
+
+  await client.searchCatalog({
+    q: "bomba hidráulica mf 290",
+    condition: "NEW",
+    state: "mg",
+    hasWarranty: true,
+    priceMin: 10000,
+    sort: "PRICE_ASC",
+    displayCurrency: "brl",
+    limit: 12,
+  });
+  await client.catalogMachineTypes();
+  await client.catalogBrands({ machineTypeId: "type-1" });
+  await client.catalogModels({ brandId: "brand-1", machineTypeId: "type-1" });
+  await client.catalogYears("model-1");
+  await client.catalogCategories();
+  await client.catalogPartsByCode("MF 290/10");
+  await client.catalogCompatibilities("part-1");
+
+  assert.equal(
+    calls[0]?.url,
+    "https://api.example/v1/catalog/search?q=bomba+hidr%C3%A1ulica+mf+290&condition=NEW&state=mg&hasWarranty=true&priceMin=10000&sort=PRICE_ASC&displayCurrency=brl&limit=12",
+  );
+  assert.deepEqual(
+    calls.slice(1).map(({ url }) => url),
+    [
+      "https://api.example/v1/catalog/machine-types",
+      "https://api.example/v1/catalog/brands?machineTypeId=type-1",
+      "https://api.example/v1/catalog/models?brandId=brand-1&machineTypeId=type-1",
+      "https://api.example/v1/catalog/years?modelId=model-1",
+      "https://api.example/v1/catalog/categories",
+      "https://api.example/v1/catalog/parts/MF%20290%2F10",
+      "https://api.example/v1/catalog/compatibilities?partId=part-1",
+    ],
+  );
+  assert.ok(calls.every(({ authorization }) => authorization === null));
+});
+
+test("cliente administra catálogo e importa CSV com bearer", async () => {
+  const calls: Array<{
+    url: string;
+    method: string;
+    body: string | null;
+    authorization: string | null;
+  }> = [];
+  const client = createApiClient({
+    baseUrl: "https://api.example",
+    fetcher: async (input, init) => {
+      calls.push({
+        url: input.toString(),
+        method: init?.method ?? "GET",
+        body: typeof init?.body === "string" ? init.body : null,
+        authorization: new Headers(init?.headers).get("authorization"),
+      });
+      return Response.json(
+        input.toString().endsWith("/imports")
+          ? { rows: 1, parts: 1, codes: 1, fitments: 1, links: 1 }
+          : { id: "record-1" },
+        { status: init?.method === "POST" ? 201 : 200 },
+      );
+    },
+  });
+
+  await client.listCatalogAdmin("parts", "secret");
+  await client.createCatalogAdmin("parts", "secret", {
+    name: "Bomba",
+    slug: "bomba",
+  });
+  await client.updateCatalogAdmin("parts", "record-1", "secret", {
+    name: "Bomba hidráulica",
+  });
+  await client.deactivateCatalogAdmin("parts", "record-1", "secret");
+  await client.importCatalogCsv("secret", "sku,nome\n1,Bomba");
+
+  assert.deepEqual(
+    calls.map(({ url, method }) => ({ url, method })),
+    [
+      { url: "https://api.example/v1/admin/catalog/parts", method: "GET" },
+      { url: "https://api.example/v1/admin/catalog/parts", method: "POST" },
+      {
+        url: "https://api.example/v1/admin/catalog/parts/record-1",
+        method: "PATCH",
+      },
+      {
+        url: "https://api.example/v1/admin/catalog/parts/record-1",
+        method: "DELETE",
+      },
+      { url: "https://api.example/v1/admin/catalog/imports", method: "POST" },
+    ],
+  );
+  assert.equal(
+    calls[1]?.body,
+    JSON.stringify({ name: "Bomba", slug: "bomba" }),
+  );
+  assert.equal(calls[4]?.body, JSON.stringify({ csv: "sku,nome\n1,Bomba" }));
+  assert.ok(
+    calls.every(({ authorization }) => authorization === "Bearer secret"),
+  );
+});

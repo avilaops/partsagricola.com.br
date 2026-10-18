@@ -151,3 +151,16 @@ Imagens seguem upload direto por URL S3 v4 assinada. A confirmação cria um
 `image_job`; o worker reivindica jobs com lock, remove metadados e publica três
 derivados WebP antes de marcar o trabalho como concluído. Falhas voltam para a
 fila com limite de tentativas. Detalhes estão em `docs/API-CENTRAL.md`.
+
+## Catálogo pesquisável
+
+O AVL-171 torna o catálogo canônico consultável sem reativar o storefront de
+loja. PostgreSQL normaliza acentos, indexa texto e trigramas e filtra somente
+anúncios publicados por empresas aprovadas no mercado atual. Códigos ambíguos
+retornam todas as peças correspondentes, e compatibilidades ligam peças a tipo,
+marca, modelo e ano.
+
+A administração usa a API central com `ADMIN`/`SUPPORT`, cookie OIDC HttpOnly,
+soft delete e auditoria. Importações CSV são atômicas. Taxas de câmbio geram
+somente valores aproximados explicitamente identificados. O contrato completo
+e a reprodução do benchmark estão em [Catálogo e busca](CATALOGO-E-BUSCA.md).

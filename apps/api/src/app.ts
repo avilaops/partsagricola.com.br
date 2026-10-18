@@ -19,6 +19,12 @@ import {
 } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { ApiError, errorBody } from "./errors.ts";
+import { registerCatalogRoutes } from "./catalog/routes.ts";
+import { registerCatalogAdminRoutes } from "./catalog/admin-routes.ts";
+import {
+  emptyCatalogRepository,
+  type CatalogRepository,
+} from "./catalog/repository.ts";
 import { registerDomainModules } from "./modules/index.ts";
 import { createPrincipalRateLimiter } from "./rate-limit.ts";
 
@@ -60,6 +66,7 @@ export type AppOptions = {
   audit?: AuditRepository;
   uploads?: UploadSigner;
   imageJobs?: ImageJobQueue;
+  catalog?: CatalogRepository;
 };
 type RequestContext = {
   principal: SessionPrincipal;
@@ -261,6 +268,20 @@ export async function createApp(options: AppOptions = {}) {
     async (request) => contexts.get(request)!.principal,
   );
   await registerDomainModules(app, {
+    authenticate,
+    contextFor(request) {
+      return contexts.get(request)!;
+    },
+  });
+  await registerCatalogRoutes(app, {
+    repository: options.catalog ?? emptyCatalogRepository,
+    resolveMarket(request) {
+      return resolveMarket(request, markets);
+    },
+  });
+  await registerCatalogAdminRoutes(app, {
+    repository: options.catalog ?? emptyCatalogRepository,
+    audit,
     authenticate,
     contextFor(request) {
       return contexts.get(request)!;
