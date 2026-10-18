@@ -33,6 +33,25 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Configura origens públicas no build
+        run: |
+          cat > apps/web/.env.production <<'EOF'
+          API_ORIGIN=http://127.0.0.1:4150
+          AUTH_ORIGIN=https://conta.partsagricola.com.br
+          NEXT_PUBLIC_APP_URL=https://marketplace.partsagricola.com.br
+          NEXT_PUBLIC_SELLER_URL=https://vendedor.partsagricola.com.br
+          EOF
+          cat > apps/seller/.env.production <<'EOF'
+          API_ORIGIN=http://127.0.0.1:4150
+          AUTH_ORIGIN=https://conta.partsagricola.com.br
+          NEXT_PUBLIC_APP_URL=https://vendedor.partsagricola.com.br
+          ASSET_PUBLIC_ORIGIN=https://media.partsagricola.com.br/partsagricola
+          EOF
+          cat > apps/admin/.env.production <<'EOF'
+          API_ORIGIN=http://127.0.0.1:4150
+          AUTH_ORIGIN=https://conta.partsagricola.com.br
+          NEXT_PUBLIC_APP_URL=https://admin.partsagricola.com.br
+          EOF
       - run: pnpm build
       - name: Empacota aplicações Next.js
         run: |
