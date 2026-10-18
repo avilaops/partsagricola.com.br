@@ -36,6 +36,22 @@ incremental conforme [a arquitetura inicial](docs/ARQUITETURA-INICIAL.md).
 Os pacotes compartilhados ficam em `packages/`: configuração, banco, cliente de
 API, internacionalização, providers, contratos comuns e sistema de interface.
 
+## Design system
+
+`packages/ui` concentra os tokens e componentes usados por web, seller, admin e
+autenticação. A galeria completa fica em `http://localhost:3002/ui` durante o
+desenvolvimento e cobre estados, interações e layouts responsivos.
+
+- Verde de marca `#0B6B3F`, verde de ação, dourado funcional e neutros são
+  expostos por `@partsagricola/ui/tokens` e variáveis `--pa-*`.
+- Inter é a tipografia de leitura; Manrope identifica títulos e valores.
+- A marca histórica é reutilizada sem redesenho e seu hash está documentado em
+  [`assets/brand/partsagricola`](assets/brand/partsagricola/README.md).
+- O marketplace não apresenta carrinho, checkout ou estoque próprio.
+
+Evidências Playwright: [desktop](docs/evidencias/avl-170/ui-desktop.png) e
+[mobile](docs/evidencias/avl-170/ui-mobile.png).
+
 ## Execução local
 
 Pré-requisitos: Node.js 20+, Corepack e Docker com Compose.
@@ -143,6 +159,9 @@ Evidências visuais da homologação:
 - [API central](docs/API-CENTRAL.md)
 - [Evidência da API desktop](docs/evidencias/avl-169-api-docs-desktop.png)
 - [Evidência da API mobile](docs/evidencias/avl-169-api-docs-mobile.png)
+- [Design system AVL-170 — decisão](docs/superpowers/specs/2026-10-18-avl-170-design-system-design.md)
+- [Design system AVL-170 — execução](docs/superpowers/plans/2026-10-18-avl-170-design-system.md)
+- [Guia de uso do design system](docs/DESIGN-SYSTEM.md)
 - [Evidências do AVL-167](docs/evidencias/avl-167-schema-marketplace.md)
 - [Decisão de design do AVL-166](docs/superpowers/specs/2026-10-17-avl-166-design.md)
 - [Plano executado do AVL-166](docs/superpowers/plans/2026-10-17-avl-166.md)
