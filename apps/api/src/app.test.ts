@@ -266,6 +266,9 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
     async publicCatalog() {
       return { items: [] };
     },
+    async publicListing() {
+      throw new Error("not used");
+    },
     async publicTaxonomy() {
       return { categories: [], brands: [] };
     },

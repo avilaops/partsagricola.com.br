@@ -270,6 +270,34 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
     return { categories: categories.rows, brands: brands.rows };
   }
 
+  async publicListing(id: string) {
+    const result = await this.pool.query(
+      `select l.id,l.title,l.description,l.condition,l.price_amount_minor::int as "priceAmountMinor",l.price_on_request as "priceOnRequest",l.state_code as "stateCode",l.city,
+       (select li.url from marketplace.listing_image li where li.listing_id=l.id order by li.position limit 1) as "imageUrl",
+       coalesce((select json_agg(json_build_object('url',li.url,'altText',li.alt_text) order by li.position) from marketplace.listing_image li where li.listing_id=l.id),'[]') as images,
+       json_build_object(
+         'tradeName',c.trade_name,'slug',c.slug,'verified',(c.status='APPROVED'),'city',c.city,'stateCode',c.state_code,
+         'rating',(select round(avg(r.rating)::numeric,1)::float from marketplace.review r where r.reviewed_company_id=c.id and r.status='PUBLISHED'),
+         'reviewCount',(select count(*)::int from marketplace.review r where r.reviewed_company_id=c.id and r.status='PUBLISHED')
+       ) as company,
+       case when p.id is null then null else json_build_object(
+         'name',p.name,'brand',b.name,'category',pc.name,
+         'codes',coalesce((select array_agg(pcode.code order by pcode.kind,pcode.code) from marketplace.part_code pcode where pcode.part_id=p.id),'{}')
+       ) end as part
+       from marketplace.listing l
+       join marketplace.company c on c.id=l.company_id
+       left join marketplace.part p on p.id=l.part_id
+       left join marketplace.brand b on b.id=p.brand_id
+       left join marketplace.part_category pc on pc.id=p.category_id
+       where l.id=$1 and l.status='PUBLISHED' and c.status='APPROVED'`,
+      [id],
+    );
+    const listing = result.rows[0];
+    if (!listing)
+      throw new ApiError(404, "LISTING_NOT_FOUND", "Anúncio não encontrado");
+    return listing;
+  }
+
   async publicSeller(slug: string) {
     const companyResult = await this.pool.query<{
       tradeName: string;

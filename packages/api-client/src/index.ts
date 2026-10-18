@@ -43,6 +43,8 @@ export type ReferenceDataResponse =
   paths["/v1/catalog/reference-data"]["get"]["responses"][200]["content"]["application/json"];
 export type PublicCatalogResponse =
   paths["/v1/marketplace/listings"]["get"]["responses"][200]["content"]["application/json"];
+export type PublicListingResponse =
+  paths["/v1/marketplace/listings/{id}"]["get"]["responses"][200]["content"]["application/json"];
 export type PublicSellerResponse =
   paths["/v1/marketplace/sellers/{slug}"]["get"]["responses"][200]["content"]["application/json"];
 export type ListingInput =
@@ -182,6 +184,10 @@ export function createApiClient(input: {
     publicSeller: (slug: string) =>
       request<PublicSellerResponse>(
         `/v1/marketplace/sellers/${encodeURIComponent(slug)}`,
+      ),
+    publicListing: (id: string) =>
+      request<PublicListingResponse>(
+        `/v1/marketplace/listings/${encodeURIComponent(id)}`,
       ),
     publicTaxonomy: () =>
       request<

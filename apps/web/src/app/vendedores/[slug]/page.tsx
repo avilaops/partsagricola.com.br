@@ -1,6 +1,7 @@
 import { createApiClient } from "@partsagricola/api-client";
 import { AppShell } from "@partsagricola/ui";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 export default async function SellerPage({
   params,
@@ -48,7 +49,9 @@ export default async function SellerPage({
       <div className="catalog-grid">
         {data.listings.map((item) => (
           <article className="listing-card" key={item.id}>
-            <h3>{item.title}</h3>
+            <h3>
+              <Link href={`/anuncios/${item.id}`}>{item.title}</Link>
+            </h3>
             <p>{item.description}</p>
             <strong>
               {item.priceOnRequest

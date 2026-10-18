@@ -56,6 +56,21 @@ export type ListingSummary = {
   imageUrl: string | null;
   company: { tradeName: string; slug: string; verified: boolean };
 };
+export type ListingDetail = ListingSummary & {
+  images: Array<{ url: string; altText: string }>;
+  company: ListingSummary["company"] & {
+    city: string;
+    stateCode: string;
+    rating: number | null;
+    reviewCount: number;
+  };
+  part: {
+    name: string;
+    brand: string | null;
+    category: string | null;
+    codes: string[];
+  } | null;
+};
 export type InterestSummary = {
   id: string;
   status: string;
@@ -94,6 +109,7 @@ export interface MarketplaceRepository {
     brands: Array<{ id: string; name: string }>;
   }>;
   publicCatalog(filters: CatalogFilters): Promise<{ items: ListingSummary[] }>;
+  publicListing(id: string): Promise<ListingDetail>;
   publicTaxonomy(): Promise<{
     categories: Array<{ name: string; slug: string }>;
     brands: Array<{ name: string; slug: string }>;
@@ -265,6 +281,23 @@ const listingSummarySchema = z.object({
     verified: z.boolean(),
   }),
 });
+const listingDetailSchema = listingSummarySchema.extend({
+  images: z.array(z.object({ url: z.string(), altText: z.string() })),
+  company: listingSummarySchema.shape.company.extend({
+    city: z.string(),
+    stateCode: z.string(),
+    rating: z.number().nullable(),
+    reviewCount: z.number().int(),
+  }),
+  part: z
+    .object({
+      name: z.string(),
+      brand: z.string().nullable(),
+      category: z.string().nullable(),
+      codes: z.array(z.string()),
+    })
+    .nullable(),
+});
 const interestSummarySchema = z.object({
   id: z.string().uuid(),
   status: z.string(),
@@ -339,6 +372,22 @@ export async function registerMarketplaceRoutes(
       },
     },
     async () => repository().publicTaxonomy(),
+  );
+
+  api.get(
+    "/v1/marketplace/listings/:id",
+    {
+      schema: {
+        tags: ["catalog"],
+        params: z.object({ id: z.string().uuid() }),
+        response: {
+          200: listingDetailSchema,
+          404: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => repository().publicListing(request.params.id),
   );
 
   api.get(

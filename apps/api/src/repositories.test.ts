@@ -142,6 +142,12 @@ test(
       });
       assert.equal(catalog.items.length, 1);
       assert.equal(catalog.items[0]?.company.tradeName, "API");
+      const publicListing = await marketplace.publicListing(listing.id);
+      assert.equal(
+        publicListing.images[0]?.url,
+        "https://cdn.example.test/bomba.jpg",
+      );
+      assert.equal(publicListing.company.verified, true);
       const taxonomy = await marketplace.publicTaxonomy();
       assert.equal(
         taxonomy.categories.some((item) => item.slug === "hidraulica"),

@@ -12,7 +12,9 @@ export function SeoListings({
         items.map((item) => (
           <article className="listing-card" key={item.id}>
             <span className="tag">{item.condition}</span>
-            <h2>{item.title}</h2>
+            <h2>
+              <Link href={`/anuncios/${item.id}`}>{item.title}</Link>
+            </h2>
             <p>{item.description}</p>
             <strong>
               {item.priceOnRequest

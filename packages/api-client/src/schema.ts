@@ -1631,6 +1631,105 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/marketplace/listings/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** Format: uuid */
+              id: string;
+              title: string;
+              description: string;
+              condition: string;
+              priceAmountMinor: number | null;
+              priceOnRequest: boolean;
+              stateCode: string;
+              city: string;
+              imageUrl: string | null;
+              company: {
+                tradeName: string;
+                slug: string;
+                verified: boolean;
+                city: string;
+                stateCode: string;
+                rating: number | null;
+                reviewCount: number;
+              };
+              images: {
+                url: string;
+                altText: string;
+              }[];
+              part: {
+                name: string;
+                brand: string | null;
+                category: string | null;
+                codes: string[];
+              } | null;
+            };
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        503: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/marketplace/sellers/{slug}": {
     parameters: {
       query?: never;

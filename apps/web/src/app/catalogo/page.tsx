@@ -53,14 +53,18 @@ export default async function CatalogPage({
           items.map((item) => (
             <article className="listing-card" key={item.id}>
               {item.imageUrl ? (
-                // URLs pertencem aos vendedores e são validadas pela API.
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={item.imageUrl} alt={item.title} />
+                <Link href={`/anuncios/${item.id}`}>
+                  {/* URLs pertencem aos vendedores e são validadas pela API. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={item.imageUrl} alt={item.title} />
+                </Link>
               ) : (
                 <div className="image-placeholder">Imagem do vendedor</div>
               )}
               <span className="tag">{item.condition}</span>
-              <h2>{item.title}</h2>
+              <h2>
+                <Link href={`/anuncios/${item.id}`}>{item.title}</Link>
+              </h2>
               <p>{item.description}</p>
               <strong>
                 {item.priceOnRequest
