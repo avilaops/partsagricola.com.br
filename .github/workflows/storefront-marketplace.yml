@@ -18,6 +18,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: storefront-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   validar:
     name: Testes, build e telas
@@ -81,3 +85,113 @@ jobs:
             storefront/playwright-report/**
           if-no-files-found: warn
           retention-days: 30
+      - name: Empacota runtime validado
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p .deploy/runtime/.next/static
+          cp -a .next/standalone/. .deploy/runtime/
+          cp -a .next/static/. .deploy/runtime/.next/static/
+          cp -a public/. .deploy/runtime/public/
+          find .deploy/runtime -name '.env*' -delete
+          tar -czf .deploy/storefront-runtime.tar.gz -C .deploy/runtime .
+      - name: Publica runtime validado
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: storefront-runtime-${{ github.sha }}
+          path: storefront/.deploy/storefront-runtime.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  publicar:
+    name: Publica artefato em produção
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Baixa runtime aprovado
+        uses: actions/download-artifact@v4
+        with:
+          name: storefront-runtime-${{ github.sha }}
+      - name: Configura acesso SSH
+        env:
+          PRODUCTION_SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+          PRODUCTION_KNOWN_HOSTS: ${{ secrets.PRODUCTION_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$PRODUCTION_SSH_KEY" > ~/.ssh/production
+          printf '%s\n' "$PRODUCTION_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/production ~/.ssh/known_hosts
+      - name: Envia artefato pronto
+        env:
+          PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+          PRODUCTION_USER: ${{ secrets.PRODUCTION_USER }}
+        run: >-
+          scp -i ~/.ssh/production
+          storefront-runtime.tar.gz
+          "$PRODUCTION_USER@$PRODUCTION_HOST:/tmp/partsagricola-${GITHUB_SHA}.tar.gz"
+      - name: Troca atômica e valida com rollback
+        env:
+          PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+          PRODUCTION_USER: ${{ secrets.PRODUCTION_USER }}
+        run: |
+          ssh -i ~/.ssh/production "$PRODUCTION_USER@$PRODUCTION_HOST" \
+            "RELEASE='$GITHUB_SHA' bash -s" <<'REMOTE'
+          set -eu
+
+          app=/opt/agricola-storefront
+          package="/tmp/partsagricola-${RELEASE}.tar.gz"
+          candidate="/opt/agricola-storefront-new-${RELEASE}"
+          previous="/opt/agricola-storefront-old-${RELEASE}"
+
+          cleanup_candidate() {
+            rm -rf "$candidate"
+          }
+          trap cleanup_candidate EXIT
+
+          rm -rf "$candidate" "$previous"
+          mkdir -p "$candidate"
+          tar -xzf "$package" -C "$candidate"
+          test -f "$candidate/server.js"
+          test -f "$app/.env"
+          cp "$app/.env" "$candidate/.env"
+
+          systemctl stop agricola-storefront
+          mv "$app" "$previous"
+          mv "$candidate" "$app"
+
+          rollback() {
+            systemctl stop agricola-storefront || true
+            rm -rf "$app"
+            mv "$previous" "$app"
+            systemctl start agricola-storefront
+            rm -f "$package"
+            exit 1
+          }
+
+          systemctl start agricola-storefront || rollback
+
+          ready=0
+          for attempt in $(seq 1 20); do
+            if [ "$(curl -sS -o /tmp/partsagricola-home -w '%{http_code}' http://127.0.0.1:3006/br || true)" = "200" ]; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+
+          [ "$ready" = "1" ] || rollback
+          grep -q "O mercado das empresas do agro" /tmp/partsagricola-home || rollback
+          [ "$(curl -sS -o /dev/null -w '%{http_code}' --max-redirs 0 http://127.0.0.1:3006/br/store)" = "308" ] || rollback
+          [ "$(curl -sS -o /dev/null -w '%{http_code}' 'http://127.0.0.1:3006/api/search/suggestions?q=teste')" = "410" ] || rollback
+
+          rm -rf "$previous"
+          rm -f "$package" /tmp/partsagricola-home
+          trap - EXIT
+          REMOTE
+      - name: Smoke test público
+        run: |
+          home="$(curl --fail --silent --show-error --location --retry 5 --retry-delay 2 https://partsagricola.com.br/br)"
+          printf '%s' "$home" | grep -q "O mercado das empresas do agro"
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' --max-redirs 0 https://partsagricola.com.br/br/store)" = "308"
