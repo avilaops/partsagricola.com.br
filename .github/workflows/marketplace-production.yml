@@ -114,6 +114,7 @@ jobs:
           for migration in "$release"/sql/*.sql; do
             psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$migration" >/dev/null
           done
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$release/sql/seed_marketplace.sql" >/dev/null
 
           ln -sfn "$release" "$root/current-next"
           mv -Tf "$root/current-next" "$root/current"

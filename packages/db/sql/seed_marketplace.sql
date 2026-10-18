@@ -113,7 +113,13 @@ INSERT INTO marketplace.auth_client_redirect (client_id,redirect_uri,kind) VALUE
   ('partsagricola-seller','http://127.0.0.1:3001/auth/callback','LOGIN'),
   ('partsagricola-admin','http://127.0.0.1:3002/auth/callback','LOGIN'),
   ('partsagricola-mobile','br.com.partsagricola.app:/oauth/callback','LOGIN'),
+  ('partsagricola-web','https://marketplace.partsagricola.com.br/auth/callback','LOGIN'),
+  ('partsagricola-seller','https://vendedor.partsagricola.com.br/auth/callback','LOGIN'),
+  ('partsagricola-admin','https://admin.partsagricola.com.br/auth/callback','LOGIN'),
   ('partsagricola-web','http://127.0.0.1:3000','POST_LOGOUT'),
   ('partsagricola-seller','http://127.0.0.1:3001','POST_LOGOUT'),
-  ('partsagricola-admin','http://127.0.0.1:3002','POST_LOGOUT')
+  ('partsagricola-admin','http://127.0.0.1:3002','POST_LOGOUT'),
+  ('partsagricola-web','https://marketplace.partsagricola.com.br','POST_LOGOUT'),
+  ('partsagricola-seller','https://vendedor.partsagricola.com.br','POST_LOGOUT'),
+  ('partsagricola-admin','https://admin.partsagricola.com.br','POST_LOGOUT')
 ON CONFLICT (client_id,redirect_uri,kind) DO NOTHING;
