@@ -278,6 +278,18 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
         status: "PENDING_REVIEW",
       };
     },
+    async createInterest() {
+      return { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", status: "OPEN" };
+    },
+    async buyerInterests() {
+      return { items: [] };
+    },
+    async sellerInterests() {
+      return { items: [] };
+    },
+    async createSellerProposal() {
+      return { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc", status: "SENT" };
+    },
   };
   const app = await testApp({ marketplace });
   const headers = {

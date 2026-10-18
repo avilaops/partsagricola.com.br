@@ -54,6 +54,19 @@ export type ListingSummary = {
   imageUrl: string | null;
   company: { tradeName: string; slug: string; verified: boolean };
 };
+export type InterestSummary = {
+  id: string;
+  status: string;
+  message: string | null;
+  listing: { id: string; title: string };
+  buyer: { name: string; email: string };
+  latestProposal: {
+    id: string;
+    amountMinor: number | null;
+    terms: string;
+    status: string;
+  } | null;
+};
 
 export interface MarketplaceRepository {
   createCompanyApplication(
@@ -99,6 +112,19 @@ export interface MarketplaceRepository {
     companyId: string,
     input: ListingInput,
   ): Promise<{ id: string; status: "PENDING_REVIEW" }>;
+  createInterest(
+    principal: SessionPrincipal,
+    listingId: string,
+    message?: string,
+  ): Promise<{ id: string; status: "OPEN" }>;
+  buyerInterests(userId: string): Promise<{ items: InterestSummary[] }>;
+  sellerInterests(companyId: string): Promise<{ items: InterestSummary[] }>;
+  createSellerProposal(
+    principal: SessionPrincipal,
+    companyId: string,
+    interestId: string,
+    input: { amountMinor?: number | undefined; terms: string },
+  ): Promise<{ id: string; status: "SENT" }>;
 }
 
 const headersSchema = z
@@ -173,6 +199,21 @@ const listingSummarySchema = z.object({
     slug: z.string(),
     verified: z.boolean(),
   }),
+});
+const interestSummarySchema = z.object({
+  id: z.string().uuid(),
+  status: z.string(),
+  message: z.string().nullable(),
+  listing: z.object({ id: z.string().uuid(), title: z.string() }),
+  buyer: z.object({ name: z.string(), email: z.string() }),
+  latestProposal: z
+    .object({
+      id: z.string().uuid(),
+      amountMinor: z.number().int().nullable(),
+      terms: z.string(),
+      status: z.string(),
+    })
+    .nullable(),
 });
 
 export async function registerMarketplaceRoutes(
@@ -296,6 +337,135 @@ export async function registerMarketplaceRoutes(
         request.body as CompanyApplicationInput,
       );
       return reply.status(201).send(result);
+    },
+  );
+
+  api.post(
+    "/v1/marketplace/listings/:listingId/interests",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["proposals"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({ listingId: z.string().uuid() }),
+        body: z.object({ message: z.string().trim().max(1200).optional() }),
+        response: {
+          201: z.object({ id: z.string().uuid(), status: z.literal("OPEN") }),
+          401: errorSchema,
+          404: errorSchema,
+          409: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const context = options.contextFor(request);
+      return reply
+        .status(201)
+        .send(
+          await repository().createInterest(
+            context.principal,
+            request.params.listingId,
+            request.body.message,
+          ),
+        );
+    },
+  );
+
+  api.get(
+    "/v1/account/interests",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["proposals"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        response: {
+          200: z.object({ items: z.array(interestSummarySchema) }),
+          401: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) =>
+      repository().buyerInterests(options.contextFor(request).principal.sub),
+  );
+
+  api.get(
+    "/v1/sellers/interests",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["proposals"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        response: {
+          200: z.object({ items: z.array(interestSummarySchema) }),
+          401: errorSchema,
+          403: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => {
+      const context = options.contextFor(request);
+      if (
+        !context.sellerId ||
+        !context.principal.seller_ids.includes(context.sellerId)
+      )
+        throw new ApiError(
+          403,
+          "SELLER_SCOPE_FORBIDDEN",
+          "Acesso à empresa negado",
+        );
+      return repository().sellerInterests(context.sellerId);
+    },
+  );
+
+  api.post(
+    "/v1/sellers/interests/:interestId/proposals",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["proposals"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({ interestId: z.string().uuid() }),
+        body: z.object({
+          amountMinor: z.number().int().nonnegative().optional(),
+          terms: z.string().trim().min(3).max(3000),
+        }),
+        response: {
+          201: z.object({ id: z.string().uuid(), status: z.literal("SENT") }),
+          401: errorSchema,
+          403: errorSchema,
+          404: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const context = options.contextFor(request);
+      if (
+        !context.sellerId ||
+        !context.principal.seller_ids.includes(context.sellerId)
+      )
+        throw new ApiError(
+          403,
+          "SELLER_SCOPE_FORBIDDEN",
+          "Acesso à empresa negado",
+        );
+      return reply
+        .status(201)
+        .send(
+          await repository().createSellerProposal(
+            context.principal,
+            context.sellerId,
+            request.params.interestId,
+            request.body,
+          ),
+        );
     },
   );
 

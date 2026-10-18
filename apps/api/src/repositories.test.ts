@@ -132,6 +132,10 @@ test(
         "update marketplace.listing set status='PUBLISHED',published_at=now() where id=$1",
         [listing.id],
       );
+      await pool.query(
+        "insert into marketplace.company_member(company_id,user_id,role) values ($1,$2,'OWNER')",
+        [company.rows[0]!.id, user.rows[0]!.id],
+      );
       const catalog = await marketplace.publicCatalog({
         query: "hidráulica",
         stateCode: "SP",
@@ -146,6 +150,24 @@ test(
       );
       const managed = await marketplace.sellerListings(company.rows[0]!.id);
       assert.equal(managed.items[0]?.status, "PUBLISHED");
+      const buyerId = crypto.randomUUID();
+      const interest = await marketplace.createInterest(
+        { ...principal, sub: buyerId, email: "comprador@example.test" },
+        listing.id,
+        "Preciso confirmar a aplicação e o prazo.",
+      );
+      assert.equal(interest.status, "OPEN");
+      const received = await marketplace.sellerInterests(company.rows[0]!.id);
+      assert.equal(received.items[0]?.buyer.email, "comprador@example.test");
+      const proposal = await marketplace.createSellerProposal(
+        principal,
+        company.rows[0]!.id,
+        interest.id,
+        { amountMinor: 120000, terms: "Envio em dois dias úteis." },
+      );
+      assert.equal(proposal.status, "SENT");
+      const buyerView = await marketplace.buyerInterests(buyerId);
+      assert.equal(buyerView.items[0]?.latestProposal?.amountMinor, 120000);
       const onboarding = await pool.query(
         "select event_type,payload from outbox_event where event_type='empresa.cadastro_solicitado'",
       );

@@ -49,6 +49,8 @@ export type ListingInput =
   paths["/v1/sellers/listings"]["post"]["requestBody"]["content"]["application/json"];
 export type SellerListingsResponse =
   paths["/v1/sellers/listings"]["get"]["responses"][200]["content"]["application/json"];
+export type InterestsResponse =
+  paths["/v1/account/interests"]["get"]["responses"][200]["content"]["application/json"];
 
 export class ApiClientError extends Error {
   readonly status: number;
@@ -186,6 +188,31 @@ export function createApiClient(input: {
     createListing: (token: string, sellerId: string, body: ListingInput) =>
       request<{ id: string; status: "PENDING_REVIEW" }>(
         "/v1/sellers/listings",
+        token,
+        { "x-seller-id": sellerId },
+        { method: "POST", body },
+      ),
+    createInterest: (token: string, listingId: string, message?: string) =>
+      request<{ id: string; status: "OPEN" }>(
+        `/v1/marketplace/listings/${encodeURIComponent(listingId)}/interests`,
+        token,
+        {},
+        { method: "POST", body: message ? { message } : {} },
+      ),
+    buyerInterests: (token: string) =>
+      request<InterestsResponse>("/v1/account/interests", token),
+    sellerInterests: (token: string, sellerId: string) =>
+      request<InterestsResponse>("/v1/sellers/interests", token, {
+        "x-seller-id": sellerId,
+      }),
+    createSellerProposal: (
+      token: string,
+      sellerId: string,
+      interestId: string,
+      body: { amountMinor?: number | undefined; terms: string },
+    ) =>
+      request<{ id: string; status: "SENT" }>(
+        `/v1/sellers/interests/${encodeURIComponent(interestId)}/proposals`,
         token,
         { "x-seller-id": sellerId },
         { method: "POST", body },

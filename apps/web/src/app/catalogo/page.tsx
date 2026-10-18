@@ -1,11 +1,12 @@
 import { createApiClient } from "@partsagricola/api-client";
 import { AppShell } from "@partsagricola/ui";
 import Link from "next/link";
+import { createInterest } from "./actions";
 
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ busca?: string; estado?: string }>;
+  searchParams: Promise<{ busca?: string; estado?: string; error?: string }>;
 }) {
   const filters = await searchParams;
   const { items } = await createApiClient({
@@ -16,6 +17,11 @@ export default async function CatalogPage({
       area="Catálogo"
       description="Peças anunciadas por empresas do setor agrícola. Fale diretamente com o vendedor."
     >
+      {filters.error ? (
+        <p className="notice error">
+          Não foi possível registrar o interesse: {filters.error}
+        </p>
+      ) : null}
       <form className="search-bar">
         <input
           aria-label="Buscar anúncios"
@@ -63,6 +69,17 @@ export default async function CatalogPage({
                 {item.company.tradeName}
                 {item.company.verified ? " · Verificada" : ""}
               </Link>
+              <form action={createInterest} className="interest-form">
+                <input type="hidden" name="listingId" value={item.id} />
+                <input
+                  name="message"
+                  aria-label={`Mensagem sobre ${item.title}`}
+                  placeholder="Mensagem opcional ao vendedor"
+                />
+                <button className="button" type="submit">
+                  Tenho interesse
+                </button>
+              </form>
             </article>
           ))
         ) : (

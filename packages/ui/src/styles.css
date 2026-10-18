@@ -309,6 +309,45 @@ h1 {
 .compact-actions .action-card {
   min-height: 10rem;
 }
+.interest-form,
+.proposal-form {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.interest-form input,
+.proposal-form input,
+.proposal-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #aebdb2;
+  border-radius: 0.65rem;
+  background: #fff;
+  color: #102116;
+  font: inherit;
+}
+.quote-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.quote-card {
+  padding: 1.5rem;
+  border: 1px solid #d5dfd7;
+  border-radius: 1rem;
+  background: #fff;
+}
+.proposal {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-left: 4px solid #18723b;
+  background: #eef7f0;
+}
+.proposal-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 700;
+}
 :focus-visible {
   outline: 3px solid #18723b;
   outline-offset: 3px;

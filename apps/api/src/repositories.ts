@@ -322,11 +322,102 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
     }
   }
 
+  async createInterest(
+    principal: SessionPrincipal,
+    listingId: string,
+    message?: string,
+  ): Promise<{ id: string; status: "OPEN" }> {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      await this.ensureUser(client, principal);
+      const result = await client.query<{ id: string }>(
+        `insert into marketplace.listing_interest
+          (listing_id,advertiser_company_id,buyer_user_id,correlation_id,message)
+         select l.id,l.company_id,$2,$3,$4 from marketplace.listing l
+         where l.id=$1 and l.status='PUBLISHED'
+         returning id`,
+        [listingId, principal.sub, crypto.randomUUID(), message ?? null],
+      );
+      if (!result.rows[0])
+        throw new ApiError(404, "LISTING_NOT_FOUND", "Anúncio não encontrado");
+      await client.query("commit");
+      return { id: result.rows[0].id, status: "OPEN" };
+    } catch (error) {
+      await client.query("rollback");
+      if ((error as { code?: string }).code === "23505")
+        throw new ApiError(
+          409,
+          "INTEREST_ALREADY_EXISTS",
+          "Você já demonstrou interesse neste anúncio",
+        );
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  async buyerInterests(userId: string) {
+    const result = await this.pool.query(
+      this.interestSelect("i.buyer_user_id=$1 order by i.created_at desc"),
+      [userId],
+    );
+    return { items: result.rows };
+  }
+
+  async sellerInterests(companyId: string) {
+    const result = await this.pool.query(
+      this.interestSelect(
+        "i.advertiser_company_id=$1 order by i.created_at desc",
+      ),
+      [companyId],
+    );
+    return { items: result.rows };
+  }
+
+  async createSellerProposal(
+    principal: SessionPrincipal,
+    companyId: string,
+    interestId: string,
+    input: { amountMinor?: number | undefined; terms: string },
+  ): Promise<{ id: string; status: "SENT" }> {
+    const result = await this.pool.query<{ id: string }>(
+      `insert into marketplace.proposal
+        (interest_id,advertiser_company_id,created_by_user_id,issuer_company_id,direction,amount_minor,currency,terms)
+       select i.id,i.advertiser_company_id,$3,$2,'ADVERTISER_TO_BUYER',$4,$5,$6
+       from marketplace.listing_interest i where i.id=$1 and i.advertiser_company_id=$2 and i.status='OPEN'
+       returning id`,
+      [
+        interestId,
+        companyId,
+        principal.sub,
+        input.amountMinor ?? null,
+        input.amountMinor === undefined ? null : "BRL",
+        input.terms,
+      ],
+    );
+    if (!result.rows[0])
+      throw new ApiError(404, "INTEREST_NOT_FOUND", "Interesse não encontrado");
+    return { id: result.rows[0].id, status: "SENT" };
+  }
+
   private listingSelect(where: string, includeStatus = false) {
     return `select l.id,l.title,l.description,l.condition,l.price_amount_minor::int as "priceAmountMinor",l.price_on_request as "priceOnRequest",l.state_code as "stateCode",l.city,
       (select li.url from marketplace.listing_image li where li.listing_id=l.id order by li.position limit 1) as "imageUrl",
       json_build_object('tradeName',c.trade_name,'slug',c.slug,'verified',(c.status='APPROVED')) as company${includeStatus ? ",l.status" : ""}
       from marketplace.listing l join marketplace.company c on c.id=l.company_id left join marketplace.part p on p.id=l.part_id where ${where}`;
+  }
+
+  private interestSelect(where: string) {
+    return `select i.id,i.status,i.message,
+      json_build_object('id',l.id,'title',l.title) as listing,
+      json_build_object('name',u.name,'email',u.email) as buyer,
+      case when p.id is null then null else json_build_object('id',p.id,'amountMinor',p.amount_minor::int,'terms',p.terms,'status',p.status) end as "latestProposal"
+      from marketplace.listing_interest i
+      join marketplace.listing l on l.id=i.listing_id
+      join marketplace.app_user u on u.id=i.buyer_user_id
+      left join lateral (select * from marketplace.proposal px where px.interest_id=i.id order by px.created_at desc limit 1) p on true
+      where ${where}`;
   }
 
   private async ensureUser(client: pg.PoolClient, principal: SessionPrincipal) {

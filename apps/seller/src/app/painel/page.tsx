@@ -54,6 +54,11 @@ export default async function SellerDashboardPage() {
           <strong>Meus anúncios</strong>
           <p>Acompanhe publicação e disponibilidade.</p>
         </Link>
+        <Link className="action-card" href="/painel/interesses">
+          <span className="tag">Comercial</span>
+          <strong>Interesses recebidos</strong>
+          <p>Responda compradores e envie propostas.</p>
+        </Link>
       </div>
     </AppShell>
   );
