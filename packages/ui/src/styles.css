@@ -201,6 +201,36 @@ h1 {
   color: #0d3525;
   white-space: nowrap;
 }
+.seller-landing-hero {
+  position: relative;
+  min-height: 32rem;
+  margin-top: 2.5rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: #0d3525;
+}
+.seller-landing-hero > img {
+  object-fit: cover;
+}
+.seller-landing-hero::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(90deg, rgba(5, 24, 14, 0.72), transparent 70%);
+}
+.seller-landing-actions {
+  position: absolute;
+  z-index: 1;
+  left: clamp(1rem, 5vw, 3rem);
+  bottom: clamp(1rem, 5vw, 3rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.seller-landing-actions .button-secondary {
+  background: #fff;
+  color: #0d3525;
+}
 .field-help {
   margin: 0 0 1rem;
   color: #52675a;
@@ -750,6 +780,19 @@ h1 {
   .home-hero {
     min-height: 24rem;
     margin-inline: -0.25rem;
+  }
+  .seller-landing-hero {
+    min-height: 26rem;
+  }
+  .seller-landing-hero::after {
+    background: linear-gradient(0deg, rgba(5, 24, 14, 0.82), transparent 75%);
+  }
+  .seller-landing-actions {
+    right: 1rem;
+  }
+  .seller-landing-actions .button {
+    justify-content: center;
+    flex: 1 1 12rem;
   }
   .home-hero::after {
     background: linear-gradient(
