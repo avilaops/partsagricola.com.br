@@ -43,7 +43,9 @@ test("retira as rotas e APIs do catálogo próprio", async ({ request }) => {
   ]) {
     const response = await request.get(path, { maxRedirects: 0 })
     expect(response.status(), path).toBe(308)
-    expect(response.headers().location, path).toBe("/br")
+    expect(response.headers().location, path).toBe(
+      "https://partsagricola.com.br/br"
+    )
   }
 
   const search = await request.get("/api/search/suggestions?q=rolamento")
