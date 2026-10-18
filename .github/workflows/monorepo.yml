@@ -1,7 +1,7 @@
 name: Monorepo
 on:
   pull_request:
-    branches: [main]
+    branches: [main, avl-168-autenticacao-centralizada]
   push:
     branches: [main]
   workflow_dispatch:
@@ -29,6 +29,7 @@ jobs:
       MARKETPLACE_TEST_ADMIN_URL: postgresql://partsagricola_test:partsagricola_test@127.0.0.1:5432/postgres
       DATABASE_URL: postgresql://partsagricola_test:partsagricola_test@127.0.0.1:5432/postgres
       AUTH_ISSUER: http://127.0.0.1:4101
+      API_ORIGIN: http://127.0.0.1:4100
       AUTH_SOCIAL_MOCK: "true"
       GOOGLE_CLIENT_ID: github-actions-mock
       GOOGLE_CLIENT_SECRET: github-actions-mock
@@ -54,22 +55,30 @@ jobs:
       - run: pnpm db:migrate && pnpm db:seed
       - run: psql "$DATABASE_URL" -c "update marketplace.auth_connector set enabled=true where provider='GOOGLE'"
       - run: pnpm lint
+      - run: pnpm format:check
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Verify generated OpenAPI client
+        run: |
+          pnpm api:generate
+          git diff --exit-code -- apps/api/openapi.json packages/api-client/src/schema.ts
       - run: pnpm exec playwright install --with-deps chromium
       - name: Run Playwright with auth service
         run: |
           pnpm --filter @partsagricola/auth dev > "$RUNNER_TEMP/auth-service.log" 2>&1 &
           auth_pid=$!
+          pnpm --filter @partsagricola/api dev > "$RUNNER_TEMP/api-service.log" 2>&1 &
+          api_pid=$!
           pnpm --filter @partsagricola/web dev > "$RUNNER_TEMP/web-service.log" 2>&1 &
           web_pid=$!
           pnpm --filter @partsagricola/seller dev > "$RUNNER_TEMP/seller-service.log" 2>&1 &
           seller_pid=$!
           pnpm --filter @partsagricola/admin dev > "$RUNNER_TEMP/admin-service.log" 2>&1 &
           admin_pid=$!
-          trap 'kill "$auth_pid" "$web_pid" "$seller_pid" "$admin_pid" 2>/dev/null || true' EXIT
+          trap 'kill "$auth_pid" "$api_pid" "$web_pid" "$seller_pid" "$admin_pid" 2>/dev/null || true' EXIT
           for attempt in $(seq 1 60); do
             if curl --fail --silent http://127.0.0.1:4101/health >/dev/null \
+              && curl --fail --silent http://127.0.0.1:4100/v1/health >/dev/null \
               && curl --fail --silent http://127.0.0.1:3000 >/dev/null \
               && curl --fail --silent http://127.0.0.1:3001 >/dev/null \
               && curl --fail --silent http://127.0.0.1:3002 >/dev/null; then
@@ -78,7 +87,7 @@ jobs:
             fi
             sleep 1
           done
-          for log in "$RUNNER_TEMP"/{auth,web,seller,admin}-service.log; do
+          for log in "$RUNNER_TEMP"/{auth,api,web,seller,admin}-service.log; do
             echo "===== $log ====="
             cat "$log"
           done
@@ -89,5 +98,12 @@ jobs:
         with:
           name: avl-168-auth-screenshots
           path: test-results/**/avl-168-login-*.png
+          if-no-files-found: error
+      - name: Upload AVL-169 API screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: avl-169-api-screenshots
+          path: test-results/**/avl-169-api-docs-*.png
           if-no-files-found: error
       - run: pnpm build

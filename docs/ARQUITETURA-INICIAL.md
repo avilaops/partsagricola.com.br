@@ -139,4 +139,15 @@ deste documento ou do workflow em rascunho não equivale à homologação.
 
 # Identidade central
 
-`apps/auth` é a autoridade OIDC e o PostgreSQL é a fonte de verdade de identidades, papéis, sessões, revogações e memberships. Os clientes Next.js usam `packages/shared/src/auth.ts` para PKCE, troca de código, introspecção online e guards. Tokens de acesso curtos não são aceitos sem sessão ativa, permitindo logout global imediato. Detalhes operacionais estão em `docs/AUTENTICACAO.md`.
+`apps/auth` é a autoridade OIDC e o PostgreSQL é a fonte de verdade de identidades, papéis, sessões, revogações e memberships. A API central faz a introspecção online; web, seller e admin consomem `packages/api-client`, gerado do OpenAPI, sem chamadas HTTP soltas. Tokens de acesso curtos não são aceitos sem sessão ativa, permitindo logout global imediato. Detalhes operacionais estão em `docs/AUTENTICACAO.md`.
+
+## API central e mídia
+
+O AVL-169 introduz `/v1/health`, `/v1/docs`, os plugins de domínio e políticas
+compartilhadas de autorização, mercado, CORS, rate limit, paginação e erros.
+Ações sensíveis persistem ator, empresa, mercado, IP e diff no `audit_log`.
+
+Imagens seguem upload direto por URL S3 v4 assinada. A confirmação cria um
+`image_job`; o worker reivindica jobs com lock, remove metadados e publica três
+derivados WebP antes de marcar o trabalho como concluído. Falhas voltam para a
+fila com limite de tentativas. Detalhes estão em `docs/API-CENTRAL.md`.
