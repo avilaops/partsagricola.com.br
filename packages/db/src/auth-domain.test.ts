@@ -170,8 +170,7 @@ test(
         },
         {
           client_id: "partsagricola-admin",
-          redirect_uri:
-            "https://admin.partsagricola.com.br/auth/callback",
+          redirect_uri: "https://admin.partsagricola.com.br/auth/callback",
         },
         {
           client_id: "partsagricola-mobile",
@@ -183,8 +182,7 @@ test(
         },
         {
           client_id: "partsagricola-seller",
-          redirect_uri:
-            "https://vendedor.partsagricola.com.br/auth/callback",
+          redirect_uri: "https://vendedor.partsagricola.com.br/auth/callback",
         },
         {
           client_id: "partsagricola-web",
