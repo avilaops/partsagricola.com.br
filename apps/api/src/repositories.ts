@@ -256,10 +256,14 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
       verified: boolean;
       categories: string[];
       serviceRegions: string[];
+      rating: number | null;
+      reviewCount: number;
     }>(
       `select c.trade_name as "tradeName",c.slug,c.description,c.city,c.state_code as "stateCode",(c.status='APPROVED') as verified,
        coalesce((select array_agg(pc.name order by pc.name) from marketplace.company_category cc join marketplace.part_category pc on pc.id=cc.category_id where cc.company_id=c.id),'{}') as categories,
-       coalesce((select array_agg(csr.state_code order by csr.state_code) from marketplace.company_service_region csr where csr.company_id=c.id),'{}') as "serviceRegions"
+       coalesce((select array_agg(csr.state_code order by csr.state_code) from marketplace.company_service_region csr where csr.company_id=c.id),'{}') as "serviceRegions",
+       (select round(avg(r.rating)::numeric,1)::float from marketplace.review r where r.reviewed_company_id=c.id and r.status='PUBLISHED') as rating,
+       (select count(*)::int from marketplace.review r where r.reviewed_company_id=c.id and r.status='PUBLISHED') as "reviewCount"
        from marketplace.company c where c.slug=$1 and c.status='APPROVED'`,
       [slug],
     );
@@ -399,6 +403,163 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
     if (!result.rows[0])
       throw new ApiError(404, "INTEREST_NOT_FOUND", "Interesse não encontrado");
     return { id: result.rows[0].id, status: "SENT" };
+  }
+
+  async decideProposal(
+    userId: string,
+    proposalId: string,
+    decision: "ACCEPTED" | "REJECTED",
+  ) {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      const updated = await client.query<{ id: string; interestId: string }>(
+        `update marketplace.proposal p set status=$3,updated_at=now() from marketplace.listing_interest i
+         where p.id=$1 and p.interest_id=i.id and i.buyer_user_id=$2 and p.status='SENT'
+         returning p.id,p.interest_id as "interestId"`,
+        [proposalId, userId, decision],
+      );
+      const row = updated.rows[0];
+      if (!row)
+        throw new ApiError(
+          404,
+          "PROPOSAL_NOT_FOUND",
+          "Proposta não encontrada ou já decidida",
+        );
+      if (decision === "ACCEPTED") {
+        await client.query(
+          "update marketplace.proposal set status='REJECTED',updated_at=now() where interest_id=$1 and id<>$2 and status='SENT'",
+          [row.interestId, row.id],
+        );
+        await client.query(
+          "update marketplace.listing_interest set status='CLOSED',updated_at=now() where id=$1",
+          [row.interestId],
+        );
+      }
+      await client.query("commit");
+      return { id: row.id, status: decision };
+    } catch (error) {
+      await client.query("rollback");
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  async createReview(
+    principal: SessionPrincipal,
+    proposalId: string,
+    input: { rating: number; comment?: string | undefined },
+  ): Promise<{ id: string; status: "PUBLISHED" }> {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      await this.ensureUser(client, principal);
+      const created = await client.query<{ id: string }>(
+        `insert into marketplace.review(proposal_id,reviewer_user_id,reviewed_company_id,rating,comment)
+         select p.id,$2,p.advertiser_company_id,$3,$4 from marketplace.proposal p join marketplace.listing_interest i on i.id=p.interest_id
+         where p.id=$1 and p.status='ACCEPTED' and i.buyer_user_id=$2 returning id`,
+        [proposalId, principal.sub, input.rating, input.comment ?? null],
+      );
+      if (!created.rows[0])
+        throw new ApiError(
+          404,
+          "PROPOSAL_NOT_REVIEWABLE",
+          "Proposta não disponível para avaliação",
+        );
+      await client.query("commit");
+      return { id: created.rows[0].id, status: "PUBLISHED" };
+    } catch (error) {
+      await client.query("rollback");
+      if ((error as { code?: string }).code === "23505")
+        throw new ApiError(
+          409,
+          "REVIEW_ALREADY_EXISTS",
+          "Esta negociação já foi avaliada",
+        );
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  async adminModeration() {
+    const [companies, listings] = await Promise.all([
+      this.pool.query<{
+        id: string;
+        tradeName: string;
+        cnpj: string;
+        city: string;
+        stateCode: string;
+        status: string;
+      }>(
+        `select id,trade_name as "tradeName",cnpj,city,state_code as "stateCode",status from marketplace.company where status='PENDING' order by created_at`,
+      ),
+      this.pool.query<{
+        id: string;
+        title: string;
+        companyName: string;
+        status: string;
+      }>(
+        `select l.id,l.title,c.trade_name as "companyName",l.status from marketplace.listing l join marketplace.company c on c.id=l.company_id where l.status='PENDING_REVIEW' order by l.created_at`,
+      ),
+    ]);
+    return { companies: companies.rows, listings: listings.rows };
+  }
+
+  async moderateCompany(
+    principal: SessionPrincipal,
+    id: string,
+    decision: "APPROVED" | "REJECTED",
+  ) {
+    return this.moderate(principal, "company", id, decision);
+  }
+  async moderateListing(
+    principal: SessionPrincipal,
+    id: string,
+    decision: "PUBLISHED" | "REJECTED",
+  ) {
+    return this.moderate(principal, "listing", id, decision);
+  }
+
+  private async moderate(
+    principal: SessionPrincipal,
+    entity: "company" | "listing",
+    id: string,
+    decision: string,
+  ) {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      await this.ensureUser(client, principal);
+      const timeColumn =
+        entity === "company" && decision === "APPROVED"
+          ? ",approved_at=now()"
+          : entity === "listing" && decision === "PUBLISHED"
+            ? ",published_at=now()"
+            : "";
+      const result = await client.query<{ id: string; status: string }>(
+        `update marketplace.${entity} set status=$2,updated_at=now()${timeColumn} where id=$1 returning id,status`,
+        [id, decision],
+      );
+      if (!result.rows[0])
+        throw new ApiError(
+          404,
+          "MODERATION_TARGET_NOT_FOUND",
+          "Item não encontrado",
+        );
+      await client.query(
+        `insert into marketplace.audit_log(actor_user_id,action,entity_type,entity_id,metadata) values ($1,'MODERATION_DECISION',$2,$3,$4)`,
+        [principal.sub, entity, id, { decision }],
+      );
+      await client.query("commit");
+      return result.rows[0];
+    } catch (error) {
+      await client.query("rollback");
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   private listingSelect(where: string, includeStatus = false) {

@@ -102,6 +102,8 @@ export interface MarketplaceRepository {
       verified: boolean;
       categories: string[];
       serviceRegions: string[];
+      rating: number | null;
+      reviewCount: number;
     };
     listings: ListingSummary[];
   }>;
@@ -125,6 +127,42 @@ export interface MarketplaceRepository {
     interestId: string,
     input: { amountMinor?: number | undefined; terms: string },
   ): Promise<{ id: string; status: "SENT" }>;
+  decideProposal(
+    userId: string,
+    proposalId: string,
+    decision: "ACCEPTED" | "REJECTED",
+  ): Promise<{ id: string; status: "ACCEPTED" | "REJECTED" }>;
+  createReview(
+    principal: SessionPrincipal,
+    proposalId: string,
+    input: { rating: number; comment?: string | undefined },
+  ): Promise<{ id: string; status: "PUBLISHED" }>;
+  adminModeration(): Promise<{
+    companies: Array<{
+      id: string;
+      tradeName: string;
+      cnpj: string;
+      city: string;
+      stateCode: string;
+      status: string;
+    }>;
+    listings: Array<{
+      id: string;
+      title: string;
+      companyName: string;
+      status: string;
+    }>;
+  }>;
+  moderateCompany(
+    principal: SessionPrincipal,
+    id: string,
+    decision: "APPROVED" | "REJECTED",
+  ): Promise<{ id: string; status: string }>;
+  moderateListing(
+    principal: SessionPrincipal,
+    id: string,
+    decision: "PUBLISHED" | "REJECTED",
+  ): Promise<{ id: string; status: string }>;
 }
 
 const headersSchema = z
@@ -272,6 +310,8 @@ export async function registerMarketplaceRoutes(
               verified: z.boolean(),
               categories: z.array(z.string()),
               serviceRegions: z.array(z.string()),
+              rating: z.number().nullable(),
+              reviewCount: z.number().int(),
             }),
             listings: z.array(listingSummarySchema),
           }),
@@ -466,6 +506,180 @@ export async function registerMarketplaceRoutes(
             request.body,
           ),
         );
+    },
+  );
+
+  api.post(
+    "/v1/account/proposals/:proposalId/decision",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["proposals"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({ proposalId: z.string().uuid() }),
+        body: z.object({ decision: z.enum(["ACCEPTED", "REJECTED"]) }),
+        response: {
+          200: z.object({
+            id: z.string().uuid(),
+            status: z.enum(["ACCEPTED", "REJECTED"]),
+          }),
+          401: errorSchema,
+          404: errorSchema,
+          409: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) =>
+      repository().decideProposal(
+        options.contextFor(request).principal.sub,
+        request.params.proposalId,
+        request.body.decision,
+      ),
+  );
+
+  api.post(
+    "/v1/account/proposals/:proposalId/review",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["reviews"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({ proposalId: z.string().uuid() }),
+        body: z.object({
+          rating: z.number().int().min(1).max(5),
+          comment: z.string().trim().min(3).max(1200).optional(),
+        }),
+        response: {
+          201: z.object({
+            id: z.string().uuid(),
+            status: z.literal("PUBLISHED"),
+          }),
+          401: errorSchema,
+          404: errorSchema,
+          409: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request, reply) =>
+      reply
+        .status(201)
+        .send(
+          await repository().createReview(
+            options.contextFor(request).principal,
+            request.params.proposalId,
+            request.body,
+          ),
+        ),
+  );
+
+  api.get(
+    "/v1/admin/moderation",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["moderation"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        response: {
+          200: z.object({
+            companies: z.array(
+              z.object({
+                id: z.string().uuid(),
+                tradeName: z.string(),
+                cnpj: z.string(),
+                city: z.string(),
+                stateCode: z.string(),
+                status: z.string(),
+              }),
+            ),
+            listings: z.array(
+              z.object({
+                id: z.string().uuid(),
+                title: z.string(),
+                companyName: z.string(),
+                status: z.string(),
+              }),
+            ),
+          }),
+          401: errorSchema,
+          403: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => {
+      const context = options.contextFor(request);
+      if (
+        !context.principal.roles.some((role) =>
+          ["ADMIN", "SUPPORT"].includes(role),
+        )
+      )
+        throw new ApiError(403, "AUTH_FORBIDDEN", "Papel insuficiente");
+      return repository().adminModeration();
+    },
+  );
+
+  api.post(
+    "/v1/admin/moderation/:entity/:id",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["moderation"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({
+          entity: z.enum(["company", "listing"]),
+          id: z.string().uuid(),
+        }),
+        body: z.object({
+          decision: z.enum(["APPROVED", "PUBLISHED", "REJECTED"]),
+        }),
+        response: {
+          200: z.object({ id: z.string().uuid(), status: z.string() }),
+          400: errorSchema,
+          401: errorSchema,
+          403: errorSchema,
+          404: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) => {
+      const context = options.contextFor(request);
+      if (
+        !context.principal.roles.some((role) =>
+          ["ADMIN", "SUPPORT"].includes(role),
+        )
+      )
+        throw new ApiError(403, "AUTH_FORBIDDEN", "Papel insuficiente");
+      if (request.params.entity === "company") {
+        if (request.body.decision === "PUBLISHED")
+          throw new ApiError(
+            400,
+            "INVALID_DECISION",
+            "Decisão inválida para empresa",
+          );
+        return repository().moderateCompany(
+          context.principal,
+          request.params.id,
+          request.body.decision,
+        );
+      }
+      if (request.body.decision === "APPROVED")
+        throw new ApiError(
+          400,
+          "INVALID_DECISION",
+          "Decisão inválida para anúncio",
+        );
+      return repository().moderateListing(
+        context.principal,
+        request.params.id,
+        request.body.decision,
+      );
     },
   );
 

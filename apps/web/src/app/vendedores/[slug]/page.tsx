@@ -28,6 +28,12 @@ export default async function SellerPage({
         </span>
         <h2>{data.company.tradeName}</h2>
         <p>
+          <strong>Reputação:</strong>{" "}
+          {data.company.rating === null
+            ? "Ainda sem avaliações"
+            : `${data.company.rating.toFixed(1)} de 5 (${data.company.reviewCount})`}
+        </p>
+        <p>
           {data.company.city}/{data.company.stateCode}
         </p>
         <p>

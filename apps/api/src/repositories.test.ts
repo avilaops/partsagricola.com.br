@@ -168,6 +168,47 @@ test(
       assert.equal(proposal.status, "SENT");
       const buyerView = await marketplace.buyerInterests(buyerId);
       assert.equal(buyerView.items[0]?.latestProposal?.amountMinor, 120000);
+      const accepted = await marketplace.decideProposal(
+        buyerId,
+        proposal.id,
+        "ACCEPTED",
+      );
+      assert.equal(accepted.status, "ACCEPTED");
+      const review = await marketplace.createReview(
+        { ...principal, sub: buyerId, email: "comprador@example.test" },
+        proposal.id,
+        { rating: 5, comment: "Atendimento rápido e peça correta." },
+      );
+      assert.equal(review.status, "PUBLISHED");
+      const ratedShowcase = await marketplace.publicSeller("api");
+      assert.equal(ratedShowcase.company.rating, 5);
+      assert.equal(ratedShowcase.company.reviewCount, 1);
+      const moderatedCompany = await marketplace.moderateCompany(
+        principal,
+        application.id,
+        "APPROVED",
+      );
+      assert.equal(moderatedCompany.status, "APPROVED");
+      const pendingListing = await marketplace.createListing(application.id, {
+        title: "Retentor agrícola",
+        description: "Retentor novo disponível para análise administrativa.",
+        condition: "NEW",
+        stateCode: "SP",
+        city: "Campinas",
+        priceOnRequest: true,
+        imageUrls: [],
+      });
+      const moderationQueue = await marketplace.adminModeration();
+      assert.equal(
+        moderationQueue.listings.some((item) => item.id === pendingListing.id),
+        true,
+      );
+      const moderatedListing = await marketplace.moderateListing(
+        principal,
+        pendingListing.id,
+        "PUBLISHED",
+      );
+      assert.equal(moderatedListing.status, "PUBLISHED");
       const onboarding = await pool.query(
         "select event_type,payload from outbox_event where event_type='empresa.cadastro_solicitado'",
       );

@@ -348,6 +348,29 @@ h1 {
   gap: 0.4rem;
   font-weight: 700;
 }
+.decision-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.button-secondary {
+  background: #e8eee9;
+  color: #173e27;
+}
+.moderation-list {
+  display: grid;
+  gap: 0.75rem;
+}
+.moderation-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #d5dfd7;
+  border-radius: 0.75rem;
+}
 :focus-visible {
   outline: 3px solid #18723b;
   outline-offset: 3px;

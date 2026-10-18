@@ -217,6 +217,44 @@ export function createApiClient(input: {
         { "x-seller-id": sellerId },
         { method: "POST", body },
       ),
+    decideProposal: (
+      token: string,
+      proposalId: string,
+      decision: "ACCEPTED" | "REJECTED",
+    ) =>
+      request<{ id: string; status: "ACCEPTED" | "REJECTED" }>(
+        `/v1/account/proposals/${encodeURIComponent(proposalId)}/decision`,
+        token,
+        {},
+        { method: "POST", body: { decision } },
+      ),
+    createReview: (
+      token: string,
+      proposalId: string,
+      body: { rating: number; comment?: string | undefined },
+    ) =>
+      request<{ id: string; status: "PUBLISHED" }>(
+        `/v1/account/proposals/${encodeURIComponent(proposalId)}/review`,
+        token,
+        {},
+        { method: "POST", body },
+      ),
+    adminModeration: (token: string) =>
+      request<
+        paths["/v1/admin/moderation"]["get"]["responses"][200]["content"]["application/json"]
+      >("/v1/admin/moderation", token),
+    moderate: (
+      token: string,
+      entity: "company" | "listing",
+      id: string,
+      decision: "APPROVED" | "PUBLISHED" | "REJECTED",
+    ) =>
+      request<{ id: string; status: string }>(
+        `/v1/admin/moderation/${entity}/${encodeURIComponent(id)}`,
+        token,
+        {},
+        { method: "POST", body: { decision } },
+      ),
   };
 }
 

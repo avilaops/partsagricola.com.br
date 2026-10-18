@@ -290,6 +290,24 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
     async createSellerProposal() {
       return { id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc", status: "SENT" };
     },
+    async decideProposal(_userId, proposalId, decision) {
+      return { id: proposalId, status: decision };
+    },
+    async createReview() {
+      return {
+        id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        status: "PUBLISHED",
+      };
+    },
+    async adminModeration() {
+      return { companies: [], listings: [] };
+    },
+    async moderateCompany(_principal, id, decision) {
+      return { id, status: decision };
+    },
+    async moderateListing(_principal, id, decision) {
+      return { id, status: decision };
+    },
   };
   const app = await testApp({ marketplace });
   const headers = {

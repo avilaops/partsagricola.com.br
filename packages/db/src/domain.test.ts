@@ -138,6 +138,7 @@ test(
           "machine_type",
           "market",
           "message",
+          "moderation_case",
           "notification",
           "part",
           "part_category",
@@ -146,6 +147,7 @@ test(
           "part_request",
           "part_request_image",
           "proposal",
+          "review",
         ],
       );
     });
