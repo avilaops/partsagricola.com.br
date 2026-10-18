@@ -3,6 +3,7 @@ import { AppShell } from "@partsagricola/ui";
 import Link from "next/link";
 import { createInterest, reportListing } from "./actions";
 import { CompareButton, CompareTray } from "./compare";
+import { saveFavorite } from "../conta/favoritos/actions";
 
 export default async function CatalogPage({
   searchParams,
@@ -83,6 +84,13 @@ export default async function CatalogPage({
                 {item.company.verified ? " · Verificada" : ""}
               </Link>
               <CompareButton listing={item} />
+              <form action={saveFavorite}>
+                <input type="hidden" name="listingId" value={item.id} />
+                <input type="hidden" name="returnTo" value="/catalogo" />
+                <button className="compare-button" type="submit">
+                  Salvar anúncio
+                </button>
+              </form>
               <form action={createInterest} className="interest-form">
                 <input type="hidden" name="listingId" value={item.id} />
                 <input

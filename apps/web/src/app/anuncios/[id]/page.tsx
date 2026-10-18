@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createInterest } from "../../catalogo/actions";
 import { CompareButton } from "../../catalogo/compare";
+import { saveFavorite } from "../../conta/favoritos/actions";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -63,6 +64,17 @@ export default async function ListingPage({ params }: Props) {
             {listing.city}/{listing.stateCode}
           </p>
           <CompareButton listing={listing} />
+          <form action={saveFavorite}>
+            <input type="hidden" name="listingId" value={listing.id} />
+            <input
+              type="hidden"
+              name="returnTo"
+              value={`/anuncios/${listing.id}`}
+            />
+            <button className="compare-button" type="submit">
+              Salvar anúncio
+            </button>
+          </form>
           {listing.part ? (
             <dl className="listing-specs">
               <div>

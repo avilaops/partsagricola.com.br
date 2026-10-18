@@ -136,6 +136,15 @@ export interface MarketplaceRepository {
   }>;
   publicCatalog(filters: CatalogFilters): Promise<{ items: ListingSummary[] }>;
   publicListing(id: string): Promise<ListingDetail>;
+  listFavorites(userId: string): Promise<{ items: ListingSummary[] }>;
+  addFavorite(
+    principal: SessionPrincipal,
+    listingId: string,
+  ): Promise<{ listingId: string; saved: true }>;
+  removeFavorite(
+    userId: string,
+    listingId: string,
+  ): Promise<{ listingId: string; saved: false }>;
   publicTaxonomy(): Promise<{
     categories: Array<{ name: string; slug: string }>;
     brands: Array<{ name: string; slug: string }>;
@@ -407,6 +416,82 @@ export async function registerMarketplaceRoutes(
       },
     },
     async () => repository().publicTaxonomy(),
+  );
+
+  api.get(
+    "/v1/account/favorites",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["catalog"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        response: {
+          200: z.object({ items: z.array(listingSummarySchema) }),
+          401: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) =>
+      repository().listFavorites(options.contextFor(request).principal.sub),
+  );
+
+  api.post(
+    "/v1/marketplace/listings/:id/favorite",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["catalog"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({ id: z.string().uuid() }),
+        response: {
+          201: z.object({
+            listingId: z.string().uuid(),
+            saved: z.literal(true),
+          }),
+          401: errorSchema,
+          404: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request, reply) =>
+      reply
+        .status(201)
+        .send(
+          await repository().addFavorite(
+            options.contextFor(request).principal,
+            request.params.id,
+          ),
+        ),
+  );
+
+  api.delete(
+    "/v1/marketplace/listings/:id/favorite",
+    {
+      preHandler: options.authenticate,
+      schema: {
+        tags: ["catalog"],
+        security: [{ bearerAuth: [] }],
+        headers: headersSchema,
+        params: z.object({ id: z.string().uuid() }),
+        response: {
+          200: z.object({
+            listingId: z.string().uuid(),
+            saved: z.literal(false),
+          }),
+          401: errorSchema,
+          503: errorSchema,
+        },
+      },
+    },
+    async (request) =>
+      repository().removeFavorite(
+        options.contextFor(request).principal.sub,
+        request.params.id,
+      ),
   );
 
   api.get(

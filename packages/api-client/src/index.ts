@@ -205,6 +205,24 @@ export function createApiClient(input: {
       request<PublicListingResponse>(
         `/v1/marketplace/listings/${encodeURIComponent(id)}`,
       ),
+    favorites: (token: string) =>
+      request<
+        paths["/v1/account/favorites"]["get"]["responses"][200]["content"]["application/json"]
+      >("/v1/account/favorites", token),
+    addFavorite: (token: string, listingId: string) =>
+      request(
+        `/v1/marketplace/listings/${encodeURIComponent(listingId)}/favorite`,
+        token,
+        {},
+        { method: "POST" },
+      ),
+    removeFavorite: (token: string, listingId: string) =>
+      request(
+        `/v1/marketplace/listings/${encodeURIComponent(listingId)}/favorite`,
+        token,
+        {},
+        { method: "DELETE" },
+      ),
     publicTaxonomy: () =>
       request<
         paths["/v1/marketplace/taxonomy"]["get"]["responses"][200]["content"]["application/json"]

@@ -286,6 +286,15 @@ test("cria cadastro de empresa, solicitação e consulta painel", async () => {
     async publicListing() {
       throw new Error("not used");
     },
+    async listFavorites() {
+      return { items: [] };
+    },
+    async addFavorite(_principal, listingId) {
+      return { listingId, saved: true };
+    },
+    async removeFavorite(_userId, listingId) {
+      return { listingId, saved: false };
+    },
     async publicTaxonomy() {
       return { categories: [], brands: [] };
     },

@@ -150,6 +150,16 @@ test(
         "https://cdn.example.test/bomba.jpg",
       );
       assert.equal(publicListing.company.verified, true);
+      await marketplace.addFavorite(principal, listing.id);
+      assert.equal(
+        (await marketplace.listFavorites(principal.sub)).items.length,
+        1,
+      );
+      await marketplace.removeFavorite(principal.sub, listing.id);
+      assert.equal(
+        (await marketplace.listFavorites(principal.sub)).items.length,
+        0,
+      );
       const taxonomy = await marketplace.publicTaxonomy();
       assert.equal(
         taxonomy.categories.some((item) => item.slug === "hidraulica"),

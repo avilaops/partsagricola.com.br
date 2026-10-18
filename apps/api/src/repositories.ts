@@ -362,6 +362,49 @@ export class PostgresMarketplaceRepository implements MarketplaceRepository {
     return listing;
   }
 
+  async listFavorites(userId: string) {
+    const result = await this.pool.query(
+      this.listingSelect(
+        "l.status='PUBLISHED' and c.status='APPROVED' and exists (select 1 from marketplace.favorite f where f.listing_id=l.id and f.user_id=$1) order by l.published_at desc",
+      ),
+      [userId],
+    );
+    return { items: result.rows };
+  }
+
+  async addFavorite(principal: SessionPrincipal, listingId: string) {
+    const client = await this.pool.connect();
+    try {
+      await client.query("begin");
+      await this.ensureUser(client, principal);
+      const result = await client.query<{ listingId: string }>(
+        `insert into marketplace.favorite(user_id,listing_id)
+         select $1,l.id from marketplace.listing l join marketplace.company c on c.id=l.company_id
+         where l.id=$2 and l.status='PUBLISHED' and c.status='APPROVED'
+         on conflict (user_id,listing_id) do update set user_id=excluded.user_id
+         returning listing_id as "listingId"`,
+        [principal.sub, listingId],
+      );
+      if (!result.rows[0])
+        throw new ApiError(404, "LISTING_NOT_FOUND", "Anúncio não encontrado");
+      await client.query("commit");
+      return { listingId: result.rows[0].listingId, saved: true as const };
+    } catch (error) {
+      await client.query("rollback");
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  async removeFavorite(userId: string, listingId: string) {
+    await this.pool.query(
+      "delete from marketplace.favorite where user_id=$1 and listing_id=$2",
+      [userId, listingId],
+    );
+    return { listingId, saved: false as const };
+  }
+
   async publicSeller(slug: string) {
     const companyResult = await this.pool.query<{
       tradeName: string;
