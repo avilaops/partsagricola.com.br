@@ -96,12 +96,20 @@ export default function MarketplaceHome() {
             <div className="absolute -inset-10 rounded-full bg-[#2fbf71]/20 blur-3xl" />
             <div className="relative aspect-[4/3] overflow-hidden rounded-[32px] border border-white/15 bg-[#174b36] shadow-2xl">
               <Image
+                src="/images/marketplace/hero-marketplace-mobile.webp"
+                alt="Empresas independentes conectadas ao marketplace Parts Agrícola"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover medium:hidden"
+              />
+              <Image
                 src="/images/marketplace/rede-fornecedores.webp"
                 alt="Empresas do setor agrícola conectadas pelo marketplace Parts Agrícola"
                 fill
                 priority
                 sizes="(min-width: 1280px) 46vw, 100vw"
-                className="object-cover object-[38%_center] opacity-90"
+                className="hidden object-cover object-[38%_center] opacity-90 medium:block"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#082519]/80 via-transparent to-transparent" />
               <div className="absolute inset-x-5 bottom-5 grid grid-cols-2 gap-3 small:inset-x-7 small:bottom-7">

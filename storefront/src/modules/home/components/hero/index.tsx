@@ -32,8 +32,9 @@ const Hero = ({ countryCode }: { countryCode: string }) => {
             Encontre a peça certa entre fornecedores especializados
           </h1>
           <p className="mt-4 max-w-xl text-base text-ui-fg-subtle small:text-lg">
-            Pesquise pelo código, nome ou aplicação, compare opções de
-            fornecedores e peça a confirmação técnica antes de fechar negócio.
+            Os vendedores publicam e gerenciam seus próprios produtos. Você
+            pesquisa, compara as opções e confirma a aplicação antes de fechar
+            negócio.
           </p>
 
           <div className="mt-8 w-full max-w-2xl">
@@ -45,7 +46,9 @@ const Hero = ({ countryCode }: { countryCode: string }) => {
                   key={item.label}
                   href={
                     item.aplicacao
-                      ? `/aplicacoes/${item.query.toLowerCase().replace(/\s+/g, "-")}`
+                      ? `/aplicacoes/${item.query
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")}`
                       : `/store?q=${encodeURIComponent(item.query)}`
                   }
                   className="rounded-full border border-ui-border-base bg-pa-superficie px-3 py-1.5 text-ui-fg-base transition-colors hover:border-pa-verde hover:text-pa-verde"
@@ -64,14 +67,22 @@ const Hero = ({ countryCode }: { countryCode: string }) => {
           </LocalizedClientLink>
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-ui-border-base bg-pa-superficie shadow-sm small:aspect-[16/10]">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-ui-border-base bg-pa-superficie shadow-sm small:aspect-[16/10]">
+          <Image
+            src="/images/marketplace/hero-marketplace-mobile.webp"
+            alt="Estoques de vendedores conectados à plataforma Parts Agrícola"
+            fill
+            priority
+            sizes="(min-width: 768px) 0px, 100vw"
+            className="object-cover medium:hidden"
+          />
           <Image
             src="/images/marketplace/hero-marketplace.webp"
-            alt="Rede de fornecedores especializados em peças agrícolas e industriais"
+            alt="Estoques de vendedores especializados conectados à plataforma Parts Agrícola"
             fill
             priority
             sizes="(min-width: 1024px) 44vw, 100vw"
-            className="object-cover object-[72%_center]"
+            className="hidden object-cover object-[72%_center] medium:block"
           />
         </div>
       </div>

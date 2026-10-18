@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import Image from "next/image"
 import { Suspense } from "react"
 
 import { TechnicalProductType } from "@lib/data/technical-search"
@@ -49,14 +50,8 @@ export default async function DimensionsPage({
   }
   const hasCompleteSearch =
     (type === "oring" && values.internal && values.section) ||
-    (type === "retentor" &&
-      values.shaft &&
-      values.external &&
-      values.height) ||
-    (type === "gaxeta" &&
-      values.internal &&
-      values.external &&
-      values.height)
+    (type === "retentor" && values.shaft && values.external && values.height) ||
+    (type === "gaxeta" && values.internal && values.external && values.height)
   const page = Math.max(Number.parseInt(params.page || "1", 10) || 1, 1)
 
   const structuredData = {
@@ -76,17 +71,29 @@ export default async function DimensionsPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <div className="content-container">
-        <div className="mx-auto mb-8 max-w-3xl text-center small:mb-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]">
-            Localizador técnico de vedações
-          </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight small:text-5xl">
-            Encontre a peça pela medida exata
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-ui-fg-subtle small:text-lg">
-            Escolha o tipo e informe as dimensões em milímetros. A consulta
-            compara diretamente os dados técnicos cadastrados.
-          </p>
+        <div className="mb-8 grid overflow-hidden rounded-large border border-ui-border-base bg-white shadow-sm small:mb-10 small:grid-cols-[0.9fr_1.1fr]">
+          <div className="flex flex-col justify-center px-6 py-8 small:px-10 small:py-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]">
+              Localizador técnico de vedações
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight small:text-5xl">
+              Encontre a peça pela medida exata
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-ui-fg-subtle small:text-lg">
+              Escolha o tipo e informe as dimensões em milímetros. A consulta
+              compara os dados técnicos publicados pelos vendedores.
+            </p>
+          </div>
+          <div className="relative min-h-[260px] small:min-h-[390px]">
+            <Image
+              src="/images/tools/busca-por-medidas.webp"
+              alt="Vedações e paquímetro em uma bancada de medição técnica"
+              fill
+              priority
+              sizes="(min-width: 768px) 55vw, 100vw"
+              className="object-cover"
+            />
+          </div>
         </div>
 
         <DimensionSearchForm initialType={type} initialValues={values} />
@@ -100,9 +107,7 @@ export default async function DimensionsPage({
               </div>
             }
           >
-            <TechnicalResults
-              input={{ type, ...values, page, limit: 12 }}
-            />
+            <TechnicalResults input={{ type, ...values, page, limit: 12 }} />
           </Suspense>
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-4 small:grid-cols-3">
@@ -111,7 +116,10 @@ export default async function DimensionsPage({
               ["45", "retentores dimensionados"],
               ["126", "gaxetas e raspadores"],
             ].map(([value, label]) => (
-              <div key={label} className="rounded-large border border-ui-border-base bg-white p-5 text-center">
+              <div
+                key={label}
+                className="rounded-large border border-ui-border-base bg-white p-5 text-center"
+              >
                 <p className="text-2xl font-semibold text-[#0B6B3F]">{value}</p>
                 <p className="mt-1 text-sm text-ui-fg-subtle">{label}</p>
               </div>

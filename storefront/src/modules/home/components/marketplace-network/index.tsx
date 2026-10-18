@@ -19,15 +19,16 @@ const MarketplaceNetwork = () => {
             Um marketplace especializado
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-pa-grafite small:text-4xl">
-            Um catálogo, vários fornecedores técnicos
+            A plataforma conecta. Cada vendedor cuida dos próprios produtos.
           </h2>
           <p className="mt-4 text-base leading-7 text-ui-fg-subtle">
-            A Parts Agrícola conecta estoques de empresas especializadas para
-            facilitar a busca, a comparação e a identificação da peça correta.
+            Cada empresa cliente publica o catálogo, administra preços e mantém
+            seu próprio estoque. A Parts Agrícola fornece a plataforma de vendas
+            que reúne essas ofertas.
           </p>
           <p className="mt-4 text-base leading-7 text-ui-fg-subtle">
-            Você encontra opções em um só lugar e confirma a aplicação antes de
-            negociar com o fornecedor.
+            O comprador encontra opções em um só lugar, confirma a aplicação e
+            negocia com o vendedor responsável pelo produto.
           </p>
         </div>
       </div>

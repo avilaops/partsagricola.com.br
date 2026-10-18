@@ -29,14 +29,15 @@ const CATEGORY_VISUALS: Record<string, CategoryVisual> = {
     surfaceClass: "bg-[#eaf1fb]",
   },
   "kits-e-reparos": {
-    image: "/images/departments/kits-e-reparos.webp",
+    image: "/images/departments/kits-e-reparos-v2.webp",
     imageAlt: "Kit técnico de reparo com ferramentas e componentes de precisão",
     eyebrow: "Manutenção e recuperação de conjuntos",
     surfaceClass: "bg-[#f1eef9]",
   },
   "rolamentos-e-transmissao": {
-    image: "/images/departments/rolamentos-e-transmissao.webp",
-    imageAlt: "Rolamento de esferas, mancal flangeado, correia e corrente de rolos",
+    image: "/images/departments/rolamentos-e-transmissao-v2.webp",
+    imageAlt:
+      "Rolamento de esferas, mancal flangeado, correia e corrente de rolos",
     eyebrow: "Rolamentos, correias, correntes e transmissão",
     surfaceClass: "bg-[#fbeeee]",
   },

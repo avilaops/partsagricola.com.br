@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "Participe do marketplace",
@@ -30,20 +31,32 @@ export default async function ContatoPage({
   return (
     <main className="bg-[#eef5f1] py-16 small:py-24">
       <div className="content-container max-w-5xl">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pa-verde">
-            Participe da nova plataforma
-          </p>
-          <h1 className="mt-4 text-4xl text-pa-grafite small:text-6xl">
-            {isCompany
-              ? "Leve sua empresa para o marketplace"
-              : "Encontre empresas do agro em um só lugar"}
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-ui-fg-subtle">
-            {isCompany
-              ? "Conte sobre sua empresa e seja avisado sobre o credenciamento de anunciantes."
-              : "Conte o que você busca e seja avisado quando o acesso para compradores estiver disponível."}
-          </p>
+        <div className="grid overflow-hidden rounded-large border border-ui-border-base bg-white shadow-sm small:grid-cols-[0.9fr_1.1fr]">
+          <div className="flex flex-col justify-center px-6 py-8 small:px-10 small:py-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-pa-verde">
+              Participe da nova plataforma
+            </p>
+            <h1 className="mt-4 text-4xl text-pa-grafite small:text-6xl">
+              {isCompany
+                ? "Leve sua empresa para o marketplace"
+                : "Encontre empresas do agro em um só lugar"}
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-ui-fg-subtle">
+              {isCompany
+                ? "Conte sobre sua empresa e seja avisado sobre o credenciamento de anunciantes."
+                : "Conte o que você busca e seja avisado quando o acesso para compradores estiver disponível."}
+            </p>
+          </div>
+          <div className="relative min-h-[280px] small:min-h-[420px]">
+            <Image
+              src="/images/marketplace/atendimento-plataforma.webp"
+              alt="Empresas independentes conectadas pela plataforma Parts Agrícola"
+              fill
+              priority
+              sizes="(min-width: 768px) 55vw, 100vw"
+              className="object-cover"
+            />
+          </div>
         </div>
 
         <div className="mx-auto mt-10 grid max-w-2xl gap-4 xsmall:grid-cols-2">

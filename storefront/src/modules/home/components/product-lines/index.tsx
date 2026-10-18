@@ -39,14 +39,14 @@ const DEPARTMENT_DETAILS: Record<
     eyebrow: "Manutenção técnica",
     accent: "#6c3ca2",
     surface: "bg-[#f6f0fb]",
-    image: "/images/departments/kits-e-reparos.webp",
+    image: "/images/departments/kits-e-reparos-v2.webp",
     imageAlt: "Kit técnico de reparo com ferramentas e componentes de precisão",
   },
   "rolamentos-e-transmissao": {
     eyebrow: "Rolamentos e transmissão",
     accent: "#8a1c1c",
     surface: "bg-[#fdf0f0]",
-    image: "/images/departments/rolamentos-e-transmissao.webp",
+    image: "/images/departments/rolamentos-e-transmissao-v2.webp",
     imageAlt: "Rolamento de esferas, mancal e correia de transmissão",
   },
 }
@@ -65,7 +65,7 @@ const ProductLines = ({
         <div className="mb-8 flex flex-col justify-between gap-4 small:flex-row small:items-end">
           <div className="max-w-2xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B6B3F]">
-              Catálogo organizado para comprar melhor
+              Produtos publicados pelos vendedores
             </p>
             <h2 className="text-2xl font-semibold tracking-tight small:text-4xl">
               Encontre pela máquina, sistema ou aplicação
