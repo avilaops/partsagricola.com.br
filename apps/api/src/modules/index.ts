@@ -69,7 +69,12 @@ export async function registerDomainModules(
   },
 ) {
   for (const moduleName of domainModules) {
-    if (moduleName === "catalog") continue;
+    if (
+      moduleName === "catalog" ||
+      moduleName === "chat" ||
+      moduleName === "moderation"
+    )
+      continue;
     await app.register(async (scope) => {
       const domain = scope.withTypeProvider<ZodTypeProvider>();
       domain.get(

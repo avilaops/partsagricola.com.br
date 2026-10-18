@@ -66,6 +66,14 @@ Contrato, filtros, segurança e benchmark de 100 mil anúncios:
 [desktop](docs/evidencias/avl-171/catalog-admin-desktop.png) e
 [mobile](docs/evidencias/avl-171/catalog-admin-mobile.png).
 
+## Chat e moderação
+
+Conversas são restritas aos participantes e usam WebSocket com polling como
+fallback. Todo conteúdo livre passa por moderação síncrona e assíncrona;
+anexos ficam em quarentena até aprovação. A fila administrativa, denúncias,
+políticas e sanções progressivas estão descritas em
+[Chat e moderação](docs/CHAT-E-MODERACAO.md).
+
 ## Execução local
 
 Pré-requisitos: Node.js 20+, Corepack e Docker com Compose.
@@ -177,6 +185,7 @@ Evidências visuais da homologação:
 - [Design system AVL-170 — execução](docs/superpowers/plans/2026-10-18-avl-170-design-system.md)
 - [Guia de uso do design system](docs/DESIGN-SYSTEM.md)
 - [Catálogo de referências e busca](docs/CATALOGO-E-BUSCA.md)
+- [Chat e moderação](docs/CHAT-E-MODERACAO.md)
 - [Evidências do AVL-167](docs/evidencias/avl-167-schema-marketplace.md)
 - [Decisão de design do AVL-166](docs/superpowers/specs/2026-10-17-avl-166-design.md)
 - [Plano executado do AVL-166](docs/superpowers/plans/2026-10-17-avl-166.md)

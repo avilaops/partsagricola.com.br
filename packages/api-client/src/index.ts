@@ -9,12 +9,10 @@ export type ApiModule =
   | "listings"
   | "requests"
   | "proposals"
-  | "chat"
   | "orders"
   | "payments"
   | "shipping"
   | "reviews"
-  | "moderation"
   | "admin"
   | "markets";
 type ModulePath<M extends ApiModule> = `/v1/${M}`;
@@ -38,6 +36,24 @@ export type CatalogSearchResponse =
 type GeneratedCatalogSearchQuery = NonNullable<
   paths["/v1/catalog/search"]["get"]["parameters"]["query"]
 >;
+export type ChatConversationsResponse =
+  paths["/v1/chat/conversations"]["get"]["responses"][200]["content"]["application/json"];
+export type ChatMessagesResponse =
+  paths["/v1/chat/conversations/{id}/messages"]["get"]["responses"][200]["content"]["application/json"];
+export type SendChatMessageInput =
+  paths["/v1/chat/conversations/{id}/messages"]["post"]["requestBody"]["content"]["application/json"];
+export type SendChatMessageResponse =
+  paths["/v1/chat/conversations/{id}/messages"]["post"]["responses"][201]["content"]["application/json"];
+export type RealtimeTicketResponse =
+  paths["/v1/chat/conversations/{id}/realtime-ticket"]["post"]["responses"][201]["content"]["application/json"];
+export type ReportContentInput =
+  paths["/v1/chat/reports"]["post"]["requestBody"]["content"]["application/json"];
+export type ModerationFlagsResponse =
+  paths["/v1/moderation/flags"]["get"]["responses"][200]["content"]["application/json"];
+export type ReviewModerationInput =
+  paths["/v1/moderation/flags/{id}/review"]["post"]["requestBody"]["content"]["application/json"];
+export type ModerationPolicy =
+  paths["/v1/moderation/policy"]["get"]["responses"][200]["content"]["application/json"];
 export type CatalogSearchQuery = Omit<
   GeneratedCatalogSearchQuery,
   "hasWarranty"
@@ -72,7 +88,7 @@ export function createApiClient(input: {
     token?: string,
     headers: Record<string, string> = {},
     options: {
-      method?: "GET" | "POST" | "PATCH" | "DELETE";
+      method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
       body?: unknown;
     } = {},
   ): Promise<T> {
@@ -215,6 +231,62 @@ export function createApiClient(input: {
         token,
         {},
         { method: "POST", body: { csv } },
+      ),
+    chatConversations: (token: string, cursor?: string) =>
+      request<ChatConversationsResponse>(
+        withQuery("/v1/chat/conversations", { cursor }),
+        token,
+      ),
+    chatMessages: (id: string, token: string, cursor?: string) =>
+      request<ChatMessagesResponse>(
+        withQuery(`/v1/chat/conversations/${encodeURIComponent(id)}/messages`, {
+          cursor,
+        }),
+        token,
+      ),
+    sendChatMessage: (id: string, token: string, body: SendChatMessageInput) =>
+      request<SendChatMessageResponse>(
+        `/v1/chat/conversations/${encodeURIComponent(id)}/messages`,
+        token,
+        {},
+        { method: "POST", body },
+      ),
+    createRealtimeTicket: (id: string, token: string) =>
+      request<RealtimeTicketResponse>(
+        `/v1/chat/conversations/${encodeURIComponent(id)}/realtime-ticket`,
+        token,
+        {},
+        { method: "POST" },
+      ),
+    reportContent: (token: string, body: ReportContentInput) =>
+      request("/v1/chat/reports", token, {}, { method: "POST", body }),
+    moderationFlags: (
+      token: string,
+      status?: "OPEN" | "APPROVED" | "REJECTED" | "RESOLVED",
+    ) =>
+      request<ModerationFlagsResponse>(
+        withQuery("/v1/moderation/flags", { status }),
+        token,
+      ),
+    reviewModerationFlag: (
+      id: string,
+      token: string,
+      body: ReviewModerationInput,
+    ) =>
+      request(
+        `/v1/moderation/flags/${encodeURIComponent(id)}/review`,
+        token,
+        {},
+        { method: "POST", body },
+      ),
+    moderationPolicy: (token: string) =>
+      request<ModerationPolicy>("/v1/moderation/policy", token),
+    updateModerationPolicy: (token: string, body: ModerationPolicy) =>
+      request<ModerationPolicy>(
+        "/v1/moderation/policy",
+        token,
+        {},
+        { method: "PUT", body },
       ),
   };
 }

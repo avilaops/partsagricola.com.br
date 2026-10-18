@@ -46,6 +46,20 @@ garantia em meses e agregados de avaliação somente leitura. `exchange_rate`
 preserva taxas decimais por par e instante; o preço original em menor unidade
 nunca é sobrescrito.
 
+## Chat e moderação
+
+A migration `006_chat_moderation.sql` dá a cada conversa exatamente um contexto
+lógico (`LISTING`, `REQUEST`, `PROPOSAL` ou `ORDER`). Mensagens usam
+`client_message_id` para idempotência, preservam somente o corpo seguro e mantêm
+anexos em `QUARANTINED` até aprovação assíncrona.
+
+O original necessário ao worker fica em `moderation_evidence`, cifrado pela
+aplicação e com expiração máxima de sete dias.
+`marketplace.purge_expired_moderation_evidence()` remove resíduos vencidos.
+Ocorrências ficam em `moderation_flag`; denúncias são únicas por denunciante e
+alvo; `moderation_policy` define limiares progressivos e
+`moderation_sanction` preserva o histórico por usuário ou empresa.
+
 ## Importação CSV
 
 Execute sempre com um caminho explícito:
@@ -104,3 +118,4 @@ remove somente esse banco. Nunca aponte essa variável para produção.
 - taxas cambiais são aproximativas, datadas e nunca transformam o preço
   persistido;
 - mensagens só podem ser enviadas por participantes da conversa.
+- anexos de mensagem não são entregues enquanto estiverem em quarentena.

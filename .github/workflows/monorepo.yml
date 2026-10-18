@@ -47,10 +47,13 @@ jobs:
           node -e "const{generateKeyPairSync}=require('crypto');const key=JSON.stringify(generateKeyPairSync('ed25519').privateKey.export({format:'jwk'}));console.log('::add-mask::'+key);require('fs').appendFileSync(process.env.GITHUB_ENV,'AUTH_SIGNING_JWK='+key+'\n')"
           data_key=$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '=')
           lookup_key=$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '=')
+          moderation_evidence_key=$(openssl rand -base64 32 | tr -d '\n')
           echo "::add-mask::$data_key"
           echo "::add-mask::$lookup_key"
+          echo "::add-mask::$moderation_evidence_key"
           echo "AUTH_DATA_KEY=$data_key" >> "$GITHUB_ENV"
           echo "AUTH_LOOKUP_KEY=$lookup_key" >> "$GITHUB_ENV"
+          echo "MODERATION_EVIDENCE_KEY=$moderation_evidence_key" >> "$GITHUB_ENV"
       - run: pnpm db:migrate && pnpm db:seed
       - run: psql "$DATABASE_URL" -c "update marketplace.auth_connector set enabled=true where provider='GOOGLE'"
       - run: pnpm lint
@@ -118,5 +121,12 @@ jobs:
         with:
           name: avl-171-catalog-admin-screenshots
           path: docs/evidencias/avl-171/*.png
+          if-no-files-found: error
+      - name: Upload AVL-175 chat and moderation screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: avl-175-chat-moderation-screenshots
+          path: docs/evidencias/avl-175/*.png
           if-no-files-found: error
       - run: pnpm build

@@ -143,6 +143,18 @@ deste documento ou do workflow em rascunho não equivale à homologação.
 
 ## API central e mídia
 
+### Comunicação e moderação
+
+`apps/api/src/chat` aplica escopo por participante e mercado, entrega WebSocket
+autenticado por ticket descartável e mantém polling HTTP como fallback.
+`apps/api/src/moderation` concentra o classificador síncrono, fila
+administrativa, política e histórico. O worker processa texto e OCR de forma
+assíncrona; decisões só podem ficar mais restritivas.
+
+Evidências originais são cifradas por `@partsagricola/providers`, expiram em
+até sete dias e nunca são retornadas por API. Imagens de mensagem permanecem em
+quarentena até aprovação.
+
 O AVL-169 introduz `/v1/health`, `/v1/docs`, os plugins de domínio e políticas
 compartilhadas de autorização, mercado, CORS, rate limit, paginação e erros.
 Ações sensíveis persistem ator, empresa, mercado, IP e diff no `audit_log`.

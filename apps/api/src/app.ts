@@ -2,6 +2,7 @@ import cors from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
+import websocket from "@fastify/websocket";
 import {
   createHealthPayload,
   introspectSession,
@@ -27,6 +28,13 @@ import {
 } from "./catalog/repository.ts";
 import { registerDomainModules } from "./modules/index.ts";
 import { createPrincipalRateLimiter } from "./rate-limit.ts";
+import { registerModerationRoutes } from "./moderation/routes.ts";
+import {
+  emptyModerationRepository,
+  type ModerationRepository,
+} from "./moderation/repository.ts";
+import { registerChatRoutes } from "./chat/routes.ts";
+import { emptyChatRepository, type ChatRepository } from "./chat/repository.ts";
 
 export type Market = { id: string; code: string; domains: string[] };
 export type AuditEntry = {
@@ -48,6 +56,7 @@ export interface UploadSigner {
     contentType: string;
     size: number;
   }): Promise<{ key: string; url: string; expiresIn: number }>;
+  signRead?(key: string): Promise<string>;
 }
 export interface ImageJobQueue {
   enqueue(input: {
@@ -67,6 +76,8 @@ export type AppOptions = {
   uploads?: UploadSigner;
   imageJobs?: ImageJobQueue;
   catalog?: CatalogRepository;
+  chat?: ChatRepository;
+  moderation?: ModerationRepository;
 };
 type RequestContext = {
   principal: SessionPrincipal;
@@ -190,6 +201,7 @@ export async function createApp(options: AppOptions = {}) {
       );
     },
   });
+  await app.register(websocket);
   await app.register(rateLimit, {
     max: rateLimitMax,
     timeWindow: "1 minute",
@@ -281,6 +293,23 @@ export async function createApp(options: AppOptions = {}) {
   });
   await registerCatalogAdminRoutes(app, {
     repository: options.catalog ?? emptyCatalogRepository,
+    audit,
+    authenticate,
+    contextFor(request) {
+      return contexts.get(request)!;
+    },
+  });
+  await registerChatRoutes(app, {
+    repository: options.chat ?? emptyChatRepository,
+    audit,
+    ...(options.uploads ? { uploads: options.uploads } : {}),
+    authenticate,
+    contextFor(request) {
+      return contexts.get(request)!;
+    },
+  });
+  await registerModerationRoutes(app, {
+    repository: options.moderation ?? emptyModerationRepository,
     audit,
     authenticate,
     contextFor(request) {

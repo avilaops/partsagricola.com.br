@@ -228,3 +228,58 @@ test("cliente administra catálogo e importa CSV com bearer", async () => {
     calls.every(({ authorization }) => authorization === "Bearer secret"),
   );
 });
+
+test("cliente tipado cobre chat, ticket, denúncia e moderação", async () => {
+  const calls: Array<{ url: string; method: string }> = [];
+  const client = createApiClient({
+    baseUrl: "https://api.example",
+    fetcher: async (input, init) => {
+      calls.push({ url: input.toString(), method: init?.method ?? "GET" });
+      if (input.toString().endsWith("realtime-ticket"))
+        return Response.json(
+          { ticket: crypto.randomUUID(), expiresAt: new Date().toISOString() },
+          { status: 201 },
+        );
+      if (input.toString().endsWith("/review"))
+        return Response.json({ flag: { id: crypto.randomUUID() } });
+      if (input.toString().endsWith("/policy"))
+        return Response.json({
+          warningThreshold: 1,
+          suspendThreshold: 3,
+          blockThreshold: 5,
+          suspensionHours: 72,
+        });
+      return Response.json({ data: [], page: { nextCursor: null } });
+    },
+  });
+  const id = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+  await client.chatConversations("token");
+  await client.chatMessages(id, "token");
+  await client.sendChatMessage(id, "token", {
+    clientMessageId: id,
+    body: "Olá",
+    attachments: [],
+  });
+  await client.createRealtimeTicket(id, "token");
+  await client.reportContent("token", {
+    targetType: "MESSAGE",
+    targetId: id,
+    reason: "ABUSE",
+  });
+  await client.moderationFlags("token", "OPEN");
+  await client.reviewModerationFlag(id, "token", {
+    outcome: "CONFIRMED",
+    note: "Confirmado",
+  });
+  await client.moderationPolicy("token");
+  await client.updateModerationPolicy("token", {
+    warningThreshold: 1,
+    suspendThreshold: 3,
+    blockThreshold: 5,
+    suspensionHours: 72,
+  });
+  assert.deepEqual(
+    calls.map((call) => call.method),
+    ["GET", "GET", "POST", "POST", "POST", "GET", "POST", "GET", "PUT"],
+  );
+});

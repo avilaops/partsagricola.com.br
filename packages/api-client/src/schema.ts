@@ -509,106 +509,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/v1/chat": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: {
-      parameters: {
-        query?: {
-          cursor?: string;
-          market?: string;
-        };
-        header?: {
-          "x-market"?: string;
-          "x-seller-id"?: string;
-        };
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Default Response */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              data: unknown[];
-              page: {
-                nextCursor: string | null;
-              };
-              module: string;
-              market: {
-                /** Format: uuid */
-                id: string;
-                code: string;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        403: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/v1/orders": {
     parameters: {
       query?: never;
@@ -910,106 +810,6 @@ export interface paths {
     trace?: never;
   };
   "/v1/reviews": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: {
-      parameters: {
-        query?: {
-          cursor?: string;
-          market?: string;
-        };
-        header?: {
-          "x-market"?: string;
-          "x-seller-id"?: string;
-        };
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description Default Response */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              data: unknown[];
-              page: {
-                nextCursor: string | null;
-              };
-              module: string;
-              market: {
-                /** Format: uuid */
-                id: string;
-                code: string;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        400: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        401: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-        /** @description Default Response */
-        403: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": {
-              error: {
-                code: string;
-                message: string;
-                requestId: string;
-                details?: unknown;
-              };
-            };
-          };
-        };
-      };
-    };
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/v1/moderation": {
     parameters: {
       query?: never;
       header?: never;
@@ -1975,6 +1775,1220 @@ export interface paths {
         };
       };
     };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/chat/uploads/sign": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            fileName: string;
+            /** @enum {string} */
+            contentType: "image/jpeg" | "image/png" | "image/webp";
+            size: number;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              key: string;
+              /** Format: uri */
+              url: string;
+              expiresIn: number;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        503: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/chat/conversations/{id}/realtime-ticket": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** Format: uuid */
+              ticket: string;
+              /** Format: date-time */
+              expiresAt: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/chat/conversations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          cursor?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                /** Format: uuid */
+                marketId: string;
+                /** @enum {string} */
+                contextType: "LISTING" | "REQUEST" | "PROPOSAL" | "ORDER";
+                /** Format: uuid */
+                contextId: string;
+                title: string;
+                /** Format: date-time */
+                updatedAt: string;
+              }[];
+              page: {
+                nextCursor: string | null;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/chat/conversations/{id}/messages": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          cursor?: string;
+        };
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                /** Format: uuid */
+                conversationId: string;
+                /** Format: uuid */
+                senderUserId: string;
+                safeBody: string;
+                /** @enum {string} */
+                moderationStatus: "ALLOW" | "MASK" | "BLOCK" | "PENDING_REVIEW";
+                reasons: string[];
+                attachments: {
+                  /** Format: uuid */
+                  id: string;
+                  storageKey: string;
+                  /** @enum {string} */
+                  mimeType: "image/jpeg" | "image/png" | "image/webp";
+                  /** @enum {string} */
+                  status:
+                    | "QUARANTINED"
+                    | "APPROVED"
+                    | "REJECTED"
+                    | "REVIEW_REQUIRED";
+                  /** Format: uri */
+                  url?: string;
+                }[];
+                readByRecipient: boolean;
+                /** Format: date-time */
+                createdAt: string;
+                mine: boolean;
+              }[];
+              page: {
+                nextCursor: string | null;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            /** Format: uuid */
+            clientMessageId: string;
+            body: string;
+            /** @default [] */
+            attachments?: {
+              storageKey: string;
+              /** @enum {string} */
+              mimeType: "image/jpeg" | "image/png" | "image/webp";
+            }[];
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              conversationId: string;
+              /** Format: uuid */
+              senderUserId: string;
+              safeBody: string;
+              /** @enum {string} */
+              moderationStatus: "ALLOW" | "MASK" | "BLOCK" | "PENDING_REVIEW";
+              reasons: string[];
+              attachments: {
+                /** Format: uuid */
+                id: string;
+                storageKey: string;
+                /** @enum {string} */
+                mimeType: "image/jpeg" | "image/png" | "image/webp";
+                /** @enum {string} */
+                status:
+                  | "QUARANTINED"
+                  | "APPROVED"
+                  | "REJECTED"
+                  | "REVIEW_REQUIRED";
+                /** Format: uri */
+                url?: string;
+              }[];
+              readByRecipient: boolean;
+              /** Format: date-time */
+              createdAt: string;
+              mine: boolean;
+            };
+          };
+        };
+        /** @description Default Response */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** Format: uuid */
+              id: string;
+              /** Format: uuid */
+              conversationId: string;
+              /** Format: uuid */
+              senderUserId: string;
+              safeBody: string;
+              /** @enum {string} */
+              moderationStatus: "ALLOW" | "MASK" | "BLOCK" | "PENDING_REVIEW";
+              reasons: string[];
+              attachments: {
+                /** Format: uuid */
+                id: string;
+                storageKey: string;
+                /** @enum {string} */
+                mimeType: "image/jpeg" | "image/png" | "image/webp";
+                /** @enum {string} */
+                status:
+                  | "QUARANTINED"
+                  | "APPROVED"
+                  | "REJECTED"
+                  | "REVIEW_REQUIRED";
+                /** Format: uri */
+                url?: string;
+              }[];
+              readByRecipient: boolean;
+              /** Format: date-time */
+              createdAt: string;
+              mine: boolean;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/chat/conversations/{id}/read": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": "null";
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/chat/reports": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            /** @enum {string} */
+            targetType: "MESSAGE" | "LISTING" | "STORE";
+            /** Format: uuid */
+            targetId: string;
+            /** @enum {string} */
+            reason:
+              | "CONTACT_ATTEMPT"
+              | "FRAUD"
+              | "ABUSE"
+              | "MISLEADING"
+              | "OTHER";
+            details?: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** Format: uuid */
+              id: string;
+              targetType: string;
+              /** Format: uuid */
+              targetId: string;
+              reason: string;
+              status: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              /** Format: uuid */
+              id: string;
+              targetType: string;
+              /** Format: uuid */
+              targetId: string;
+              reason: string;
+              status: string;
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/moderation/flags": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          status?: "OPEN" | "APPROVED" | "REJECTED" | "RESOLVED";
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              data: {
+                /** Format: uuid */
+                id: string;
+                /** Format: uuid */
+                marketId: string;
+                /** Format: uuid */
+                companyId?: string;
+                /** Format: uuid */
+                userId?: string;
+                /** @enum {string} */
+                contentType: "MESSAGE" | "LISTING" | "STORE" | "IMAGE";
+                /** Format: uuid */
+                contentId: string;
+                /** @enum {string} */
+                decision: "ALLOW" | "MASK" | "BLOCK";
+                reasons: string[];
+                /** @enum {string} */
+                source:
+                  | "SYNC"
+                  | "ASYNC_TEXT"
+                  | "ASYNC_OCR"
+                  | "REPORT"
+                  | "REVIEW";
+                /** @enum {string} */
+                status: "OPEN" | "APPROVED" | "REJECTED" | "RESOLVED";
+                redactedExcerpt?: string;
+                /** Format: date-time */
+                createdAt: string;
+              }[];
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/moderation/flags/{id}/review": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            /** @enum {string} */
+            outcome: "CONFIRMED" | "DISMISSED";
+            note: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              flag: {
+                /** Format: uuid */
+                id: string;
+                /** Format: uuid */
+                marketId: string;
+                /** Format: uuid */
+                companyId?: string;
+                /** Format: uuid */
+                userId?: string;
+                /** @enum {string} */
+                contentType: "MESSAGE" | "LISTING" | "STORE" | "IMAGE";
+                /** Format: uuid */
+                contentId: string;
+                /** @enum {string} */
+                decision: "ALLOW" | "MASK" | "BLOCK";
+                reasons: string[];
+                /** @enum {string} */
+                source:
+                  | "SYNC"
+                  | "ASYNC_TEXT"
+                  | "ASYNC_OCR"
+                  | "REPORT"
+                  | "REVIEW";
+                /** @enum {string} */
+                status: "OPEN" | "APPROVED" | "REJECTED" | "RESOLVED";
+                redactedExcerpt?: string;
+                /** Format: date-time */
+                createdAt: string;
+              };
+              sanction?: {
+                /** Format: uuid */
+                id: string;
+                /** @enum {string} */
+                kind: "WARNING" | "SUSPENSION" | "BLOCK";
+                reason: string;
+                /** Format: uuid */
+                companyId?: string;
+                /** Format: uuid */
+                userId?: string;
+                /** Format: date-time */
+                startsAt: string;
+                /** Format: date-time */
+                endsAt?: string;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        409: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/moderation/policy": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              warningThreshold: number;
+              suspendThreshold: number;
+              blockThreshold: number;
+              suspensionHours: number;
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          "application/json": {
+            warningThreshold: number;
+            suspendThreshold: number;
+            blockThreshold: number;
+            suspensionHours: number;
+          };
+        };
+      };
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              warningThreshold: number;
+              suspendThreshold: number;
+              blockThreshold: number;
+              suspensionHours: number;
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/moderation/history": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          companyId?: string;
+          userId?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Default Response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              flags: {
+                /** Format: uuid */
+                id: string;
+                /** Format: uuid */
+                marketId: string;
+                /** Format: uuid */
+                companyId?: string;
+                /** Format: uuid */
+                userId?: string;
+                /** @enum {string} */
+                contentType: "MESSAGE" | "LISTING" | "STORE" | "IMAGE";
+                /** Format: uuid */
+                contentId: string;
+                /** @enum {string} */
+                decision: "ALLOW" | "MASK" | "BLOCK";
+                reasons: string[];
+                /** @enum {string} */
+                source:
+                  | "SYNC"
+                  | "ASYNC_TEXT"
+                  | "ASYNC_OCR"
+                  | "REPORT"
+                  | "REVIEW";
+                /** @enum {string} */
+                status: "OPEN" | "APPROVED" | "REJECTED" | "RESOLVED";
+                redactedExcerpt?: string;
+                /** Format: date-time */
+                createdAt: string;
+              }[];
+              sanctions: {
+                /** Format: uuid */
+                id: string;
+                /** @enum {string} */
+                kind: "WARNING" | "SUSPENSION" | "BLOCK";
+                reason: string;
+                /** Format: uuid */
+                companyId?: string;
+                /** Format: uuid */
+                userId?: string;
+                /** Format: date-time */
+                startsAt: string;
+                /** Format: date-time */
+                endsAt?: string;
+              }[];
+            };
+          };
+        };
+        /** @description Default Response */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        401: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+        /** @description Default Response */
+        403: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              error: {
+                code: string;
+                message: string;
+                requestId: string;
+                details?: unknown;
+              };
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;

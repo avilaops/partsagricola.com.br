@@ -1,8 +1,14 @@
 import { parseServiceEnv } from "@partsagricola/config";
 import { createPool } from "@partsagricola/db";
-import { createS3UploadSigner } from "@partsagricola/providers";
+import {
+  createModerationEvidenceCipher,
+  createS3UploadSigner,
+  parseModerationEvidenceKey,
+} from "@partsagricola/providers";
 import { createApp } from "./app.js";
 import { PostgresCatalogRepository } from "./catalog/postgres-repository.js";
+import { PostgresChatRepository } from "./chat/postgres-repository.js";
+import { PostgresModerationRepository } from "./moderation/postgres-repository.js";
 import {
   loadMarkets,
   PostgresAuditRepository,
@@ -11,12 +17,21 @@ import {
 const env = parseServiceEnv(process.env);
 const pool = createPool();
 const storage = storageConfig(process.env);
+const evidenceCipher = createModerationEvidenceCipher(
+  parseModerationEvidenceKey(required("MODERATION_EVIDENCE_KEY")),
+);
+const uploads = storage ? createS3UploadSigner(storage) : null;
 const app = await createApp({
   markets: await loadMarkets(pool),
   audit: new PostgresAuditRepository(pool),
   catalog: new PostgresCatalogRepository(pool),
+  chat: new PostgresChatRepository(pool, {
+    encryptEvidence: evidenceCipher.encrypt,
+    ...(uploads?.signRead ? { signRead: uploads.signRead } : {}),
+  }),
+  moderation: new PostgresModerationRepository(pool),
   imageJobs: new PostgresImageJobQueue(pool),
-  ...(storage ? { uploads: createS3UploadSigner(storage) } : {}),
+  ...(uploads ? { uploads } : {}),
 });
 app.addHook("onClose", async () => pool.end());
 await app.listen({ host: env.HOST, port: env.PORT });
@@ -38,4 +53,10 @@ function storageConfig(source: NodeJS.ProcessEnv) {
     secretAccessKey: source.S3_SECRET_ACCESS_KEY!,
     forcePathStyle: source.S3_FORCE_PATH_STYLE !== "false",
   };
+}
+
+function required(name: string): string {
+  const value = process.env[name];
+  if (!value) throw new Error(`${name}_REQUIRED`);
+  return value;
 }

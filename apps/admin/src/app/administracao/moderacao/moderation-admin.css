@@ -1,0 +1,207 @@
+.moderation-page {
+  min-height: 100vh;
+  background: #f5f7f4;
+  color: #17231b;
+  padding: clamp(1rem, 3vw, 3rem);
+  font-family: var(--pa-font-sans);
+}
+.moderation-hero {
+  max-width: 1180px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: flex-end;
+  padding: 2rem 0;
+}
+.moderation-hero h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  margin: 0.25rem 0;
+}
+.moderation-hero p {
+  max-width: 620px;
+  color: #566158;
+}
+.moderation-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 800;
+  font-size: 0.76rem;
+  color: #087443 !important;
+}
+.moderation-summary {
+  background: #073e2a;
+  color: white;
+  border-radius: 22px;
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  min-width: 170px;
+}
+.moderation-summary strong {
+  font-size: 2.4rem;
+}
+.moderation-summary span {
+  color: #cde9da;
+}
+.moderation-notice {
+  max-width: 1180px;
+  margin: 0 auto 1rem;
+  background: #e3f5ea;
+  border: 1px solid #acd9bd;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+}
+.moderation-layout {
+  max-width: 1180px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1.5rem;
+  align-items: start;
+}
+.moderation-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+.moderation-toolbar .pa-field {
+  max-width: 190px;
+}
+.moderation-list {
+  display: grid;
+  gap: 1rem;
+}
+.moderation-card {
+  padding: 1.25rem;
+  border: 1px solid #dce3dc;
+  box-shadow: 0 10px 28px #173d2810;
+}
+.moderation-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.moderation-card-head time,
+.moderation-user {
+  color: #667269;
+  font-size: 0.88rem;
+}
+.moderation-severity {
+  font-weight: 800;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+}
+.moderation-severity--block {
+  background: #ffe4e2;
+  color: #9f271f;
+}
+.moderation-severity--mask {
+  background: #fff0c9;
+  color: #7a5600;
+}
+.moderation-card h3 {
+  margin: 1rem 0 0.1rem;
+}
+.moderation-card blockquote {
+  margin: 1rem 0;
+  background: #f1f4f1;
+  border-left: 3px solid #759183;
+  padding: 0.8rem 1rem;
+  border-radius: 0 10px 10px 0;
+  color: #465149;
+}
+.moderation-reasons {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+.moderation-reasons span {
+  font-size: 0.72rem;
+  border: 1px solid #d9e0da;
+  border-radius: 999px;
+  padding: 0.3rem 0.5rem;
+}
+.moderation-actions {
+  display: flex;
+  gap: 0.65rem;
+  margin-top: 1.1rem;
+}
+.moderation-policy {
+  position: sticky;
+  top: 1rem;
+  background: #fff;
+  border: 1px solid #dce3dc;
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 10px 28px #173d2810;
+}
+.moderation-policy h2 {
+  margin: 0.25rem 0;
+}
+.moderation-policy > p {
+  color: #667269;
+}
+.moderation-policy form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+.moderation-policy form .pa-field:last-of-type,
+.moderation-policy form button {
+  grid-column: 1/-1;
+}
+.moderation-policy small {
+  color: #667269;
+}
+.moderation-empty {
+  text-align: center;
+  background: #fff;
+  border: 1px dashed #b9c5bc;
+  border-radius: 18px;
+  padding: 3rem;
+}
+.moderation-empty p {
+  color: #667269;
+}
+@media (max-width: 800px) {
+  .moderation-page {
+    padding: 1rem;
+  }
+  .moderation-hero {
+    align-items: start;
+    flex-direction: column;
+    padding: 1rem 0 1.5rem;
+  }
+  .moderation-summary {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .moderation-layout {
+    grid-template-columns: 1fr;
+  }
+  .moderation-policy {
+    position: static;
+    order: -1;
+  }
+  .moderation-toolbar {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .moderation-toolbar .pa-field {
+    max-width: none;
+    width: 100%;
+  }
+  .moderation-actions {
+    flex-direction: column;
+  }
+  .moderation-actions .pa-button {
+    width: 100%;
+  }
+}

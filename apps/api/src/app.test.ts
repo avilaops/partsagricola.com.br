@@ -66,7 +66,11 @@ test("expõe health versionado e OpenAPI 3.1 com todos os domínios", async () =
     assert.ok(
       module === "catalog"
         ? document.paths["/v1/catalog/search"]
-        : document.paths[`/v1/${module}`],
+        : module === "chat"
+          ? document.paths["/v1/chat/conversations"]
+          : module === "moderation"
+            ? document.paths["/v1/moderation/flags"]
+            : document.paths[`/v1/${module}`],
       `${module} ausente no OpenAPI`,
     );
   await app.close();

@@ -1,0 +1,222 @@
+.chat-page {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  background: #eef2ee;
+  color: #17231b;
+  font-family: var(--pa-font-sans);
+  max-width: 1100px;
+  margin: auto;
+  border-inline: 1px solid #dce4dd;
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border-bottom: 1px solid #dce4dd;
+}
+.chat-header > div {
+  flex: 1;
+}
+.chat-header p {
+  margin: 0.2rem 0 0;
+  color: #667269;
+  font-size: 0.88rem;
+}
+.chat-back {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f0f3f0;
+  color: #193f2a;
+  text-decoration: none;
+  font-size: 1.4rem;
+}
+.chat-connection {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #657069;
+}
+.chat-connection::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d4971a;
+  margin-right: 0.35rem;
+}
+.chat-connection--live::before {
+  background: #0a8c50;
+}
+.chat-safety {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  padding: 0.7rem 1rem;
+  background: #e5f4eb;
+  color: #175a38;
+  font-size: 0.82rem;
+}
+.chat-messages {
+  overflow-y: auto;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background-image: radial-gradient(#b8c8bc55 0.6px, transparent 0.6px);
+  background-size: 18px 18px;
+}
+.chat-bubble {
+  align-self: flex-start;
+  max-width: min(72%, 620px);
+  padding: 0.8rem 1rem;
+  background: #fff;
+  border-radius: 6px 18px 18px 18px;
+  box-shadow: 0 4px 16px #173d2812;
+}
+.chat-bubble--mine {
+  align-self: flex-end;
+  background: #dff3e7;
+  border-radius: 18px 6px 18px 18px;
+}
+.chat-bubble--moderated {
+  background: #fff5dd;
+  border: 1px solid #ebca7a;
+}
+.chat-bubble strong {
+  font-size: 0.76rem;
+  color: #087443;
+}
+.chat-bubble p {
+  margin: 0.35rem 0;
+  line-height: 1.45;
+}
+.chat-photo {
+  display: block;
+  width: min(100%, 360px);
+  max-height: 280px;
+  margin-top: 0.65rem;
+  border-radius: 14px;
+  object-fit: cover;
+}
+.chat-bubble small {
+  display: block;
+  color: #805b05;
+  font-weight: 700;
+}
+.chat-bubble time {
+  font-size: 0.68rem;
+  color: #79827b;
+  float: right;
+}
+.chat-bubble button {
+  border: 0;
+  background: none;
+  color: #7e403a;
+  font-size: 0.68rem;
+  padding: 0;
+  margin-top: 0.4rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.chat-notice {
+  margin: 0;
+  padding: 0.6rem 1rem;
+  background: #fff0c9;
+  color: #684900;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.chat-composer {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #fff;
+  border-top: 1px solid #dce4dd;
+  align-items: end;
+}
+.chat-composer label {
+  display: block;
+}
+.chat-composer textarea {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  max-height: 120px;
+  resize: vertical;
+  box-sizing: border-box;
+  border: 1px solid #cbd5cd;
+  border-radius: 14px;
+  padding: 0.75rem;
+  font: inherit;
+}
+.chat-attach {
+  width: 46px;
+  height: 46px;
+  border: 1px solid #cbd5cd;
+  border-radius: 14px;
+  background: white;
+  font-size: 1.4rem;
+  color: #087443;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 640px) {
+  .chat-page {
+    border: 0;
+  }
+  .chat-header {
+    padding: 0.8rem;
+  }
+  .chat-header .pa-avatar-wrap > span:last-child {
+    font-size: 0.88rem;
+  }
+  .chat-connection {
+    font-size: 0;
+  }
+  .chat-connection::before {
+    margin: 0;
+    width: 9px;
+    height: 9px;
+  }
+  .chat-safety {
+    display: grid;
+    text-align: center;
+    gap: 0.15rem;
+  }
+  .chat-messages {
+    padding: 1rem;
+  }
+  .chat-bubble {
+    max-width: 86%;
+  }
+  .chat-composer {
+    padding: 0.75rem;
+    grid-template-columns: auto 1fr;
+  }
+  .chat-composer .pa-button {
+    grid-column: 2;
+    width: 100%;
+  }
+  .chat-attach {
+    grid-row: 1;
+  }
+  .chat-composer label {
+    grid-column: 2;
+  }
+}

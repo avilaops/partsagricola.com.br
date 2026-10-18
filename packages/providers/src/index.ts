@@ -13,7 +13,13 @@ export interface ObjectStorageProvider {
   }): Promise<{ url: string }>;
 }
 
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+export * from "./moderation.ts";
+
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export type S3StorageConfig = {
@@ -59,6 +65,15 @@ export function createS3UploadSigner(config: S3StorageConfig) {
         }),
         expiresIn,
       };
+    },
+    async signRead(key: string) {
+      if (!key.startsWith("uploads/") || key.includes(".."))
+        throw new Error("INVALID_STORAGE_KEY");
+      return getSignedUrl(
+        client,
+        new GetObjectCommand({ Bucket: config.bucket, Key: key }),
+        { expiresIn: config.expiresIn ?? 300 },
+      );
     },
   };
 }

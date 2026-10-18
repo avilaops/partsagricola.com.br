@@ -8,6 +8,9 @@ export default function Page() {
         description="Controle operacional e auditoria do marketplace em uma interface central."
       />
       <div style={{ position: "fixed", right: "1rem", bottom: "1rem" }}>
+        <Link href="/administracao/moderacao">
+          <Button variant="secondary">Central de moderação</Button>
+        </Link>{" "}
         <Link href="/administracao/catalogo">
           <Button>Gerenciar catálogo</Button>
         </Link>
