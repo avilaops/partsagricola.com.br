@@ -107,6 +107,8 @@ ambiente. O arquivo `.env` nunca deve ser versionado. Serviços HTTP usam
 `HOST=127.0.0.1` por padrão; exposição externa deve ser feita por proxy com TLS,
 autenticação e limites de requisição.
 
+O login é centralizado em `apps/auth` por OIDC Authorization Code + PKCE, com SSO para web, fornecedor e administração. Consulte [docs/AUTENTICACAO.md](docs/AUTENTICACAO.md) para configuração, conectores, TTLs e recuperação.
+
 ## Automação n8n
 
 [`n8n/partsagricola-operacao.ts`](n8n/partsagricola-operacao.ts) mantém o

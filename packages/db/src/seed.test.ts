@@ -42,6 +42,9 @@ test(
         machineTypes: 8,
         brands: 23,
         partCategories: 10,
+        authRoles: 4,
+        authConnectors: 4,
+        authClients: 4,
       });
       const market = await pool.query(
         "select code,default_currency,default_locale,timezone,active from marketplace.market",

@@ -9,6 +9,7 @@ export default defineConfig({
   reporter: process.env.CI ? "github" : "list",
   use: {
     baseURL: "http://127.0.0.1:3000",
+    locale: "pt-BR",
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
   },
@@ -19,10 +20,12 @@ export default defineConfig({
       use: { ...devices["iPhone 13"], browserName: "chromium" },
     },
   ],
-  webServer: {
-    command: "pnpm dev:apps",
-    url: "http://127.0.0.1:3000",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  webServer: process.env.CI
+    ? undefined
+    : {
+        command: "pnpm dev:apps",
+        url: "http://127.0.0.1:3000",
+        reuseExistingServer: true,
+        timeout: 120_000,
+      },
 });

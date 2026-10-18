@@ -27,6 +27,11 @@ jobs:
           --health-retries 10
     env:
       MARKETPLACE_TEST_ADMIN_URL: postgresql://partsagricola_test:partsagricola_test@127.0.0.1:5432/postgres
+      DATABASE_URL: postgresql://partsagricola_test:partsagricola_test@127.0.0.1:5432/postgres
+      AUTH_ISSUER: http://127.0.0.1:4101
+      AUTH_SOCIAL_MOCK: "true"
+      GOOGLE_CLIENT_ID: github-actions-mock
+      GOOGLE_CLIENT_SECRET: github-actions-mock
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -37,9 +42,52 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Generate ephemeral auth keys
+        run: |
+          node -e "const{generateKeyPairSync}=require('crypto');const key=JSON.stringify(generateKeyPairSync('ed25519').privateKey.export({format:'jwk'}));console.log('::add-mask::'+key);require('fs').appendFileSync(process.env.GITHUB_ENV,'AUTH_SIGNING_JWK='+key+'\n')"
+          data_key=$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '=')
+          lookup_key=$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '=')
+          echo "::add-mask::$data_key"
+          echo "::add-mask::$lookup_key"
+          echo "AUTH_DATA_KEY=$data_key" >> "$GITHUB_ENV"
+          echo "AUTH_LOOKUP_KEY=$lookup_key" >> "$GITHUB_ENV"
+      - run: pnpm db:migrate && pnpm db:seed
+      - run: psql "$DATABASE_URL" -c "update marketplace.auth_connector set enabled=true where provider='GOOGLE'"
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
+      - name: Run Playwright with auth service
+        run: |
+          pnpm --filter @partsagricola/auth dev > "$RUNNER_TEMP/auth-service.log" 2>&1 &
+          auth_pid=$!
+          pnpm --filter @partsagricola/web dev > "$RUNNER_TEMP/web-service.log" 2>&1 &
+          web_pid=$!
+          pnpm --filter @partsagricola/seller dev > "$RUNNER_TEMP/seller-service.log" 2>&1 &
+          seller_pid=$!
+          pnpm --filter @partsagricola/admin dev > "$RUNNER_TEMP/admin-service.log" 2>&1 &
+          admin_pid=$!
+          trap 'kill "$auth_pid" "$web_pid" "$seller_pid" "$admin_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:4101/health >/dev/null \
+              && curl --fail --silent http://127.0.0.1:3000 >/dev/null \
+              && curl --fail --silent http://127.0.0.1:3001 >/dev/null \
+              && curl --fail --silent http://127.0.0.1:3002 >/dev/null; then
+              pnpm test:e2e
+              exit $?
+            fi
+            sleep 1
+          done
+          for log in "$RUNNER_TEMP"/{auth,web,seller,admin}-service.log; do
+            echo "===== $log ====="
+            cat "$log"
+          done
+          exit 1
+      - name: Upload AVL-168 screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: avl-168-auth-screenshots
+          path: test-results/**/avl-168-login-*.png
+          if-no-files-found: error
       - run: pnpm build

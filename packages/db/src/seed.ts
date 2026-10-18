@@ -11,6 +11,9 @@ export interface SeedSummary {
   machineTypes: number;
   brands: number;
   partCategories: number;
+  authRoles: number;
+  authConnectors: number;
+  authClients: number;
 }
 
 export async function applyMarketplaceSeed(
@@ -28,7 +31,10 @@ export async function applyMarketplaceSeed(
         (select count(*)::integer from marketplace.market) as markets,
         (select count(*)::integer from marketplace.machine_type) as "machineTypes",
         (select count(*)::integer from marketplace.brand) as brands,
-        (select count(*)::integer from marketplace.part_category) as "partCategories"
+        (select count(*)::integer from marketplace.part_category) as "partCategories",
+        (select count(*)::integer from marketplace.auth_role) as "authRoles",
+        (select count(*)::integer from marketplace.auth_connector) as "authConnectors",
+        (select count(*)::integer from marketplace.auth_client) as "authClients"
     `);
     await client.query("commit");
     return counts.rows[0]!;
